@@ -1,0 +1,12 @@
+<?php
+require_once dirname(__FILE__).'/../inc.php';
+INC_defineBasics();
+INC_dokuwikiCore();
+
+require_once dirname(__FILE__)."/classes/ThemeCollector.php";
+/*require_once DOKU_INC.'/inc/confutils.php';*/
+
+echo "Collector:<br/>";
+
+$col = new ThemeCollector();
+$col->collect(dirname(__FILE__)."/themes");

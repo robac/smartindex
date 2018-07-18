@@ -1,0 +1,37 @@
+.smartindex-default-theme li
+{
+    background-repeat: no-repeat;
+    padding-left: 12px;
+}
+
+.smartindex-default-theme li.namespace > a
+{
+    font-weight: bold;
+    color: red !important;
+}
+
+.smartindex-default-theme.smartindex-highlite div:hover > a
+{
+    background-color: yellow !important;   
+}
+
+
+.smartindex-default-theme li.namespace.closed
+{
+    background-image: url("img/folder.gif");    
+}
+
+.smartindex-default-theme li.namespace.open
+{
+    background-image: url("img/folderopen.gif");    
+}
+
+.smartindex-default-theme li.page > a
+{
+    font-weight: normal;
+}
+
+.smartindex-default-theme li > div > a:hover
+{
+    text-decoration: none;
+}

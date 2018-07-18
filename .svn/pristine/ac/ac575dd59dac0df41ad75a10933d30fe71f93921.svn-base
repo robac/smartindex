@@ -1,0 +1,54 @@
+<?php
+
+function microtime_float()
+{
+    list($usec, $sec) = explode(" ", microtime());
+    return ((float)$usec + (float)$sec);
+}
+
+$time_start = microtime_float();
+
+require_once (dirname(__FILE__).'/../inc.php');
+INC_constsDW();
+INC_includeDWCore();
+INC_constsSmartindex();
+
+$time_start2 = microtime_float();
+
+global $conf;
+
+$res = "";
+$config = new SmartIndexConf();
+$config->namespace = $_POST['namespace'];
+$config->depth = $_POST['depth'];
+$config->theme = $_POST['theme'];
+$config->checkHandle();
+$config->checkRender();
+
+if (!is_null($config->error)) {
+    $res .= "<div class=\"smartindex-error\">SmartIndex error: {$config->error}</div>";
+} else {
+    $time_start3 = microtime_float();
+    
+    $seeker = new PageSeeker($config);
+    $data = $seeker->get($config);
+    
+    $time_start4 = microtime_float();
+    
+    $indexBuilder = $config->getRenderer();
+    $indexBuilder->setWrapper(false);
+    $indexBuilder->render($data, $res);
+    echo $res;
+    
+    
+    $time_end = microtime_float();
+    $time = round(($time_start2 - $time_start)*1000);
+    $time2= round(($time_end - $time_start2)*1000);
+    $time3 = round(($time_start4 - $time_start3)*1000);
+    $time4= round(($time_end - $time_start4)*1000);
+    echo "start {$time}<br />";
+    echo "smart {$time2}<br />";
+    echo "seek {$time3}<br />";
+    echo "render {$time4}\n";
+
+}

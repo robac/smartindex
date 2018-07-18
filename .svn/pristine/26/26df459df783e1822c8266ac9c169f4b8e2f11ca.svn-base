@@ -1,0 +1,58 @@
+.smartindex-default-theme
+{
+    font-size: 14px;
+}
+
+.smartindex-default-theme li
+{
+    line-height: 1.35em;
+}
+
+.smartindex-default-theme li > ul
+{
+    padding-left: 1em !important;
+}
+
+.smartindex-default-theme li > div
+{
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 0.6em;
+}
+
+.smartindex-default-theme li.namespace > div > a
+{
+    font-weight: bold;
+    color: rgb(43, 115, 183) !important;
+}
+
+.smartindex-default-theme.smartindex-highlite div:hover > a
+{
+    background-color: yellow !important;   
+}
+
+.smartindex-default-theme li.namespace.closed > div
+{
+    background-image: url("img/folder.gif");    
+}
+
+.smartindex-default-theme li.namespace.open > div
+{
+    background-image: url("img/folderopen.gif");    
+}
+
+.smartindex-default-theme li.page > div
+{
+    background-image: url("img/page.gif");    
+}
+
+.smartindex-default-theme li.page > div > a
+{
+    font-weight: normal;
+    color: rgb(0, 136, 0) !important;
+}
+
+.smartindex-default-theme li > div > a:hover
+{
+    text-decoration: none;
+}

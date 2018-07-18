@@ -1,0 +1,11 @@
+<?php
+class CssCollector {
+    public function collect($initDir) {
+        $pattern = $initDir.'/*';
+        $ret = "";
+        foreach(glob(pattern, GLOB_ONLYDIR) as $file) {
+            $ret .= $file;
+        }
+        return $pattern.$ret;
+    }
+}

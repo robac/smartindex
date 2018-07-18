@@ -1,0 +1,8 @@
+.default
+{
+  color: green;
+}
+.dtree
+{
+  color: red;
+}

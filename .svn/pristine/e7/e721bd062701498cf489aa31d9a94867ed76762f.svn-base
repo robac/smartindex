@@ -1,0 +1,64 @@
+<?php
+
+class ThemeCollector {
+    
+    private function css_loadfile($file,$location=''){
+    if(!@file_exists($file)) return '';
+    $css = file_get_contents($file);
+    if(!$location) return $css;
+
+    $css = preg_replace('#(url\([ \'"]*)(?!/|data:|http://|https://| |\'|")#','\\1'.$location,$css);
+    $css = preg_replace('#(@import\s+[\'"])(?!/|data:|http://|https://)#', '\\1'.$location, $css);
+
+    return $css;
+}
+    
+    
+    private function addTheme($dirPath, $dir, $file) {
+        if (!file_exists($dirPath."/theme.info.txt")) {
+            return;
+        }
+        $themeConf = confToHash($dirPath."/theme.info.txt");
+
+        echo "<pre>".var_dump($themeConf)."</pre>";
+        echo $dirPath."<br/>";
+        
+        if ($themeConf['theme'] != $dir) {
+            return;
+        }
+        
+        if ()
+        
+        
+        
+        
+        
+        if (file_exists($dirPath."/screen.css")) {
+            $css = $this->css_loadfile($dirPath."/screen.css", "/lib/plugins/smartindex/themes/{$dir}/");
+            //@fwrite($file, file_get_contents($dirPath."/screen.css")."\n");
+            @fwrite($file, $css);
+        }
+        
+    }
+    
+    public function collect($initDir) {
+        $dh = @opendir($initDir);
+
+        $cssFile = fopen($initDir.'/../screen.css', 'w');
+        if (file_exists($initDir."/screen.css")) {
+            $css = $this->css_loadfile($initDir."/screen.css", "/lib/plugins/smartindex/themes/");
+            @fwrite($cssFile, $css);
+        }
+        
+        if (!$dh) return;
+        while(($file = readdir($dh)) !== false){
+            if(preg_match('/^[\._]/',$file)) continue;
+            $filePath = $initDir.'/'.$file;
+            if(is_dir($filePath)){
+                $this->addTheme($filePath, $file, $cssFile);
+            }
+        }
+        @fclose($file);
+        closedir($dh);
+    }
+}

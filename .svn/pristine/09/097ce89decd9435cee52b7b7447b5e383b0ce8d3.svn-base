@@ -1,0 +1,14 @@
+<div>
+    <center><h1>SmartIndex Plugin</h1></center>
+    <button id="collect-themes">collect themes</button>
+    <script type="text/javascript">/*<![CDATA[*/
+        jQuery(function() {
+        jQuery("#collect-themes")
+          .button()
+          .click(function( event ) {
+            alert('hu');
+          });
+        });
+    /*!]]>*/</script>
+  
+</div>

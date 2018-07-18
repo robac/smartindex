@@ -1,0 +1,152 @@
+<?php
+
+class PageSeeker {
+    
+    const KEY_DIRS = 'dirs';
+    const KEY_PAGES = 'files';
+    
+    private $config;
+    private $info;
+    
+    public function __construct() {
+    }
+    
+    public function get(SmartIndexConf $config) {
+        $this->config = $config;
+        $data = array();
+        
+        
+        if (auth_quickaclcheck(PageTools::constructPageName($this->config->namespace, "*")) >= AUTH_READ)
+            $this->search($data, PageTools::getPageDirFromNamespace("", $this->config->namespace), $this->config->namespace, 1);
+    
+        return $data;
+    }
+    
+    public function setFollowPath($path) {
+        $this->followPath = $path;
+    }
+    
+    private function isInFollowPath($namespace, $dir) {
+        $completePath = PageTools::constructPageName($namespace, $dir);
+        if (strpos($this->followPath, $completePath) === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    private function initInfo() {
+        $this->info = array();
+        $this->info[1][0] = $this->config->namespace;
+        $this->info[1][1] = $this->config->baseDir;
+    }
+    
+    private function addInfo($level, $dir) {
+        $this->info[$level][0] = PageTools::constructPageName($this->info[$level-1]['ns'], $dir);
+        $this->info[$level][1] = $this->info[$level-1]['dir'].'\\'.$NS_SEPARATOR.$dir;
+    }
+    
+   
+    public function _get(SmartIndexConf $config) {
+        $this->config = $config;
+        $data = array();
+        
+        $this->initInfo();
+        $this->_search($data, 1);
+    
+        return $data;
+    }
+
+    
+    private function _search(&$data, $level) {
+        $namespace = $this->info[$level][0];
+        $data[$namespace][self::KEY_DIRS] = array();
+        $data[$namespace][self::KEY_PAGES] = array();
+        
+        $dh = @opendir($this->info[$level][1]);
+        if (!$dh) return;
+        
+        while(($file = readdir($dh)) !== false){
+            if(preg_match('/^[\._]/',$file)) continue;
+            $filePath = $this->info[$level][1].'/'.$file;
+            if(is_dir($filePath)){
+                $data[$namespace][self::KEY_DIRS][] = $file;
+                continue;
+            }
+            $pagename = PageTools::excludePageExtension($file);
+            $page_ns = ($namespace == "") ? $file : $namespace.":".$file;
+            $data[$namespace][self::KEY_PAGES][] = $pagename;
+        }
+        
+        if (($level < $this->config->depth)) {
+            foreach ($data[$namespace][self::KEY_DIRS] as $subdir) {
+                if (($level < $this->config->depth) || PageTools::isPathPart($this->config->followPath, PageTools::constructPageName($namespace, $subdir))) {
+                    $this->addInfo($level+1, $subdir);
+                    $this->_search($data, $level+1);    
+                }
+            }
+        }
+    }
+
+    private function search(&$data, $dir, $namespace, $level) {
+        $data[$namespace]["dirs"] = array();
+        $data[$namespace]["files"] = array();
+        $data[$namespace]["fm"] = array();
+        
+        $l1 = "";
+        $l2 = "";
+        PageTools::excludePageNamespaces($namespace, $l1, $l2);
+        $pattern = $this->config->nsPage;
+        //$pattern = '/'.str_replace("{namespace}", $l2, $pattern).'/i';
+        $pattern = str_replace("{namespace}", $l2, $pattern);
+        
+        //echo $this->config->baseDir.$dir.'\\'.$pattern.".txt<br/>";
+        if (file_exists($this->config->baseDir.$dir.'\\'.$pattern.".txt")) {
+            $data["headpage"]=array();
+            $data["headpage"][] = $pattern;
+        }
+
+        $dh = @opendir($this->config->baseDir.'/'.$dir);
+        if(!$dh) return;
+        
+        while(($file = readdir($dh)) !== false){
+            if(preg_match('/^[\._]/',$file)) continue;
+            $filePath = $this->config->baseDir.$dir.'/'.$file;
+            if(is_dir($filePath)){
+                $pagex = ($namespace == "") ? $file.":*" : $namespace.":".$file.":*";
+                if (auth_quickaclcheck($pagex)<AUTH_READ)
+                    continue;
+                $data[$namespace]["dirs"][] = $file;
+                continue;
+            }
+            $pagename = PageTools::excludePageExtension($file);
+            $page_ns = ($namespace == "") ? $file : $namespace.":".$file;
+            if (auth_quickaclcheck($page_ns)>=AUTH_READ) {
+                $data[$namespace]["files"][] = $pagename;
+                $data[$namespace]["fm"][] = filemtime($filePath);
+            }
+            
+            
+            /*if (($l2 != "")&&(preg_match($pattern, $pagename))) {
+                //echo "<br/>".$namespace." ".$pagename; 
+            }*/
+        }
+        
+        closedir($dh);
+        
+        sort($data[$namespace]["dirs"]);
+        //sort($data[$namespace]["files"]);
+        array_multisort($data[$namespace]['fm'], SORT_DESC, $data[$namespace]['files']);
+
+        $isFollow = PageTools::isPathPart($this->config->followPath, PageTools::constructPageName($namespace, $subdir));
+        
+        if (($level < $this->config->depth) || (!is_null($this->config->followPath))) {
+            foreach ($data[$namespace]["dirs"] as $subdir) {
+                if (($level < $this->config->depth) || PageTools::isPathPart($this->config->followPath, PageTools::constructPageName($namespace, $subdir)))
+                $this->search($data, $dir.DIRECTORY_SEPARATOR.$subdir, PageTools::constructPageName($namespace, $subdir), $level+1);    
+            }
+        }
+        
+    }
+            
+}

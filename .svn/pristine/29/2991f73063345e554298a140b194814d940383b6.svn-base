@@ -1,0 +1,127 @@
+/******************
+smartindex-treeview
+*******************/
+.smartindex-treeview ul,
+.smartindex-treeview li
+{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.smartindex-treeview li.namespace.closed > ul
+{
+    display: none;
+}
+
+/****************
+.smartindex-error 
+****************/
+.smartindex-error 
+{
+    background-color: #F88EA0;
+    display: block;
+    padding: 10px;
+    border: solid black 1px;    
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    border-radius: 10px;
+    color: black;
+}
+
+/******************
+.smartindex-default
+*******************/
+.smartindex-default li
+{
+    background-repeat: no-repeat;
+    padding-left: 12px;
+}
+
+.smartindex-default li.namespace > a
+{
+    font-weight: bold;
+    color: red !important;
+}
+
+.smartindex-default a.active
+{
+    background-color: yellow !important;
+}
+
+.smartindex-default li.namespace.closed
+{
+    background-image: url("themes/default/folder.gif");    
+}
+
+.smartindex-default li.namespace.open
+{
+    background-image: url("themes/default/folderopen.gif");    
+}
+
+.smartindex-default li.page > a
+{
+    font-weight: normal;
+}
+
+.smartindex-default li > a:hover 
+{
+    text-decoration: none;
+}
+
+/******************
+.smartindex-folder
+******************/
+
+.smartindex-folder 
+{
+    font-family: Verdana, Arial, Helvetica, sans-serif;    
+    font-size: 16px;
+}
+
+.smartindex-folder li > div
+{
+    background-repeat: no-repeat;
+    padding-left: 25px;
+    background-position:left center ; 
+    background-repeat: no-repeat;
+}
+
+.smartindex-folder li.namespace > ul
+{
+    padding-left: 25px;
+}
+
+.smartindex-folder a.active
+{
+    background-color: yellow !important;
+}
+
+.smartindex-folder li.namespace.closed > div
+{
+    background-image: url("themes/folder/folder-horizontal.png");    
+}
+
+.smartindex-folder li.namespace.open > div
+{
+    background-image: url("themes/folder/folder-horizontal.png");    
+}
+
+.smartindex-folder li.page > div
+{
+    background-image: url("themes/folder/document.png");    
+}
+
+.smartindex-folder li.page > a
+{
+    font-weight: normal;
+}
+
+.smartindex-folder li > a:hover 
+{
+    text-decoration: none;
+}
+
+
+

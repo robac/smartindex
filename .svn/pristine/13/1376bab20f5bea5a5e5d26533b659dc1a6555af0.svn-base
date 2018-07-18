@@ -1,0 +1,10 @@
+<?php
+
+class Utils {
+    
+    public static function getFloatMicrotime($prefix = NULL) {
+         list($usec, $sec) = explode(" ", microtime());
+         return ((is_null($prefix))?"":$prefix).((float)$usec + (float)$sec);
+    }
+    
+}

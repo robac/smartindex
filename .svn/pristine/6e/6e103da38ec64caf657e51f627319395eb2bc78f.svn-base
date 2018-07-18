@@ -1,0 +1,37 @@
+<?php
+
+if(!defined('DOKU_INC')) define('DOKU_INC',realpath(dirname(__FILE__).'/../../../').'/');
+if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
+require_once(DOKU_INC.'inc/init.php');
+require_once(DOKU_INC.'inc/auth.php');
+
+function smartindex_autoloader($class) {
+    $classpath = dirname(__FILE__).DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR."{$class}.php"; 
+    if (file_exists($classpath)) {
+        require_once $classpath;
+    }
+}
+spl_autoload_register('smartindex_autoloader');
+
+
+global $conf;
+
+$res = "";
+sleep(10);
+
+$config = new SmartIndexConf();
+$config->depth = 2;
+$config->namespace = $_GET['namespace'];
+$config->check();
+if (!is_null($config->error)) {
+    $res .= "<div class=\"smartindex-error\">SmartIndex error: {$config->error}</div>";
+} else {
+    $seeker = new PageSeeker($config);
+    $data = $seeker->get($config);
+
+    $indexBuilder = new SmartIndexRenderer($config);
+    $indexBuilder->setUseWrapper(false);
+    $indexBuilder->render($data, $res);
+}
+
+echo $res;

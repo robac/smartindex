@@ -1,0 +1,34 @@
+<?php
+
+class ThemeCollector {
+    private function addTheme($dirPath, $file) {
+        if (!file_exists($dirPath."/theme.info.txt")) {
+            return;
+        }
+        $x = confToHash($dirPath."/theme.info.txt");
+        echo "<pre>".var_dump($x)."</pre>";
+        echo $dirPath."<br/>";
+        
+        if (file_exists($dirPath."/screen.css")) {
+            @fwrite($file, file_get_contents($dirPath."/screen.css")."\n");
+        }
+        
+    }
+    
+    public function collect($initDir) {
+        $dh = @opendir($initDir);
+
+        $cssFile = fopen($initDir.'/screen.css', 'w');
+        
+        if (!$dh) return;
+        while(($file = readdir($dh)) !== false){
+            if(preg_match('/^[\._]/',$file)) continue;
+            $filePath = $initDir.'/'.$file;
+            if(is_dir($filePath)){
+                $this->addTheme($filePath, $cssFile);
+            }
+        }
+        @fclose($file);
+        closedir($dh);
+    }
+}

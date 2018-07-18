@@ -1,0 +1,108 @@
+<?php
+require_once (dirname(__FILE__).'/inc.php');
+INC_requireDW();
+INC_constsDW();
+INC_constsSmartindex();
+
+class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
+    public function getType() {
+        return 'substition';
+    }
+
+    public function getPType() {
+        return 'block';
+    }
+
+    public function getSort() {
+        return 100;
+    }
+
+
+    public function connectTo($mode) {
+        $this->Lexer->addSpecialPattern('<smartindex(?i:\s+[a-zA-Z\-]+\s*=\s*"[^"]*")*\s*/>', $mode, 'plugin_smartindex');
+    }
+
+
+    public function handle($match, $state, $pos, &$handler){
+        $config = new SmartIndexConf();
+        $config->readFromTag($match);
+        $config->followPath = $INFO['id']; 
+        $config->checkHandle();
+        return serialize($config);
+    }
+    
+    public function removeDirs($dir, $filename) {
+        return str_replace("\\", ":", substr($filename, strlen($dir)+1));
+    }
+    
+    public function renderError(&$document, $error) {
+        $document .= '<div class="smartindex-error">';
+        $document .= '<strong>SmartIndex error:</strong><br/>';
+        $document .= $error;
+        $document .= '</div>';
+    }
+    
+    public function render($mode, &$renderer, $data) {
+        global $conf;
+        global $INFO;
+        
+        if($mode != 'xhtml') 
+            return false;
+
+        $config = unserialize($data);
+        
+        
+        if (($config->target=='desktop' && $INFO['ismobile']===true))
+            return true;
+        
+        
+        
+        $config->followPath = $INFO['id'];
+        $config->checkRender();
+        if (is_null($config->error)) {
+            $seeker = new PageSeeker($config);
+            $pages = $seeker->get($config);
+        } else {
+            $this->renderError($renderer->doc, $config->error);
+            return true;
+        }
+        
+        $indexBuilder = $config->getRenderer();
+        
+        $indexBuilder->setWrapper(true, $config->treeId);
+        $indexBuilder->render($pages, $renderer->doc);
+        
+        //$renderer->doc .= HtmlHelper::createInlineScript("var {$config->treeId}_conf =\"namespace={$config->namespace}\";");
+        $ajaxConfig = new stdClass();
+        $ajaxConfig->url  = AJAX_URL;
+        $ajaxConfig->open = 'SmartIndexOpenFolder';
+        $ajaxConfig->depth = $config->ajaxDepth;
+        
+        $ajaxConfig->openActions = array();
+        $ajaxConfig->openActions[0]['selector'] = 'li.namespace.closed > div';
+        $ajaxConfig->openActions[0]['func'] = 'SmartIndexOpenFolder2';
+        $ajaxConfig->openActions[0]['event'] = 'click';
+        
+        $ajaxConfig->openActions[1]['selector'] = 'li.namespace.open > div';
+        $ajaxConfig->openActions[1]['func'] = 'SmartIndexCloseFolder';
+        $ajaxConfig->openActions[1]['event'] = 'click';
+        
+        $ajaxConfig->openActions[3]['selector'] = 'li.page > div';
+        $ajaxConfig->openActions[3]['func'] = 'SmartIndexDivLink';
+        $ajaxConfig->openActions[3]['event'] = 'click';
+        
+        $ajaxConfig->openActions[2]['selector'] = 'li.page > div > a';
+        $ajaxConfig->openActions[2]['func'] = 'SmartIndexHeadpage';
+        $ajaxConfig->openActions[2]['event'] = 'click';
+
+        $ajaxConfig->theme = $config->theme;
+
+
+        
+        $renderer->doc .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($config->treeId."_conf", $ajaxConfig));
+       // $renderer->doc .= "<pre>".var_dump(unserialize(file_get_contents('c:\web\root\data\cache\9\924735c755cbdfa4a61a66a53fc06a53.i')))."</pre>";
+        $renderer->doc .= ("hora head" < "a") ? "true" : "false";
+
+        return true;
+    }
+}

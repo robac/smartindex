@@ -1,0 +1,11 @@
+<?php
+require_once(dirname(__FILE__).'/../inc.php');
+INC_constsDW();
+INC_includeDWCore();
+INC_constsSmartindex();
+
+
+echo "Collector:<br/>";
+
+$col = new ThemeCollector();
+$col->collect();

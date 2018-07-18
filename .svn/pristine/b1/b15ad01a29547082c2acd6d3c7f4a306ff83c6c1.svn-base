@@ -1,0 +1,73 @@
+<?php
+class SmartIndexRenderer {
+    private $useWrapper = true;
+    private $wrapperClasses;
+    private $wrapperId;
+    
+    private $config;
+    
+    
+    public function setUseWrapper($use, $id = NULL, $classes = NULL) {
+        $this->useWrapper = $use;
+        $this->wrapperClasses = $classes;
+        $this->wrapperId = $id;
+    }
+
+    public function __construct(SmartIndexConf $config) {
+        $this->config = $config;
+    }
+    
+    public function render($data, &$document) {
+        if ($this->useWrapper) {
+            $document .= "<div".HtmlHelper::createIdClassesPart($this->wrapperId, $this->wrapperClasses).">";
+        }
+        
+        //$document .= HtmlHelper::createHiddenInput("{'name' : 'John'}", "neco");
+       
+        $this->buildList($data, $this->config->namespace, $document);
+        
+        if ($this->useWrapper) {
+            $document .= "</div>";
+        }
+    }
+    
+    private function buildList($data, $namespace, &$document) {
+        if (!array_key_exists($namespace, $data))
+                return "";
+        
+        if ($namespace != "") {
+            $document .= "<ul class=\"closed\">";
+        } else {             
+            $document .= "<ul>";
+        }
+         
+        
+        foreach($data[$namespace]["dirs"] as $key=>$dir)  {
+            $classes = array("namespace");
+            if (PageTools::isPathPart($this->config->followPath, PageTools::constructPageName($namespace, $dir))) {
+                $classes[] = "open";
+            } else {
+                $classes[] = "closed";
+            }
+                
+            $document .= "<li".HtmlHelper::createIdClassesPart(NULL, $classes).">".HtmlHelper::createInternalLink($dir, array("idx"=>  PageTools::constructPageName($namespace, $dir)), $dir, NULL, $classes);
+            $this->buildList($data, PageTools::constructPageName($namespace, $dir), $document);
+            $document .= "</li>";
+        }
+        
+        
+        foreach($data[$namespace]["files"] as $file) {
+            $heading = p_get_first_heading($namespace.":".$file, false);
+            if ($heading == "")
+                $heading = $file;
+            
+            
+            $document .= "<li".HtmlHelper::createIdClassesPart(NULL, array("page")).">".HtmlHelper::createInternalLink(PageTools::constructPageName($namespace, $file), NULL, $heading, NULL, NULL)."</li>";
+        }
+        
+        $document .= "</ul>";
+    }
+}
+
+
+?>

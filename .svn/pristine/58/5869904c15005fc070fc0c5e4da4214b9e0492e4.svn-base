@@ -1,0 +1,153 @@
+function getParameterByName(url, name)
+{
+  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+  var regexS = "[\\?&]" + name + "=([^&#]*)";
+  var regex = new RegExp(regexS);
+  var results = regex.exec(url);
+  if(results == null)
+    return "";
+  else
+    return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function getSmartIndexConf(tree) {
+        return window[jQuery(tree).attr('id')+'_conf'];
+}
+
+function SmartIndexOpenFolder(event) {
+        var link = jQuery(this).children("a");
+        if (link.parent().siblings("ul").length == 0) {
+            if (link.parent().parent().hasClass("waiting")) {
+                return false;
+            }
+            link.parent().parent().addClass("waiting");
+            jQuery.post(event.data.url, {namespace: getParameterByName(link.attr('href'), 'idx'), depth: event.data.depth, theme: event.data.theme}, function(data){
+                link.parent().parent().append(data);
+                link.parent().parent().removeClass("waiting");
+            });
+        }
+        link.parent().parent().removeClass('closed').addClass('open');
+        return false;
+}
+
+function SmartIndexCloseFolder(event) {
+    jQuery(this).parent().removeClass('open').addClass('closed');
+    return false;
+}
+
+function SmartIndexDivLink(event) {
+        window.location = jQuery(this).children('a').attr('href');
+        return false;
+}
+
+
+function initSmartIndexTree(tree) {
+    var conf = getSmartIndexConf(tree);
+    var id = jQuery(tree).attr('id');
+    jQuery.each(conf.openActions, function(key, value){
+        jQuery(tree).delegate('#'+id+' '+value.selector, value.event, conf, window[value.func]);
+    });
+}
+
+function initSmartIndex() {
+    jQuery.each(jQuery('div.smartindex-treeview'), function(key, value){
+        initSmartIndexTree(value);
+    });
+}
+
+jQuery(function(){
+    initSmartIndex();
+});
+
+
+(function($){
+    
+function jg_createlist(items, id, classes, menuid) {
+    var res = "<ul"+((classes != null)?(" class=\""+classes+"\""):"")+((id != null)?(" id=\""+id+"\""):"")+">";
+    $.each(items, function(k, v){
+        var itemid = menuid+"_"+v.id;
+        var icon = (v.icon != null)?"<span class=\"icon "+v.icon+"\"></span>":"";
+        if (v.separator) {
+            res += "<li class=\"separator\"></li>";
+        }
+        else {
+            res += "<li id=\""+itemid+"\""+((v.icon != null)?" class=\"icon\">"+icon:">")+"<div>"+v.text+"</div>";
+            if (v.submenu != null) {res += jg_createlist(v.submenu, null, null, menuid);}
+            res += "</li>";
+            jg_events[itemid] = v.fn;
+        }
+    });
+    
+    res += "</ul>";
+    return res;
+}
+
+var jg_events = new Object;
+
+function jg_buildContext(settings) {
+    $('body').append(jg_createlist(settings.items, settings.id, "jeegoocontext cm_poch", settings.id));
+    
+    var all = {
+        widthOverflowOffset: 0,
+        heightOverflowOffset: 3,
+        submenuLeftOffset: -4,
+        submenuTopOffset: 0,
+        autoHide: true,
+        onSelect: jg_handle
+    };
+    
+    $.each(settings.selectors, function(key, value){
+        all.event = value.event;
+        $(value.selector).jg_contextmenu(settings.id, all);
+    });
+}
+
+function jg_handle(e, context) {
+    jg_events[jQuery(this).attr('id')]();
+}
+
+
+
+$(function() {
+    var set = {
+        "id" : "menu1", 
+        "selectors" : [
+            {"selector" : ".smartindex-treeview", event : "contextmenu"},
+        ],
+        "items": [
+            {id: "kokot", text : "hello", fn: function(e, context){alert('1');}}, 
+            {id: "kokot2", text : "poch", fn: function(){alert('2');}},
+            {separator : true},
+            {id: "kokot3", text : "poch", fn: function(){alert('3');}},
+            {id: "kokot3", text : "ph", fn: function(){alert('4');}},
+            {id: "kokot4", text : "suberrb", fn: function(){alert('5');}, submenu: [
+                    {id: "kre", text: "hello", fn: function(){alert('6');}}
+            ]}
+            
+        ]
+    };
+
+    jg_buildContext(set);
+    
+    var set2 = {
+        "id" : "menu2", 
+        "selectors" : [
+            {"selector" : ".pageId", event : "contextmenu"},
+        ],
+        "items": [
+            {id: "kokot", text : "hello", fn: function(e, context){alert('a');}}, 
+            {id: "kokot2", text : "poch", fn: function(){alert('b');}},
+            {separator : true},
+            {id: "kokot3", text : "poch", fn: function(){alert('c');}},
+            {id: "kokot3", text : "ph", fn: function(){alert('d');}},
+            {id: "kokot4", text : "suberrb", fn: function(){alert('e');}, submenu: [
+                    {id: "kre", text: "hello", fn: function(){alert('f');}}
+            ]}
+            
+        ]
+    };
+
+    jg_buildContext(set2);
+});
+})(jQuery);
+    

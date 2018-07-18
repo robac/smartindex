@@ -1,0 +1,16 @@
+<?php
+
+if(!defined('DOKU_INC')) define('DOKU_INC',realpath(dirname(__FILE__).'/../../../').'/');
+if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
+require_once(DOKU_INC.'inc/init.php');
+require_once(DOKU_INC.'inc/auth.php');
+
+
+/*if(!defined('DOKU_INC')) define('DOKU_INC',realpath(dirname(__FILE__).'/../../../').'/');*/
+require_once dirname(__FILE__)."/classes/ThemeCollector.php";
+/*require_once DOKU_INC.'/inc/confutils.php';*/
+
+echo "Collector:<br/>";
+
+$col = new ThemeCollector();
+$col->collect(dirname(__FILE__)."/themes");

@@ -1,0 +1,2 @@
+theme      default
+css-class  smartindex-default-theme

@@ -1,0 +1,98 @@
+<?php
+/**
+ * DokuWiki Plugin test (Syntax Component)
+ *
+ * @license GPL 2 http://www.gnu.org/licenses/gpl-2.0.html
+ * @author  robert poch <robik@poch.cz>
+ */
+
+// must be run within Dokuwiki
+if (!defined('DOKU_INC')) die();
+
+if (!defined('DOKU_LF')) define('DOKU_LF', "\n");
+if (!defined('DOKU_TAB')) define('DOKU_TAB', "\t");
+if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
+
+require_once DOKU_PLUGIN.'syntax.php';
+
+
+function smartindex_autoloader($class) {
+    $classpath = dirname(__FILE__).DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR."{$class}.php"; 
+    if (file_exists($classpath)) {
+        require_once $classpath;
+    }
+}
+
+spl_autoload_register('smartindex_autoloader');
+
+
+class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
+    public function getType() {
+        return 'substition';
+    }
+
+    public function getPType() {
+        return 'block';
+    }
+
+    public function getSort() {
+        return 100;
+    }
+
+
+    public function connectTo($mode) {
+        //$this->Lexer->addSpecialPattern('<smartindex .+?/>', $mode, 'plugin_smartindex');
+        $this->Lexer->addSpecialPattern('<smartindex(?i:\s+[a-zA-Z\-]+\s*=\s*"[^"]*")*\s*/>', $mode, 'plugin_smartindex');
+    }
+
+
+    public function handle($match, $state, $pos, &$handler){
+        $config = new SmartIndexConf();
+        $config->readFromTag($match);
+        $config->followPath = $INFO['id']; 
+        $config->checkHandle();
+        return serialize($config);
+    }
+    
+    public function removeDirs($dir, $filename) {
+        return str_replace("\\", ":", substr($filename, strlen($dir)+1));
+    }
+    
+    public function renderError(&$document, $error) {
+        $document .= '<div class="smartindex-error">';
+        $document .= '<strong>SmartIndex error:</strong><br/>';
+        $document .= $error;
+        $document .= '</div>';
+    }
+    
+    public function render($mode, &$renderer, $data) {
+        global $conf;
+        global $INFO;
+        
+        if($mode != 'xhtml') 
+            return false;
+
+        $config = unserialize($data);
+        $config->followPath = $INFO['id'];
+        $config->checkRender();
+        if (is_null($config->error)) {
+            $seeker = new PageSeeker($config);
+            $pages = $seeker->get($config);
+        } else {
+            $this->renderError($renderer->doc, $config->error);
+            return true;
+        }
+        
+        //if ($INFO['ismobile']) {
+        $indexBuilder = new SmartIndexRenderer($config);
+        $indexBuilder->setWrapper(true, $config->treeId, array("smartindex-treeview", $config->theme));
+        $indexBuilder->render($pages, $renderer->doc);
+        
+        $renderer->doc .= HtmlHelper::createInlineScript("var {$config->treeId}_conf =\"namespace={$config->namespace}\";");
+        $renderer->doc .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON("test55", $config),"test5");
+        
+        $neco = new ThemeCollector();
+               
+        return true;
+    }
+}

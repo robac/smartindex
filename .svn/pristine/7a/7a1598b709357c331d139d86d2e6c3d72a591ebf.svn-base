@@ -1,0 +1,54 @@
+.smartindex-treeview ul,
+.smartindex-treeview li
+{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.smartindex-treeview li.namespace.closed > ul
+{
+    display: none;
+}
+
+.smartindex-error 
+{
+    background-color: #F88EA0;
+    display: block;
+    padding: 10px;
+    border: solid black 1px;    
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    border-radius: 10px;
+    color: black;
+}
+
+.ui-button-text
+{
+ padding: 3px !important;    
+}
+
+.smartindex-input-dialog
+{
+    font-size: 13px;
+}
+
+.smartindex-input-dialog input
+{
+    width: 100%;
+}
+
+.smartindex-input-dialog .ui-dialog-content
+{
+    padding: 1.5em 1em 1.5em 1em;
+}
+
+.smartindex-input-dialog p
+{
+    margin-bottom: 0.5em;
+}
+
+.smartindex-input-dialog .ui-dialog-titlebar-close {
+  display: none;
+}

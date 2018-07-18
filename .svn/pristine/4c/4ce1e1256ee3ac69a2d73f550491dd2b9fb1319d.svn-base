@@ -1,0 +1,12 @@
+<?php
+
+class CssCollector {
+    public function collect($initDir) {
+        $pattern = $initDir.'/*';
+        $ret = "";
+        foreach(glob('libs') as $file) {
+            $ret .= $file.'poch';
+        }
+        return $ret;
+    }
+}

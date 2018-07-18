@@ -1,0 +1,78 @@
+<?php
+require_once (dirname(__FILE__).'/../inc.php');
+INC_constsDW();
+INC_includeDWCore();
+INC_constsSmartindex();
+
+$handler = new AjaxRequestHandler;
+$handler->handle($_POST['action']);
+
+
+class AjaxRequestHandler {
+    const ACTION_RENDER_SUBTREE = 'subtree';
+
+    private function handle_render_subtree() {
+        global $conf;
+        $res = "";
+        $config = new SmartIndexConf();
+        $config->namespace = $_POST['namespace'];
+        $config->depth = $_POST['depth'];
+        $config->theme = $_POST['theme'];
+        $config->checkHandle();
+        $config->checkRender();
+
+        if (!is_null($config->error)) {
+            $res .= "<div class=\"smartindex-error\">SmartIndex error: {$config->error}</div>";
+        } else {
+            $seeker = new PageSeeker($config);
+            $data = $seeker->get($config);
+
+            $indexBuilder = $config->getRenderer();
+            $indexBuilder->setWrapper(false);
+            $indexBuilder->render($data, $res);
+            echo $res;
+        }
+  
+    }
+
+    private function handle_admin() {
+    
+    }
+    
+    public function handle($action) {
+        switch ($action) {
+            case self::ACTION_RENDER_SUBTREE:
+                $this->handle_render_subtree();
+                break;
+            
+            default: echo "hovno";
+        }
+        
+    }
+
+/*global $conf;
+
+$res = "";
+$config = new SmartIndexConf();
+$config->namespace = $_POST['namespace'];
+$config->depth = $_POST['depth'];
+$config->theme = $_POST['theme'];
+$config->checkHandle();
+$config->checkRender();
+
+if (!is_null($config->error)) {
+    $res .= "<div class=\"smartindex-error\">SmartIndex error: {$config->error}</div>";
+} else {
+    $seeker = new PageSeeker($config);
+    $data = $seeker->get($config);
+    
+    $indexBuilder = $config->getRenderer();
+    $indexBuilder->setWrapper(false);
+    $indexBuilder->render($data, $res);
+    echo $res;
+ * }
+    
+    
+
+}*/
+}

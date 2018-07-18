@@ -1,0 +1,4 @@
+theme           dtree
+css-class       smartindex-dtree-theme
+renderer-file   DTreeRenderer
+renderer-class  DTreeRenderer

@@ -1,0 +1,38 @@
+<?php
+
+$time_start = microtime();
+
+require_once (dirname(__FILE__).'/../inc.php');
+INC_constsDW();
+INC_includeDWCore();
+INC_constsSmartindex();
+
+$time_start2 = microtime();
+
+global $conf;
+
+$res = "";
+$config = new SmartIndexConf();
+$config->namespace = $_POST['namespace'];
+$config->depth = $_POST['depth'];
+$config->theme = $_POST['theme'];
+$config->checkHandle();
+$config->checkRender();
+
+if (!is_null($config->error)) {
+    $res .= "<div class=\"smartindex-error\">SmartIndex error: {$config->error}</div>";
+} else {
+    $seeker = new PageSeeker($config);
+    $data = $seeker->get($config);
+    
+    $indexBuilder = $config->getRenderer();
+    $indexBuilder->setWrapper(false);
+    $indexBuilder->render($data, $res);
+    echo $res;
+    $time_end = microtime();
+    $time = ($time_end - $time_start)*1000;
+    $time2= ($time_end - $time_start2)*1000;
+    echo "$time miliseconds\n";
+    echo "$time2 miliseconds\n";
+
+}

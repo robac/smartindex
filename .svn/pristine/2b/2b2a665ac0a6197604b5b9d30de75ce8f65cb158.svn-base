@@ -1,0 +1,10 @@
+<?php
+require_once dirname(__FILE__).'/../inc.php';
+INC_dokuwikiCore();
+INC_defineBasics();
+
+
+echo "Collector:<br/>";
+
+$col = new ThemeCollector();
+$col->collect();

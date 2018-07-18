@@ -1,0 +1,11 @@
+jQuery(function(){
+    jQuery('.smartindex-treeview a').bind('click', function(){
+        var list = jQuery(this).siblings('ul.closed');
+        if (list.length)
+        {
+            list.removeClass("closed");
+            return false;
+        }
+        return true;
+    });
+});

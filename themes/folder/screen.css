@@ -1,0 +1,74 @@
+.smartindex-folder-theme 
+{
+    font-family: Verdana, Arial, Helvetica, sans-serif;    
+    /*font-size: 1.3em;*/
+    font-size: 16px;
+}
+
+.smartindex-folder-theme li > div
+{
+    background-repeat: no-repeat;
+    padding-left: 25px;
+    background-position:left center ; 
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.smartindex-folder-theme > ul 
+{
+    padding-left: 0px !important;    
+}
+
+.smartindex-folder-theme li.namespace > ul
+{
+    padding-left: 15px !important;
+}
+
+.smartindex-folder-theme li > div
+{
+    /*background-size: 1em 1em;*/
+}
+
+.smartindex-folder-theme li.namespace.closed > div
+{
+    background-image: url("img/folder-horizontal.png");    
+}
+
+.smartindex-folder-theme li.namespace.open > div
+{
+    background-image: url("img/folder-horizontal.png");    
+}
+
+.smartindex-folder-theme li.page > div
+{
+    background-image: url("img/document.png");    
+}
+
+.smartindex-folder-theme li.waiting > div
+{
+    background-image: url("img/ajax-loader.gif") !important;    
+}
+
+.smartindex-folder-theme li.page > a
+{
+    font-weight: normal;
+}
+
+.smartindex-folder-theme li > div > a:hover 
+{
+    text-decoration: none;
+}
+
+.smartindex-folder-theme.smartindex-highlite div:hover > a
+{
+    background-color: yellow !important;   
+}
+
+.smartindex-folder-theme span.headpage
+{
+    background-image: url("img/document.png");
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    float: left;
+}

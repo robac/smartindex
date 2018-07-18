@@ -1,0 +1,27 @@
+<?php
+require_once (dirname(__FILE__).'/../inc.php');
+INC_constsDW();
+INC_includeDWCore();
+INC_constsSmartindex();
+
+global $conf;
+
+$res = "";
+$config = new SmartIndexConf();
+$config->namespace = $_GET['namespace'];
+$config->depth = $_GET['depth'];
+
+$config->theme = 'default';
+$config->checkHandle();
+$config->checkRender();
+if (!is_null($config->error)) {
+    $res .= "<div class=\"smartindex-error\">SmartIndex error: {$config->error}</div>";
+} else {
+    $seeker = new PageSeeker($config);
+    $data = $seeker->get($config);
+    
+    $indexBuilder = $config->getRenderer();
+    $indexBuilder->setWrapper(false);
+    $indexBuilder->render($data, $res);
+    echo $res;
+}

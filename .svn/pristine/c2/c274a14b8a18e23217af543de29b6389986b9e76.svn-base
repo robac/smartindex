@@ -1,0 +1,274 @@
+/******************
+smartindex-treeview
+*******************/
+.smartindex-treeview ul,
+.smartindex-treeview li
+{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.smartindex-treeview li.namespace.closed > ul
+{
+    display: none;
+}
+
+/****************
+.smartindex-error 
+****************/
+.smartindex-error 
+{
+    background-color: #F88EA0;
+    display: block;
+    padding: 10px;
+    border: solid black 1px;    
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    border-radius: 10px;
+    color: black;
+}
+
+/******************
+.smartindex-default
+*******************/
+.smartindex-default-theme li
+{
+    background-repeat: no-repeat;
+    padding-left: 12px;
+}
+
+.smartindex-default-theme li.namespace > a
+{
+    font-weight: bold;
+    color: red !important;
+}
+
+.smartindex-default-theme.smartindex-highlite div:hover > a
+{
+    background-color: yellow !important;   
+}
+
+
+.smartindex-default-theme li.namespace.closed
+{
+    background-image: url("themes/default/folder.gif");    
+}
+
+.smartindex-default-theme li.namespace.open
+{
+    background-image: url("themes/default/folderopen.gif");    
+}
+
+.smartindex-default-theme li.page > a
+{
+    font-weight: normal;
+}
+
+.smartindex-default-theme li > div > a:hover
+{
+    text-decoration: none;
+}
+
+/******************
+.smartindex-folder
+******************/
+
+.smartindex-folder-theme 
+{
+    font-family: Verdana, Arial, Helvetica, sans-serif;    
+    font-size: 16px;
+}
+
+.smartindex-folder-theme li > div
+{
+    background-repeat: no-repeat;
+    padding-left: 25px;
+    background-position:left center ; 
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.smartindex-folder-theme > ul 
+{
+    padding-left: 0px !important;    
+}
+
+.smartindex-folder-theme li.namespace > ul
+{
+    padding-left: 15px !important;
+}
+
+/*.smartindex-folder-theme li.waiting > div > a
+{
+    color: graytext;
+}
+
+.smartindex-folder-theme li.waiting > div
+{
+    pointer: progress;
+}*/
+
+.smartindex-folder-theme li.namespace.closed > div
+{
+    background-image: url("themes/folder/folder-horizontal.png");    
+}
+
+.smartindex-folder-theme li.namespace.open > div
+{
+    background-image: url("themes/folder/folder-horizontal.png");    
+}
+
+.smartindex-folder-theme li.page > div
+{
+    background-image: url("themes/folder/document.png");    
+}
+
+.smartindex-folder-theme li.waiting > div
+{
+    background-image: url("themes/folder/ajax-loader.gif") !important;    
+}
+
+.smartindex-folder-theme li.page > a
+{
+    font-weight: normal;
+}
+
+.smartindex-folder-theme li > div > a:hover 
+{
+    text-decoration: none;
+}
+
+.smartindex-folder-theme.smartindex-highlite div:hover > a
+{
+    background-color: yellow !important;   
+}
+
+
+
+
+.smartindex-sitemap-theme li > div
+{
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 40px;
+}
+
+.smartindex-sitemap-theme li > ul > li
+{
+    padding-left: 20px;
+}
+
+
+.smartindex-sitemap-theme li.namespace.closed > div
+{
+    background-image: url("themes/sitemap/folder_closed.png");    
+}
+
+.smartindex-sitemap-theme li.namespace.open > div
+{
+    background-image: url("themes/sitemap/folder_open.png");    
+}
+
+.smartindex-sitemap-theme li.waiting > div
+{
+    background-image: url("themes/sitemap/ajax-loader.gif") !important;    
+}
+
+.smartindex-sitemap-theme li.page > a
+{
+    font-weight: normal;
+}
+
+.smartindex-sitemap-theme li > div > a:hover 
+{
+    text-decoration: none;
+}
+
+.smartindex-sitemap-theme div:hover > a
+{
+    background-color: yellow !important;   
+}
+
+
+
+.smartindex-dtree-theme ul
+{
+    line-height: 18px;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+}
+
+.smartindex-dtree-theme a
+{
+    color: rgb(51, 51, 51) !important;
+}
+
+.smartindex-dtree-theme span
+{
+    float: left;
+    width:18px; 
+    height:18px;
+    display: inline-block;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.smartindex-dtree-theme span.folderx
+{
+    background: url("themes/dtree/folderopen.gif");
+}
+
+.smartindex-dtree-theme span.necox
+{
+    background: url("themes/dtree/line.gif");
+}
+
+.smartindex-dtree-theme span.noline
+{
+
+}
+
+
+.smartindex-dtree-theme span.pagex
+{
+    background: url("themes/dtree/page.gif");
+}
+
+.smartindex-dtree-theme li.closed > div > span.collx
+{
+    background: url("themes/dtree/plus.gif");
+}
+
+.smartindex-dtree-theme li.open > div > span.collx
+{
+    background: url("themes/dtree/minus.gif");
+}
+
+
+.smartindex-dtree-theme span.xxx
+{
+    background: url("themes/dtree/join.gif");
+}
+
+.smartindex-dtree-theme li:last-child > div > span.xxx
+{
+    background: url("themes/dtree/joinbottom.gif");
+}
+
+.smartindex-dtree-theme li:last-child > div > span.collx
+{
+    background: url("themes/dtree/plusbottom.gif");
+}
+
+
+
+
+
+
+
+
+
+
+

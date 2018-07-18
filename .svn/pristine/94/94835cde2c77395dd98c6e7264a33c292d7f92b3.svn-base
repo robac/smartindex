@@ -1,0 +1,8 @@
+<div class="context-menu">
+  <a href="javascript:return false" id="option1" class="new-page-menu">new page</a><br />
+  <a href="javascript:void(0)" id="option2">Option 2</a><br />
+  <a href="javascript:void(0)" id="option3">Option 3</a><br />
+  <a href="javascript:void(0)" id="option4">Option 4</a><br />
+</div>
+
+<a class="poch" href="#"><b>pokus</b></a>
