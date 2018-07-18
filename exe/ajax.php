@@ -78,7 +78,7 @@ class AjaxRequestHandler {
                 $this->handle_page_info();
                 break;
             
-            default: echo "nerozumim";
+            default: echo "nerozumidm";
         }
         
     }

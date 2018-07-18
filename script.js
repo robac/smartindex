@@ -237,26 +237,6 @@ function si_context_newPage(e, c) {
  }
  */
  
- function addBtnActionClick1($btn, props, edid) {
-    $btn.click(function() {
-        alert('hey you clicked me');
-        return false;
-    });
- 
-    return true;
-}
- 
-jQuery(function(){
-    if (window.toolbar != undefined) {
-        window.toolbar[window.toolbar.length] = {
-            "type":"Click1", // we have a new type that links to the function
-            "title":"Hey Click me!",
-            "icon":"../../plugins/smartindex/themes/tree/img/minus.gif"
-        };
-    }
-});
-
-
 
 /*
  * SmartIndex dtree theme event handlers
