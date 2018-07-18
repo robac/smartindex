@@ -1,4 +1,0 @@
-theme           dtree
-css-class       smartindex-dtree-theme
-renderer-class  DTreeRenderer
-renderer-file   DTreeRenderer.php

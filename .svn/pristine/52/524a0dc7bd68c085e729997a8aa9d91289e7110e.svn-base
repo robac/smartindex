@@ -1,1 +1,0 @@
-a:4:{s:7:"default";a:1:{s:3:"css";s:24:"smartindex-default-theme";}s:6:"folder";a:1:{s:3:"css";s:23:"smartindex-folder-theme";}s:6:"simple";a:1:{s:3:"css";s:23:"smartindex-simple-theme";}s:4:"tree";a:3:{s:3:"css";s:21:"smartindex-tree-theme";s:6:"rend-c";s:12:"TreeRenderer";s:6:"rend-f";s:16:"TreeRenderer.php";}}
