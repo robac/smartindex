@@ -25,6 +25,7 @@ class AjaxRequestHandler {
 
         if (!is_null($config->error)) {
             $res .= "<div class=\"smartindex-error\">SmartIndex error: {$config->error}</div>";
+            echo $res;
         } else {
             $seeker = new PageSeeker($config);
             $data = $seeker->get($config);
@@ -65,8 +66,6 @@ class AjaxRequestHandler {
     }
     
     public function handle($action) {
-        echo "action: ".$action;
-        return;
         switch ($action) {
             case self::ACTION_RENDER_SUBTREE:
                 $this->handle_render_subtree();
