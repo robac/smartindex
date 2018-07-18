@@ -14,7 +14,7 @@ function si_init() {
     jQuery.each(jQuery("div.smartindex-treeview"), function(k, v){
         si_initTree(v);
     });
-    si_initContextMenu();
+    /*si_initContextMenu();*/
     si_initInputDialog();
 }
 
@@ -184,6 +184,7 @@ function si_context_newPage(e, c) {
      jQuery('#xxx').dialog();
  }
 
+/*
  function si_initContextMenu() {
      var set_folder = {
          "useWrapper": true,
@@ -234,7 +235,7 @@ function si_context_newPage(e, c) {
      };
      jg_buildContext(set_file);
  }
- 
+ */
  
  function addBtnActionClick1($btn, props, edid) {
     $btn.click(function() {
