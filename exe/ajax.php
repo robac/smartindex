@@ -65,6 +65,8 @@ class AjaxRequestHandler {
     }
     
     public function handle($action) {
+        echo "action: ".$action;
+        return;
         switch ($action) {
             case self::ACTION_RENDER_SUBTREE:
                 $this->handle_render_subtree();
