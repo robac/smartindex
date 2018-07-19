@@ -1,2 +1,3 @@
 <?php
-$conf['poch'] = 'poch';
+$conf['loadContextMenuCSS'] = 1;
+$conf['loadFontAwesomeCSS'] = 1;

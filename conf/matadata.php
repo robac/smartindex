@@ -1,2 +1,3 @@
 <?php
-$meta['poch']='';
+$meta['loadContextMenuCSS'] = array('onoff');
+$meta['loadFontAwesomeCSS'] = array('onoff');
