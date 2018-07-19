@@ -1,7 +1,7 @@
 base   smartindex
-author robert poch
+author Robert Poch
 email  robert@poch.cz
 date   2013-01-21
 name   smartindex plugin
 desc   SmartIndex syntax plugin
-url    http://poch.cz
+url    https://github.com/robac/smartindex
