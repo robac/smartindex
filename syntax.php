@@ -73,26 +73,9 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
         
         $ajaxConfig = new stdClass();
         $ajaxConfig->url  = AJAX_URL;
-        $ajaxConfig->handleSubTreeLoad = 'si_dtree_handleSubTreeLoad';
         $ajaxConfig->depth = $config->ajaxDepth;
-        
-        $ajaxConfig->rawEvents = array();
-        $ajaxConfig->rawEvents[0]['selector'] = 'li.namespace.closed > div';
-        $ajaxConfig->rawEvents[0]['fn'] = 'si_default_openFolder';
-        $ajaxConfig->rawEvents[0]['event'] = 'click';
-        
-        $ajaxConfig->rawEvents[1]['selector'] = 'li.namespace.open > div';
-        $ajaxConfig->rawEvents[1]['fn'] = 'si_default_closeFolder';
-        $ajaxConfig->rawEvents[1]['event'] = 'click';
-        
-        $ajaxConfig->rawEvents[3]['selector'] = 'li.page > div';
-        $ajaxConfig->rawEvents[3]['fn'] = 'si_default_openPage';
-        $ajaxConfig->rawEvents[3]['event'] = 'click';
-
         $ajaxConfig->theme = $config->theme;
 
-
-        
         $renderer->doc .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($config->treeId."_conf", $ajaxConfig));
         return true;
     }

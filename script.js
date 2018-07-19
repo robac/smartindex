@@ -1,100 +1,123 @@
+/* DOKUWIKI:include js/jquery.ui.position.js */
+/* DOKUWIKI:include js/jquery.contextMenu.min.js */
+
+
+
+SI_CLASS_INDEX = 'div.smartindex-treeview';
+SI_CLASS_NAMESPACE = 'namespace';
+SI_CLASS_OPENNAMESPACE = 'open';
+SI_CLASS_CLOSEDNAMESPACE = 'closed';
+SI_CLASS_PAGE = 'page';
+SI_CLASS_WAITINIG = 'waiting';
+
+SI_ID_INPUTDIALOG = 'smartindex-input-dialog-tpl';
+
+SI_SUFFIX_INDEXCONFIG = '_conf';
+
+SI_SELECTOR_CLOSEDNAMESPACE = 'li.'+SI_CLASS_NAMESPACE+'.'+SI_CLASS_CLOSEDNAMESPACE+' > div';
+SI_SELECTOR_OPENEDNAMESPACE = 'li.'+SI_CLASS_NAMESPACE+'.'+SI_CLASS_OPENNAMESPACE+' > div';
+SI_SELECTOR_PAGE = 'li.'+SI_CLASS_PAGE+' > div';
+
+SI_URLPARAMETER_NAMESPACE = 'idx';
+
+SI_ACTION_LOADSUBTREE = 'load_namespace';
+SI_INPUTDIALOG_OPTIONS =
+    {
+        "closeOnEscape" : true,
+        "modal"         : true,
+        "autoOpen"      : false,
+        "resizable"     : false,
+        "dialogClass"   : 'smartindex-input-dialog'
+    };
+
+
+
+
 
 /*
  * SmartIndex initialization.
  */
 jQuery(function(){
-    si_init();
+    SI_init();
 });
 
 /*
- * SmartIndex base functions.
+ * SmartIndex base function
+ * call
  */
-
-function si_init() {
-    jQuery.each(jQuery("div.smartindex-treeview"), function(k, v){
-        si_initTree(v);
+function SI_init() {
+    jQuery.each(jQuery(SI_CLASS_INDEX), function(k, index){
+        SI_initIndex(index);
     });
-    /*si_initContextMenu();*/
-    si_initInputDialog();
+    SI_createHTMLControls();
+    SI_initInputDialog();
+    SI_initContextMenu();
 }
 
-function si_initTree(tree) {
-    var cnf = si_getTreeConf(tree);
-    var $id = jQuery(tree).attr("id");
-    jQuery.each(cnf.rawEvents, function(k, v){
-        jQuery(tree).delegate("#"+$id+" "+v.selector, v.event, cnf, window[v.fn]);
-    });
+function SI_initIndex(index) {
+    var index_config = SI_getIndexConfiguration(index);
+    jQuery(index).on('click', SI_SELECTOR_CLOSEDNAMESPACE, index_config, SI_loadNamespaceSubtree);
+    jQuery(index).on('click', SI_SELECTOR_OPENEDNAMESPACE, index_config, SI_hideNamespaceContent);
+    jQuery(index).on('click', SI_SELECTOR_PAGE, index_config, SI_redirectPage);
 }
 
-function si_getTreeConf(tree) {
-    return window[jQuery(tree).attr("id")+"_conf"];
+function SI_getIndexID(index) {
+    return jQuery(index).attr("id")+SI_SUFFIX_INDEXCONFIG;
+}
+
+function SI_getIndexConfiguration(index) {
+    return window[SI_getIndexID(index)];
+}
+
+function SI_createLoadNamespaceRequestData(index_config, link) {
+    var data =
+        {
+            namespace : SI_getURLParameter(link.attr("href"), SI_URLPARAMETER_NAMESPACE),
+            depth     : index_config.depth,
+            theme     : index_config.theme,
+            action    : SI_ACTION_LOADSUBTREE
+        };
+    return data;
 }
 
 /*
  * SmartIndex default event handlers
- */
+*/
+function SI_loadNamespaceSubtree(event) {
+    var link = jQuery(this).children("a");
+    var element = jQuery(this).closest("li");
 
-function si_default_openFolder(event) {
-    if (event.data.beforeOpenFolder != null) 
-        if (!window[event.data.beforeOpenFolder](event))
-            return false;
-   
-    var $link = jQuery(this).children("a");
-    var $li = jQuery(this).closest("li");
+    if (element.hasClass(SI_CLASS_WAITINIG)) return false;
     
-    if ($li.children("ul").length == 0) {
-        if ($li.hasClass("waiting")) {
-            return false;
-        }
-        $li.addClass("waiting");
-        var ajaxData = 
-            {
-                "namespace" : url_getParameter($link.attr("href"), "idx"), 
-                "depth"     : event.data.depth, 
-                "theme"     : event.data.theme, 
-                "action"    : "subtree"
-            };
-    
-        if (event.data.beforeSubTreeLoad != null)
-            window[event.data.beforeSubTreeLoad](event, ajaxData);
-        
-        jQuery.post(event.data.url, ajaxData, function(data){
-            if (event.data.handleSubTreeLoad != null) {
-                window[event.data.handleSubTreeLoad](event, data);
-            } else {
-                $li.append(data);
-                $li.removeClass("waiting");
-            }
+    if (! element.children("ul").length) {
+        element.addClass(SI_CLASS_WAITINIG);
+
+        jQuery.post(event.data.url, SI_createLoadNamespaceRequestData(event.data, link), function(data){
+                element.append(data);
+                element.removeClass(SI_CLASS_WAITINIG).removeClass(SI_CLASS_CLOSEDNAMESPACE).addClass(SI_CLASS_OPENNAMESPACE);
         });
     }
-    $li.removeClass("closed").addClass("open");
-    
-    if (event.data.afterOpenFolder != null) window[event.data.afterOpenFolder](event);
-    
+
     return false;
 }
 
-function si_default_closeFolder(event) {
-    if (event.data.beforeCloseFolder != null) 
-       if (!window[event.data.beforeCloseFolder](event))
-           return false;
-    
-    
-    jQuery(this).parent().removeClass("open").addClass("closed");
-    
-    if (event.data.afterCloseFolder != null) window[event.data.afterCloseFolder](event);
-    
+function SI_hideNamespaceContent(event) {
+    jQuery(this).parent().removeClass(SI_CLASS_OPENNAMESPACE).addClass(SI_CLASS_CLOSEDNAMESPACE);
     return false;
 }
 
-function si_default_openPage(event) {
-    var $link = jQuery(this).children("a");
-    window.location = $link.attr("href");
+function SI_redirectPage(event) {
+    window.location = jQuery(this).children("a").attr("href");
+    return false;
 }
 
-function si_initInputDialog() {
-    jQuery('body').append('<div id="smartindex-input-dialog-tpl"><p class="info-text"></p><input type="text" name="input-value" class="input-value" /></div>');
-    jQuery("#smartindex-input-dialog-tpl").dialog(
+function SI_createHTMLControls() {
+    jQuery('body').append('<div id="'+SI_ID_INPUTDIALOG+'"><p class="info-text"></p><input type="text" name="input-value" class="input-value" /></div>');
+    jQuery('body').append('<span class="context-menu-one btn btn-neutral">right click me</span>');
+}
+
+function SI_initInputDialog() {
+    jQuery('#'+SI_ID_INPUTDIALOG).dialog(
         {
             "closeOnEscape" : true,
             "modal"         : true,
@@ -113,8 +136,29 @@ function si_initInputDialog() {
     });
 }
 
+function SI_initContextMenu() {
+    jQuery.contextMenu({
+        selector: '.context-menu-one',
+        callback: function(key, options) {
+            var m = "clicked: " + key;
+            window.console && console.log(m) || alert(m);
+        },
+        items: {
+            "edit": {name: "Edit", icon: "edit"},
+            "cut": {name: "Cut", icon: "cut"},
+            copy: {name: "Copy", icon: "copy"},
+            "paste": {name: "Paste", icon: "paste"},
+            "delete": {name: "Delete", icon: "delete"},
+            "sep1": "---------",
+            "quit": {name: "Quit", icon: function(){
+                    return 'context-menu-icon context-menu-icon-quit';
+                }}
+        }
+    });
+}
 
-function si_openInputDialog(data, title, info, okHandler) {
+
+function SI_openInputDialog(data, title, info, okHandler) {
     jQuery("#smartindex-input-dialog-tpl").dialog("option", "title", title);
     jQuery("#smartindex-input-dialog-tpl .info-text").html(info);   
     jQuery("#smartindex-input-dialog-tpl .input-value").val("");
@@ -127,7 +171,7 @@ function si_openInputDialog(data, title, info, okHandler) {
                     "click" : function() {jQuery(this).dialog("close");}
                 },
                 {
-                    "text"  : "ok",
+                    "text"  : "OK",
                     "click" : function() {jQuery(this).dialog("close"); if (okHandler != null) okHandler(data, jQuery("#smartindex-input-dialog-tpl .input-value").val());}
                 }
                 
@@ -143,7 +187,7 @@ function si_openInputDialog(data, title, info, okHandler) {
 /* Get value of URL parameter.
  * http://james.padolsey.com/javascript/bujs-1-getparameterbyname/
  */
-function url_getParameter(url, param) {
+function SI_getURLParameter(url, param) {
     param = param.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regexS = "[\\?&]" + param + "=([^&#]*)";
     var regex = new RegExp(regexS);
@@ -156,29 +200,29 @@ function url_getParameter(url, param) {
 }
 
 function si_context_newPage(e, c) {
-     var namespace = url_getParameter(jQuery(c).children("a").attr("href"), "idx");
+     var namespace = SI_getURLParameter(jQuery(c).children("a").attr("href"), "idx");
      var title = jQuery(c).children("a").html();
-     si_openInputDialog(namespace, "Create new page in \""+title+"\"", "Enter page name to create:", function(data, input) {
+     SI_openInputDialog(namespace, "Create new page in \""+title+"\"", "Enter page name to create:", function(data, input) {
          window.location = DOKU_BASE+"doku.php?do=edit&id="+data+":"+input;
      });
  }
 
  function si_context_search(e, c) {
-     var namespace = url_getParameter(jQuery(c).children("a").attr("href"), "idx");
+     var namespace = SI_getURLParameter(jQuery(c).children("a").attr("href"), "idx");
      var title = jQuery(c).children("a").html();     
-     si_openInputDialog(namespace, "Search in \""+title+"\"", "Enter phrase to search in namespace:", function(data, input) {
+     SI_openInputDialog(namespace, "Search in \""+title+"\"", "Enter phrase to search in namespace:", function(data, input) {
          window.location = DOKU_BASE+"doku.php?do=search&id="+input+" @"+data;
      });
 
  }
 
  function si_context_showAcl(e, c) {
-     var namespace = url_getParameter(jQuery(c).children("a").attr("href"), "idx");
+     var namespace = SI_getURLParameter(jQuery(c).children("a").attr("href"), "idx");
      window.location = DOKU_BASE+"doku.php?do=admin&page=acl&id="+namespace;
  }
  
  function si_context_pageInfo(e, c) {
-     var page = url_getParameter(jQuery(c).children("a").attr("href"), "id");
+     var page = SI_getURLParameter(jQuery(c).children("a").attr("href"), "id");
      jQuery('body').append('<div id="xxx"></div>');
      jQuery('#xxx').load('/lib/plugins/smartindex/exe/ajax.php', {action: "pageinfo", "page":page});
      jQuery('#xxx').dialog();
@@ -236,33 +280,3 @@ function si_context_newPage(e, c) {
      jg_buildContext(set_file);
  }
  */
- 
-
-/*
- * SmartIndex dtree theme event handlers
- */
-
-function si_dtree_handleSubTreeLoad(event, data) {
-    var $div = jQuery(event.currentTarget);
-    var $li = $div.parent();
-    $li.append(data);
-
-    var parentLis = $div.children("a").parents("li.namespace");
-    var s = "";
-    var cls = "";
-    for (var i = parentLis.length; i > 0; i--) {
-        if (jQuery(parentLis.get(i-1)).next("li").length > 0) {
-            cls = "line";
-        } else {
-            cls = "noline";
-        }
-        s += "<span class=\""+cls+"\"></span>"
-    }
-
-    var ajaxLis = $div.next("ul").find("li");
-    jQuery.each(ajaxLis, function(k, v){
-        jQuery(v).children("div").prepend(s);
-    });
-
-    $li.removeClass("waiting");
-}

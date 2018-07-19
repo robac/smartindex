@@ -9,7 +9,7 @@ $handler->handle($_POST['action']);
 
 
 class AjaxRequestHandler {
-    const ACTION_RENDER_SUBTREE = 'subtree';
+    const ACTION_RENDER_SUBTREE = 'load_namespace';
     const ACTION_COLLECT_THEMES = 'collect';
     const ACTION_PAGE_INFO      = 'pageinfo';
 
@@ -22,7 +22,6 @@ class AjaxRequestHandler {
         $config->theme = $_POST['theme'];
         $config->checkHandle();
         $config->checkRender();
-
         if (!is_null($config->error)) {
             $res .= "<div class=\"smartindex-error\">SmartIndex error: {$config->error}</div>";
             echo $res;
@@ -79,7 +78,7 @@ class AjaxRequestHandler {
                 $this->handle_page_info();
                 break;
             
-            default: echo "nerozumidm ".$action;
+            default: echo "Unknown anction: ".$action."!";
         }
         
     }
