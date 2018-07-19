@@ -1,7 +1,5 @@
-/* DOKUWIKI:include js/jquery.ui.position.js */
-/* DOKUWIKI:include js/jquery.contextMenu.min.js */
-
-
+/* DOKUWIKI:include assets/context-menu/jquery.ui.position.js */
+/* DOKUWIKI:include assets/context-menu/jquery.contextMenu.min.js */
 
 SI_CLASS_INDEX = 'div.smartindex-treeview';
 SI_CLASS_NAMESPACE = 'namespace';
@@ -19,6 +17,7 @@ SI_SELECTOR_OPENEDNAMESPACE = 'li.'+SI_CLASS_NAMESPACE+'.'+SI_CLASS_OPENNAMESPAC
 SI_SELECTOR_PAGE = 'li.'+SI_CLASS_PAGE+' > div';
 
 SI_URLPARAMETER_NAMESPACE = 'idx';
+
 
 SI_ACTION_LOADSUBTREE = 'load_namespace';
 SI_INPUTDIALOG_OPTIONS =
@@ -47,14 +46,14 @@ jQuery(function(){
  */
 function SI_init() {
     jQuery.each(jQuery(SI_CLASS_INDEX), function(k, index){
-        SI_initIndex(index);
+        SI_initIndexEvents(index);
     });
     SI_createHTMLControls();
     SI_initInputDialog();
     SI_initContextMenu();
 }
 
-function SI_initIndex(index) {
+function SI_initIndexEvents(index) {
     var index_config = SI_getIndexConfiguration(index);
     jQuery(index).on('click', SI_SELECTOR_CLOSEDNAMESPACE, index_config, SI_loadNamespaceSubtree);
     jQuery(index).on('click', SI_SELECTOR_OPENEDNAMESPACE, index_config, SI_hideNamespaceContent);
@@ -97,6 +96,7 @@ function SI_loadNamespaceSubtree(event) {
                 element.removeClass(SI_CLASS_WAITINIG).removeClass(SI_CLASS_CLOSEDNAMESPACE).addClass(SI_CLASS_OPENNAMESPACE);
         });
     }
+    element.removeClass(SI_CLASS_CLOSEDNAMESPACE).addClass(SI_CLASS_OPENNAMESPACE);
 
     return false;
 }
@@ -113,19 +113,10 @@ function SI_redirectPage(event) {
 
 function SI_createHTMLControls() {
     jQuery('body').append('<div id="'+SI_ID_INPUTDIALOG+'"><p class="info-text"></p><input type="text" name="input-value" class="input-value" /></div>');
-    jQuery('body').append('<span class="context-menu-one btn btn-neutral">right click me</span>');
 }
 
 function SI_initInputDialog() {
-    jQuery('#'+SI_ID_INPUTDIALOG).dialog(
-        {
-            "closeOnEscape" : true,
-            "modal"         : true,
-            "autoOpen"      : false,
-            "resizable"     : false, 
-            "dialogClass"   : 'smartindex-input-dialog'
-        }
-    );
+    jQuery('#'+SI_ID_INPUTDIALOG).dialog(SI_INPUTDIALOG_OPTIONS);
     jQuery("#smartindex-input-dialog-tpl .input-value").keypress(function(e) {
         if (e.which == 13) {
             e.preventDefault();
@@ -138,27 +129,35 @@ function SI_initInputDialog() {
 
 function SI_initContextMenu() {
     jQuery.contextMenu({
-        selector: '.context-menu-one',
-        callback: function(key, options) {
-            var m = "clicked: " + key;
-            window.console && console.log(m) || alert(m);
-        },
+        selector: 'li.namespace > div',
         items: {
-            "edit": {name: "Edit", icon: "edit"},
-            "cut": {name: "Cut", icon: "cut"},
-            copy: {name: "Copy", icon: "copy"},
-            "paste": {name: "Paste", icon: "paste"},
-            "delete": {name: "Delete", icon: "delete"},
+            "new": {
+                name: "New page",
+                icon: "fa-plus",
+                callback: SI_action_newPage,
+            },
+            "search": {
+                name: "Search in namespace",
+                icon: "fa-search",
+                callback: SI_action_searchNamespace,
+            },
+            "acl": {
+                name: "Show ACL",
+                icon: "fa-users",
+                callback: SI_action_showAcl,
+            },
             "sep1": "---------",
-            "quit": {name: "Quit", icon: function(){
-                    return 'context-menu-icon context-menu-icon-quit';
-                }}
+            "quit": {
+                name: "Quit",
+                icon: "fa-times-circle",
+                callback: function () {return;}
+            }
         }
     });
 }
 
 
-function SI_openInputDialog(data, title, info, okHandler) {
+function SI_action_openInputDlg(data, title, info, okHandler) {
     jQuery("#smartindex-input-dialog-tpl").dialog("option", "title", title);
     jQuery("#smartindex-input-dialog-tpl .info-text").html(info);   
     jQuery("#smartindex-input-dialog-tpl .input-value").val("");
@@ -167,7 +166,7 @@ function SI_openInputDialog(data, title, info, okHandler) {
             "buttons": 
             [
                 {
-                    "text"  : "cancel",
+                    "text"  : "Cancel",
                     "click" : function() {jQuery(this).dialog("close");}
                 },
                 {
@@ -199,84 +198,24 @@ function SI_getURLParameter(url, param) {
     }
 }
 
-function si_context_newPage(e, c) {
-     var namespace = SI_getURLParameter(jQuery(c).children("a").attr("href"), "idx");
-     var title = jQuery(c).children("a").html();
-     SI_openInputDialog(namespace, "Create new page in \""+title+"\"", "Enter page name to create:", function(data, input) {
+function SI_action_newPage(itemKey, opt) {
+     var namespace = SI_getURLParameter(jQuery(this).find("a").first().attr("href"), "idx");
+     var title = jQuery(this).find("a").first().html();
+     SI_action_openInputDlg(namespace, "Create new page in \""+title+"\"", "Enter page name to create:", function(data, input) {
          window.location = DOKU_BASE+"doku.php?do=edit&id="+data+":"+input;
      });
  }
 
- function si_context_search(e, c) {
-     var namespace = SI_getURLParameter(jQuery(c).children("a").attr("href"), "idx");
-     var title = jQuery(c).children("a").html();     
-     SI_openInputDialog(namespace, "Search in \""+title+"\"", "Enter phrase to search in namespace:", function(data, input) {
+ function SI_action_searchNamespace(itemKey, opt) {
+     var namespace = SI_getURLParameter(jQuery(this).find("a").first().attr("href"), "idx");
+     var title = jQuery(this).find("a").first().html();
+     SI_action_openInputDlg(namespace, "Search in \""+title+"\"", "Enter phrase to search in namespace:", function(data, input) {
          window.location = DOKU_BASE+"doku.php?do=search&id="+input+" @"+data;
      });
 
  }
 
- function si_context_showAcl(e, c) {
-     var namespace = SI_getURLParameter(jQuery(c).children("a").attr("href"), "idx");
+ function SI_action_showAcl(itemKey, opt) {
+     var namespace = SI_getURLParameter(jQuery(this).find("a").first().attr("href"), "idx");
      window.location = DOKU_BASE+"doku.php?do=admin&page=acl&id="+namespace;
  }
- 
- function si_context_pageInfo(e, c) {
-     var page = SI_getURLParameter(jQuery(c).children("a").attr("href"), "id");
-     jQuery('body').append('<div id="xxx"></div>');
-     jQuery('#xxx').load('/lib/plugins/smartindex/exe/ajax.php', {action: "pageinfo", "page":page});
-     jQuery('#xxx').dialog();
- }
-
-/*
- function si_initContextMenu() {
-     var set_folder = {
-         "useWrapper": true,
-         "id" : "menu1", 
-         "selectors" : [
-             {
-                 "selector"  : ".smartindex-treeview li.namespace>div", 
-                 "event"     : "contextmenu"
-             },
-         ],
-         "items": [
-             {
-                 "id"    : "newpage", 
-                 "text"  : "new page", 
-                 "fn"    : si_context_newPage
-             }, 
-             {
-                 "id"    : "search", 
-                 "text"  : "search", 
-                 "fn"    : si_context_search
-             },
-             {
-                 "id "   : "acl", 
-                 "text"  : "acl", 
-                 "fn"    : si_context_showAcl
-             },
-         ]
-     };
-
-     jg_buildContext(set_folder);
-     
-     var set_file = {
-         "useWrapper": true,
-         "id" : "menu2", 
-         "selectors" : [
-             {
-                 "selector"  : ".smartindex-treeview li.page>div", 
-                 "event"     : "contextmenu"
-             },
-         ],
-         "items": [
-             {
-                 "id"    : "pageinfo", 
-                 "text"  : "page info", 
-                 "fn"    : si_context_pageInfo
-             }
-         ]
-     };
-     jg_buildContext(set_file);
- }
- */
