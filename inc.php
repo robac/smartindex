@@ -1,9 +1,18 @@
 <?php
 
-function smartindex_autoloader($class) {
-    $classpath = dirname(__FILE__)."/classes/{$class}.php"; 
-    if (file_exists($classpath)) {
-        require_once $classpath;
+
+function path_to_class($class) {
+    if ((DIRECTORY_SEPARATOR !== '\\') && (strpos($class, '\\') !== false)) {
+        $class =  str_replace('\\', DIRECTORY_SEPARATOR, $class);
+    }
+    return $class;
+}
+
+function smartindex_autoloader($class)
+{
+    $path = dirname(__FILE__) . "/classes" . DIRECTORY_SEPARATOR . path_to_class($class) . ".php";
+    if (file_exists($path)) {
+        require_once $path;
     }
 }
 
@@ -25,6 +34,7 @@ function INC_constsSmartindex() {
     DEFINE('SMARTINDEX_DIR', dirname(__FILE__).'/');
     DEFINE('THEMES_DIR', SMARTINDEX_DIR.'themes/');
     DEFINE('HTML_DIR', SMARTINDEX_DIR.'html/');
+    DEFINE('TEMPLATES_DIR', SMARTINDEX_DIR.'templates/');
     DEFINE('SMARTINDEX_URL', DOKU_BASE.'lib/plugins/smartindex/');
     DEFINE('THEMES_URL', SMARTINDEX_URL.'themes/');
     DEFINE('AJAX_URL', SMARTINDEX_URL.'exe/ajax.php');
