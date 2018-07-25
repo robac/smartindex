@@ -12,7 +12,7 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
  
   function html() {
     $template = new Monotek\MiniTPL\Template(TEMPLATES_DIR);
-    $template->load("test.php");
+    $template->load("admin.tpl");
     $template->render();
 
     //echo HtmlHelper::createInlineScript('var collectorURL = "'.AJAX_URL.'";');
