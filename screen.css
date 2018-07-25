@@ -328,3 +328,17 @@ ul.context-menu-list > li
 {
     background: url("/lib/plugins/smartindex/themes/tree/img/minusbottom.gif");
 }
+
+.smartindex-admin-list
+{
+    list-style-type: none;
+}
+
+.dokuwiki .page .smartindex-admin-list li
+{
+    color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-image: none;
+    background-color: #f6f6f6;
+}
