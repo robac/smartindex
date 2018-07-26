@@ -335,6 +335,11 @@ ul.context-menu-list > li
 
 /* ADMIN PAGE ---START */
 
+div.smartindex__namespace-organizer-wrapper
+{
+    padding: 10px;
+}
+
 .smartindex-admin-list
 {
     list-style-type: none;
@@ -342,8 +347,8 @@ ul.context-menu-list > li
 
 .dokuwiki .page .smartindex-admin-list
 {
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-left: 0em;
+    /*padding-right: 1em;*/
 }
 
 .dokuwiki .page .smartindex-admin-list li
