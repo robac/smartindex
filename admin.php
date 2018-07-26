@@ -11,29 +11,25 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
   }
  
   function html() {
-    $template = new Monotek\MiniTPL\Template(TEMPLATES_DIR);
-    $template->load("admin.tpl");
-    $template->render();
-
-    //echo HtmlHelper::createInlineScript('var collectorURL = "'.AJAX_URL.'";');
-      /*      $config = new SmartIndexConf();
-      $config->namespace = $_POST['namespace'];
-      $config->openDepth = $_POST['depth'];
-      $config->theme = $_POST['theme'];
+      $config = new SmartIndexConf();
+      PageTools::excludePageNamespaces($_REQUEST['id'], $namespace, $page);
+      $config->namespace = $namespace;
+      $config->openDepth = "5";
+      $config->theme = "default";
       $config->checkHandle();
       $config->checkRender();
-      if (!is_null($config->error)) {
+      if ( ! is_null($config->error)) {
           $res .= "<div class=\"smartindex-error\">SmartIndex error: {$config->error}</div>";
           echo $res;
       } else {
           $seeker = new PageSeeker($config);
           $data = $seeker->get($config);
 
-          $indexBuilder = $config->getRenderer();
-          $indexBuilder->setWrapper(false);
-          $indexBuilder->render($data, $res);
+          $renderer = new AdminRenderer($config);
+          $renderer->setWrapper(false);
+          $renderer->render($data, $res);
           echo $res;
-      }*/
+      }
   }
   
   function getMenuText($language) {
