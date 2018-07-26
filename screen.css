@@ -1,7 +1,11 @@
+/* jQuery COntextMenu ---START */
+
 ul.context-menu-list > li
 {
     margin-left: 0px !important;
 }
+
+/* jQuery COntextMenu ---END */
 
 
 .smartindex-treeview ul,
@@ -329,6 +333,8 @@ ul.context-menu-list > li
     background: url("/lib/plugins/smartindex/themes/tree/img/minusbottom.gif");
 }
 
+/* ADMIN PAGE ---START */
+
 .smartindex-admin-list
 {
     list-style-type: none;
@@ -382,3 +388,5 @@ ul.context-menu-list > li
     color: #6093e5;
     margin-right: 10px;
 }
+
+/* ADMIN PAGE ---END */
