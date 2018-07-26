@@ -1,10 +1,5 @@
 <?php
 class DefaultRenderer implements iIndexRenderer {
-    const CLASS_OPEN = "open";
-    const CLASS_CLOSED = "closed";
-    const CLASS_NAMESPACE = "namespace";
-    const CLASS_PAGE = "page";
-    
     private $useWrapper = true;
     private $wrapperClasses = array();
     private $wrapperId;
