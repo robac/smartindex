@@ -366,13 +366,13 @@ ul.context-menu-list > li
 .dokuwiki .page .smartindex-admin-list li.namespace i.structure-icon
 {
     margin-left: 10px;
-    margin-right: 17px;
+    margin-right: 10px;
     font-weight: 900;
 }
 
 .dokuwiki .page .smartindex-admin-list li.page i.structure-icon
 {
-    margin-left: 17px;
+    margin-left: 20px;
     margin-right: 10px;
 }
 

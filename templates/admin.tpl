@@ -1,10 +1,10 @@
 <div>
-    <center><h1>SmartIndex page sorter</h1></center>
+    <h1>SmartIndex page sorter</h1>
     <br/>
     {if $namespace == ""}
-    <center><h2>ROOT namespace</h2></center>
+    <h2>ROOT namespace</h2></center>
     {else}
-    <center><h2>namespace: {$namespace}</h2></center>
+    <h2>namespace: {$namespace}</h2></center>
     {/if}
     <br/>
     <br/>
