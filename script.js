@@ -147,7 +147,13 @@ function SI_initContextMenu() {
                 icon: "fas fa-users",
                 callback: SI_action_showAcl,
             },
-            "sep1": "---------",
+            "sep11": "---------",
+            "organize": {
+                name: "Organize namespace",
+                icon: "fas fa-random",
+                callback: SI_action_organizeNamespace,
+            },
+            "sep12": "---------",
             "quit": {
                 name: "Quit",
                 icon: "fas fa-times-circle",
@@ -220,3 +226,8 @@ function SI_action_newPage(itemKey, opt) {
      var namespace = SI_getURLParameter(jQuery(this).find("a").first().attr("href"), "idx");
      window.location = DOKU_BASE+"doku.php?do=admin&page=acl&id="+namespace;
  }
+
+function SI_action_organizeNamespace(itemKey, opt) {
+    var namespace = SI_getURLParameter(jQuery(this).find("a").first().attr("href"), "idx");
+    window.location = DOKU_BASE+"doku.php?do=admin&page=smartindex&id="+namespace+':organize';
+}
