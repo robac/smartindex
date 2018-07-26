@@ -134,23 +134,23 @@ function SI_initContextMenu() {
         items: {
             "new": {
                 name: "New page",
-                icon: "fa-plus",
+                icon: "fas fa-plus",
                 callback: SI_action_newPage,
             },
             "search": {
                 name: "Search in namespace",
-                icon: "fa-search",
+                icon: "fas fa-search",
                 callback: SI_action_searchNamespace,
             },
             "acl": {
                 name: "Show ACL",
-                icon: "fa-users",
+                icon: "fas fa-users",
                 callback: SI_action_showAcl,
             },
             "sep1": "---------",
             "quit": {
                 name: "Quit",
-                icon: "fa-times-circle",
+                icon: "fas fa-times-circle",
                 callback: function () {return;}
             }
         }
