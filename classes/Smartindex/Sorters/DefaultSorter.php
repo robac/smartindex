@@ -1,12 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: poch
- * Date: 25.07.2018
- * Time: 15:45
- */
 
-class DefaultSorter implements iPageSorter
+namespace Smartindex\Sorters;
+
+class DefaultSorter implements \Smartindex\Sorters\iPageSorter
 {
     private $config;
 

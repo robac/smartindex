@@ -49,11 +49,11 @@ class SmartIndexConf {
                     break;
                     
                 case self::PARAM_HIGHLITE:
-                    $this->highlite = Utils::parseBoolean($val[2]);
+                    $this->highlite = \Smartindex\Utils\Utils::parseBoolean($val[2]);
                     break;
                 
                 case self::SHOW_MAIN_NAMESPACE:
-                    $this->showMain = Utils::parseBoolean($val[2]);
+                    $this->showMain = \Smartindex\Utils\Utils::parseBoolean($val[2]);
                     break;
                 
                 case self::PARAM_OPEN_DEPTH:
@@ -102,16 +102,16 @@ class SmartIndexConf {
     
     public function getRenderer() {
         if (!isset($this->themesInfo[$this->theme][ThemesCollector::KEY_RENDERER_C])) {
-            return new DefaultRenderer($this);
+            return new \Smartindex\Renderers\DefaultRenderer($this);
         } else {
             require_once(THEMES_DIR.$this->theme.'/'.$this->themesInfo[$this->theme][ThemesCollector::KEY_RENDERER_F]);
-            return new $this->themesInfo[$this->theme][ThemesCollector::KEY_RENDERER_C]($this);
+            //return new $this->themesInfo[$this->theme][ThemesCollector::KEY_RENDERER_C]($this);
         }
     }
     
     public function checkRender() {
         if (is_null($this->treeId)) {
-            $this->treeId = Utils::getFloatMicrotime("smartindex_");
+            $this->treeId = \Smartindex\Utils\Utils::getFloatMicrotime("smartindex_");
         }
         
         $this->loadThemesInfo();

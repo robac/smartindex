@@ -1,4 +1,7 @@
 <?php
+
+namespace Smartindex\Renderers;
+
 interface iIndexRenderer {
     const CLASS_OPEN = "open";
     const CLASS_CLOSED = "closed";

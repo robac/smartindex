@@ -1,5 +1,7 @@
 <?php
-class DefaultRenderer implements iIndexRenderer {
+namespace Smartindex\Renderers;
+
+class DefaultRenderer implements \Smartindex\Renderers\iIndexRenderer {
     private $useWrapper = true;
     private $wrapperClasses = array();
     private $wrapperId;
@@ -11,22 +13,22 @@ class DefaultRenderer implements iIndexRenderer {
     public function setWrapper($useWrapper, $id = NULL) {
         $this->useWrapper = $useWrapper;
         
-        $this->wrapperClasses[] = SmartIndexConf::TREE_CLASS;
+        $this->wrapperClasses[] = \SmartIndexConf::TREE_CLASS;
         $this->wrapperClasses[] = $this->config->cssClass;
         if ($this->config->highlite) {
-            $this->wrapperClasses[] = SmartIndexConf::HIGHLITE_CLASS;
+            $this->wrapperClasses[] = \SmartIndexConf::HIGHLITE_CLASS;
         }
         
         $this->wrapperId = $id;
     }
 
-    public function __construct(SmartIndexConf $config) {
+    public function __construct(\SmartIndexConf $config) {
         $this->config = $config;
     }
     
     public function render($data, &$document) {
         if ($this->useWrapper) {
-            $document .= "<div".HtmlHelper::createIdClassesPart($this->wrapperId, $this->wrapperClasses).">";
+            $document .= "<div".\HtmlHelper::createIdClassesPart($this->wrapperId, $this->wrapperClasses).">";
         }
         
         $this->basicData = $data;
@@ -45,31 +47,31 @@ class DefaultRenderer implements iIndexRenderer {
         
         $document .= "<ul>";
         
-        foreach($data[$namespace][PageSeeker::KEY_DIRS] as $ns)  {
+        foreach($data[$namespace][\PageSeeker::KEY_DIRS] as $ns)  {
             $classes = array(self::CLASS_NAMESPACE);
             
-            if (($this->config->openDepth > $level) || (isset($data[$ns][PageSeeker::KEY_FOLLOW]))) {
+            if (($this->config->openDepth > $level) || (isset($data[$ns][\PageSeeker::KEY_FOLLOW]))) {
                 $classes[] = self::CLASS_OPEN;
             } else {
                 $classes[] = self::CLASS_CLOSED;
             }
 
                 
-            $document .= "<li".HtmlHelper::createIdClassesPart(NULL, $classes)."><div>"
-                         .HtmlHelper::createSitemapLink(PageTools::constructPageName($namespace, $ns), $ns)
+            $document .= "<li".\HtmlHelper::createIdClassesPart(NULL, $classes)."><div>"
+                         .\HtmlHelper::createSitemapLink(\PageTools::constructPageName($namespace, $ns), $ns)
                          ."</div>";
             
-            $this->buildList($data, PageTools::constructPageName($namespace, $ns), $document, $level+1);
+            $this->buildList($data, \PageTools::constructPageName($namespace, $ns), $document, $level+1);
             $document .= "</li>";
         }
         
         
-        foreach($data[$namespace][PageSeeker::KEY_PAGES] as $key => $page) {
-            $heading = $data[$namespace][PageSeeker::KEY_PAGES_TITLE][$key];
+        foreach($data[$namespace][\PageSeeker::KEY_PAGES] as $key => $page) {
+            $heading = $data[$namespace][\PageSeeker::KEY_PAGES_TITLE][$key];
             if ($heading == "")
                 $heading = $page;
-            $document .= "<li".HtmlHelper::createIdClassesPart(NULL, array(self::CLASS_PAGE))."><div>"
-                         .HtmlHelper::createInternalLink(PageTools::constructPageName($namespace, $page), NULL, $heading, NULL, NULL)
+            $document .= "<li".\HtmlHelper::createIdClassesPart(NULL, array(self::CLASS_PAGE))."><div>"
+                         .\HtmlHelper::createInternalLink(\PageTools::constructPageName($namespace, $page), NULL, $heading, NULL, NULL)
                          ."</div ></li>";
         }
         

@@ -1,5 +1,7 @@
 <?php
 
+namespace Smartindex\Utils;
+
 class Utils {
     
     public static function getFloatMicrotime($prefix = NULL) {
