@@ -334,11 +334,51 @@ ul.context-menu-list > li
     list-style-type: none;
 }
 
+.dokuwiki .page .smartindex-admin-list
+{
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
 .dokuwiki .page .smartindex-admin-list li
 {
-    color: black;
+    color: #6093e5;
     padding-top: 10px;
     padding-bottom: 10px;
     background-image: none;
+    margin-left: 0px;
+    margin-top: 1px;
+    border-radius: 3px;
     background-color: #f6f6f6;
+    height: 15px;
+}
+
+.dokuwiki .page .smartindex-admin-list li.new
+{
+    background-color: #f9f8ea;
+}
+
+.dokuwiki .page .smartindex-admin-list li.namespace i
+{
+    font-size: 15px;
+}
+
+.dokuwiki .page .smartindex-admin-list li.namespace i.structure-icon
+{
+    margin-left: 10px;
+    margin-right: 17px;
+    font-weight: 900;
+}
+
+.dokuwiki .page .smartindex-admin-list li.page i.structure-icon
+{
+    margin-left: 17px;
+    margin-right: 10px;
+}
+
+.dokuwiki .page .smartindex-admin-list li i.sortable-icon
+{
+    float: right;
+    color: #6093e5;
+    margin-right: 10px;
 }
