@@ -1,6 +1,7 @@
 <?php
 
 use Smartindex\Configuration\SmartIndexConf;
+use Smartindex\Utils\PageTools;
 
 require_once (dirname(__FILE__).'/inc.php');
 INC_requireDW();

@@ -2,6 +2,7 @@
 
 use Smartindex\Configuration\SmartIndexConf;
 use Smartindex\Utils\HtmlHelper;
+use Smartindex\Utils\PageTools;
 
 class TreeRenderer implements iIndexRenderer {
     const CLASS_OPEN = "open";
