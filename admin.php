@@ -1,6 +1,6 @@
 <?php
 
-use Smartindex\Configuration\SmartIndexConf;
+use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Indexer\DefaultIndexer;
 use Smartindex\Utils\PageTools;
 
@@ -15,7 +15,7 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
   }
  
   function html() {
-      $config = new SmartIndexConf();
+      $config = new IndexConfiguration();
       PageTools::excludePageNamespaces($_REQUEST['id'], $namespace, $page);
       $config->namespace = $namespace;
       $config->openDepth = "5";

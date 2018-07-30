@@ -13,16 +13,16 @@ class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
     public function setWrapper($useWrapper, $id = NULL) {
         $this->useWrapper = $useWrapper;
         
-        $this->wrapperClasses[] = \Smartindex\Configuration\SmartIndexConf::TREE_CLASS;
+        $this->wrapperClasses[] = \Smartindex\Configuration\IndexConfiguration::TREE_CLASS;
         $this->wrapperClasses[] = $this->config->cssClass;
         if ($this->config->highlite) {
-            $this->wrapperClasses[] = \Smartindex\Configuration\SmartIndexConf::HIGHLITE_CLASS;
+            $this->wrapperClasses[] = \Smartindex\Configuration\IndexConfiguration::HIGHLITE_CLASS;
         }
         
         $this->wrapperId = $id;
     }
 
-    public function __construct(\Smartindex\Configuration\SmartIndexConf $config) {
+    public function __construct(\Smartindex\Configuration\IndexConfiguration $config) {
         $this->config = $config;
     }
     

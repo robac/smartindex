@@ -1,6 +1,6 @@
 <?php
 
-use Smartindex\Configuration\SmartIndexConf;
+use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Indexer\DefaultIndexer;
 
 require_once (dirname(__FILE__).'/../inc.php');
@@ -20,7 +20,7 @@ class AjaxRequestHandler {
     private function handle_render_subtree() {
         global $conf;
         $res = "";
-        $config = new SmartIndexConf();
+        $config = new IndexConfiguration();
         $config->namespace = $_POST['namespace'];
         $config->openDepth = $_POST['depth'];
         $config->theme = $_POST['theme'];

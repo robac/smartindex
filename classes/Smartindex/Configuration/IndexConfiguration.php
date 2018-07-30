@@ -3,7 +3,7 @@
 namespace Smartindex\Configuration;
 use ThemesCollector;
 
-class SmartIndexConf
+class IndexConfiguration
 {
     const TREE_CLASS = 'smartindex-treeview';
     const HIGHLITE_CLASS = 'smartindex-highlite';
@@ -11,7 +11,7 @@ class SmartIndexConf
 
     const PARAM_NAMESPACE = 'namespace';
     const PARAM_NS_FRONT_PAGE = 'nsfrontpage';
-    const PARAM_HIGHLITE = 'highlite';
+    const PARAM_HIGHLIGHT = 'highlite';
     const PARAM_THEME = 'theme';
     const PARAM_AJAX_DEPTH = 'ajaxdepth';
     const PARAM_OPEN_DEPTH = 'opendepth';
@@ -53,7 +53,7 @@ class SmartIndexConf
                     $this->theme = $val[2];
                     break;
 
-                case self::PARAM_HIGHLITE:
+                case self::PARAM_HIGHLIGHT:
                     $this->highlite = \Smartindex\Utils\Utils::parseBoolean($val[2]);
                     break;
 

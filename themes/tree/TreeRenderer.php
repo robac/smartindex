@@ -1,6 +1,6 @@
 <?php
 
-use Smartindex\Configuration\SmartIndexConf;
+use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Indexer\DefaultIndexer;
 use Smartindex\Utils\HtmlHelper;
 use Smartindex\Utils\PageTools;
@@ -19,17 +19,17 @@ class TreeRenderer implements iIndexRenderer {
     
     private $hasFiles = array();
 
-    public function __construct(SmartIndexConf $config) {
+    public function __construct(IndexConfiguration $config) {
         $this->config = $config;
     }
     
     public function setWrapper($useWrapper, $id = NULL) {
         $this->useWrapper = $useWrapper;
         
-        $this->wrapperClasses[] = SmartIndexConf::TREE_CLASS;
+        $this->wrapperClasses[] = IndexConfiguration::TREE_CLASS;
         $this->wrapperClasses[] = $this->config->cssClass;
         if ($this->config->highlite) {
-            $this->wrapperClasses[] = SmartIndexConf::HIGHLITE_CLASS;
+            $this->wrapperClasses[] = IndexConfiguration::HIGHLITE_CLASS;
         }
         
         $this->wrapperId = $id;

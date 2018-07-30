@@ -1,6 +1,6 @@
 <?php
 
-use Smartindex\Configuration\SmartIndexConf;
+use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Indexer\DefaultIndexer;
 use Smartindex\Utils\HtmlHelper;
 
@@ -29,7 +29,7 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
 
 
     public function handle($match, $state, $pos, &$handler){
-        $config = new SmartIndexConf();
+        $config = new IndexConfiguration();
         $config->readFromTag($match);
         $config->followPath = $INFO['id']; 
         $config->checkHandle();

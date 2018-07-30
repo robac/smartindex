@@ -2,7 +2,7 @@
 
 namespace Smartindex\Indexer;
 
-use Smartindex\Configuration\SmartIndexConf;
+use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Utils\PageTools;
 
 class DefaultIndexer implements \Smartindex\Indexer\iIndexer
@@ -11,7 +11,7 @@ class DefaultIndexer implements \Smartindex\Indexer\iIndexer
     private $info;
     private $follow;
 
-    public function __construct(SmartIndexConf $config)
+    public function __construct(IndexConfiguration $config)
     {
         $this->config = $config;
         $this->init();
@@ -46,7 +46,7 @@ class DefaultIndexer implements \Smartindex\Indexer\iIndexer
     }
 
 
-    public function getIndex(SmartIndexConf $config)
+    public function getIndex(IndexConfiguration $config)
     {
         $index = array();
         $this->search($index, 1);
