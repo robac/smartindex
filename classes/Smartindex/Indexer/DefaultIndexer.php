@@ -5,25 +5,21 @@ namespace Smartindex\Indexer;
 use Smartindex\Configuration\SmartIndexConf;
 use Smartindex\Utils\PageTools;
 
-class DefaultIndexer
+class DefaultIndexer implements \Smartindex\Indexer\iIndexer
 {
-    const KEY_DIRS = 0;
-    const KEY_PAGES = 1;
-    const KEY_PAGES_TITLE = 2;
-    const KEY_FOLLOW = 3;
-    const KEY_FRONT = 4;
-
-    const INFO_NS = 0;
-    const INFO_DIR = 1;
-    const INFO_FOLLOW = 2;
-
     private $config;
     private $info;
     private $follow;
 
+    public function __construct(SmartIndexConf $config)
+    {
+        $this->config = $config;
+        $this->init();
+    }
+
     private function checkFollowPath($namespace, $level)
     {
-        if ($this->info[$level - 1][self::INFO_FOLLOW] && isset($this->follow[$level]) && ($this->follow[$level] == $namespace)) {
+        if ($this->info[$level - 1][iIndexer::INFO_FOLLOW] && isset($this->follow[$level]) && ($this->follow[$level] == $namespace)) {
             $this->info[$level][self::INFO_FOLLOW] = true;
             return true;
         } else {
@@ -52,13 +48,10 @@ class DefaultIndexer
 
     public function getIndex(SmartIndexConf $config)
     {
-        $this->config = $config;
-        $this->init();
+        $index = array();
+        $this->search($index, 1);
 
-        $data = array();
-        $this->search($data, 1);
-
-        return $data;
+        return $index;
     }
 
     private function search(&$data, $level)
