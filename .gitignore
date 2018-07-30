@@ -1,2 +1,4 @@
 .idea/*
 /templates/cache/*
+disabled
+manager.dat
