@@ -1,7 +1,7 @@
 <?php
-namespace Smartindex\Renderers;
+namespace Smartindex\Renderer;
 
-class DefaultRenderer implements \Smartindex\Renderers\iIndexRenderer {
+class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
     private $useWrapper = true;
     private $wrapperClasses = array();
     private $wrapperId;

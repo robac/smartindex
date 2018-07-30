@@ -25,7 +25,7 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
           $seeker = new PageSeeker($config);
           $data = $seeker->get($config);
 
-          $renderer = new Smartindex\Renderers\AdminRenderer($config);
+          $renderer = new Smartindex\Renderer\AdminRenderer($config);
           $renderer->setWrapper(false);
           $renderer->render($data, $res);
           echo $res;

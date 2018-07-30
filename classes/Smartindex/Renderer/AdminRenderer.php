@@ -1,7 +1,7 @@
 <?php
-namespace Smartindex\Renderers;
+namespace Smartindex\Renderer;
 
-class AdminRenderer implements \Smartindex\Renderers\iIndexRenderer {
+class AdminRenderer implements \Smartindex\Renderer\iIndexRenderer {
 
     private $useWrapper = true;
     private $wrapperClasses = array();
@@ -42,7 +42,7 @@ class AdminRenderer implements \Smartindex\Renderers\iIndexRenderer {
                     $document .= "</div>";
                 }*/
 
-        $sorter = new \Smartindex\Sorters\DefaultSorter($this->config);
+        $sorter = new \Smartindex\Sorter\DefaultSorter($this->config);
 
         $template = new \Monotek\MiniTPL\Template(TEMPLATES_DIR);
         $template->load("admin.tpl");

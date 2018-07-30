@@ -1,6 +1,6 @@
 <?php
 
-namespace Smartindex\Renderers;
+namespace Smartindex\Renderer;
 
 interface iIndexRenderer {
     const CLASS_OPEN = "open";

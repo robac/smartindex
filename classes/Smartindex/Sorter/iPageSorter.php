@@ -1,6 +1,6 @@
 <?php
 
-namespace Smartindex\Sorters;
+namespace Smartindex\Sorter;
 
 interface iPageSorter {
     public function sort($data);

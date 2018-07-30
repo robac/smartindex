@@ -1,8 +1,8 @@
 <?php
 
-namespace Smartindex\Sorters;
+namespace Smartindex\Sorter;
 
-class DefaultSorter implements \Smartindex\Sorters\iPageSorter
+class DefaultSorter implements \Smartindex\Sorter\iPageSorter
 {
     private $config;
 
