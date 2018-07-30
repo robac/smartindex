@@ -28,7 +28,7 @@ class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
     
     public function render($data, &$document) {
         if ($this->useWrapper) {
-            $document .= "<div".\HtmlHelper::createIdClassesPart($this->wrapperId, $this->wrapperClasses).">";
+            $document .= "<div". \Smartindex\Utils\HtmlHelper::createIdClassesPart($this->wrapperId, $this->wrapperClasses).">";
         }
         
         $this->basicData = $data;
@@ -57,8 +57,8 @@ class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
             }
 
                 
-            $document .= "<li".\HtmlHelper::createIdClassesPart(NULL, $classes)."><div>"
-                         .\HtmlHelper::createSitemapLink(\PageTools::constructPageName($namespace, $ns), $ns)
+            $document .= "<li". \Smartindex\Utils\HtmlHelper::createIdClassesPart(NULL, $classes)."><div>"
+                         . \Smartindex\Utils\HtmlHelper::createSitemapLink(\PageTools::constructPageName($namespace, $ns), $ns)
                          ."</div>";
             
             $this->buildList($data, \PageTools::constructPageName($namespace, $ns), $document, $level+1);
@@ -70,8 +70,8 @@ class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
             $heading = $data[$namespace][\PageSeeker::KEY_PAGES_TITLE][$key];
             if ($heading == "")
                 $heading = $page;
-            $document .= "<li".\HtmlHelper::createIdClassesPart(NULL, array(self::CLASS_PAGE))."><div>"
-                         .\HtmlHelper::createInternalLink(\PageTools::constructPageName($namespace, $page), NULL, $heading, NULL, NULL)
+            $document .= "<li". \Smartindex\Utils\HtmlHelper::createIdClassesPart(NULL, array(self::CLASS_PAGE))."><div>"
+                         . \Smartindex\Utils\HtmlHelper::createInternalLink(\PageTools::constructPageName($namespace, $page), NULL, $heading, NULL, NULL)
                          ."</div ></li>";
         }
         

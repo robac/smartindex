@@ -1,4 +1,7 @@
 <?php
+
+use Smartindex\Utils\HtmlHelper;
+
 require_once (dirname(__FILE__).'/inc.php');
 INC_requireDW();
 INC_constsDW();

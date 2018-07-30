@@ -1,4 +1,7 @@
 <?php
+
+use Smartindex\Utils\HtmlHelper;
+
 class TreeRenderer implements iIndexRenderer {
     const CLASS_OPEN = "open";
     const CLASS_CLOSED = "closed";
