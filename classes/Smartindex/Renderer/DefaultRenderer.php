@@ -47,10 +47,10 @@ class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
         
         $document .= "<ul>";
         
-        foreach($data[$namespace][\Smartindex\Indexer\DefaultIndexer::KEY_DIRS] as $ns)  {
+        foreach($data[$namespace][\Smartindex\Indexer\iIndexer::KEY_DIRS] as $ns)  {
             $classes = array(self::CLASS_NAMESPACE);
             
-            if (($this->config->openDepth > $level) || (isset($data[$ns][\Smartindex\Indexer\DefaultIndexer::KEY_FOLLOW]))) {
+            if (($this->config->openDepth > $level) || (isset($data[$ns][\Smartindex\Indexer\iIndexer::KEY_FOLLOW]))) {
                 $classes[] = self::CLASS_OPEN;
             } else {
                 $classes[] = self::CLASS_CLOSED;
@@ -66,8 +66,8 @@ class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
         }
         
         
-        foreach($data[$namespace][\Smartindex\Indexer\DefaultIndexer::KEY_PAGES] as $key => $page) {
-            $heading = $data[$namespace][\Smartindex\Indexer\DefaultIndexer::KEY_PAGES_TITLE][$key];
+        foreach($data[$namespace][\Smartindex\Indexer\iIndexer::KEY_PAGES] as $key => $page) {
+            $heading = $data[$namespace][\Smartindex\Indexer\iIndexer::KEY_PAGES_TITLE][$key];
             if ($heading == "")
                 $heading = $page;
             $document .= "<li". \Smartindex\Utils\HtmlHelper::createIdClassesPart(NULL, array(self::CLASS_PAGE))."><div>"

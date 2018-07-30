@@ -55,11 +55,11 @@ class TreeRenderer implements iIndexRenderer {
                 return "";
         
         
-        $this->hasFiles[$level] = !empty($data[$namespace][DefaultIndexer::KEY_PAGES]);
+        $this->hasFiles[$level] = !empty($data[$namespace][iIndexer::KEY_PAGES]);
         
         $document .= "<ul>";
         
-        foreach($data[$namespace][DefaultIndexer::KEY_DIRS] as $ns)  {
+        foreach($data[$namespace][iIndexer::KEY_DIRS] as $ns)  {
             $classes = array(self::CLASS_NAMESPACE);
             if (($this->config->openDepth >= $level) || PageTools::isPathPart($this->config->followPath, PageTools::constructPageName($namespace, $ns))) {
                 $classes[] = self::CLASS_OPEN;
@@ -82,7 +82,7 @@ class TreeRenderer implements iIndexRenderer {
         }
         
         
-        foreach($data[$namespace][DefaultIndexer::KEY_PAGES] as $page) {
+        foreach($data[$namespace][iIndexer::KEY_PAGES] as $page) {
             $heading = p_get_first_heading(PageTools::constructPageName($namespace, $page), false);
             if ($heading == "")
                 $heading = $page;
