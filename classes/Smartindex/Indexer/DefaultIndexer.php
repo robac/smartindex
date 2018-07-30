@@ -50,7 +50,7 @@ class DefaultIndexer
     }
 
 
-    public function get(SmartIndexConf $config)
+    public function getIndex(SmartIndexConf $config)
     {
         $this->config = $config;
         $this->init();

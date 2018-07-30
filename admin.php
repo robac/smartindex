@@ -27,7 +27,7 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
           echo $res;
       } else {
           $seeker = new DefaultIndexer($config);
-          $data = $seeker->get($config);
+          $data = $seeker->getIndex($config);
 
           $renderer = new Smartindex\Renderer\AdminRenderer($config);
           $renderer->setWrapper(false);

@@ -31,7 +31,7 @@ class AjaxRequestHandler {
             echo $res;
         } else {
             $seeker = new DefaultIndexer($config);
-            $data = $seeker->get($config);
+            $data = $seeker->getIndex($config);
 
             $indexBuilder = $config->getRenderer();
             $indexBuilder->setWrapper(false);
