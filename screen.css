@@ -340,18 +340,18 @@ div.smartindex__namespace-organizer-wrapper
     padding: 10px;
 }
 
-.smartindex-admin-list
+#smartindex__admin-organizer-list
 {
     list-style-type: none;
 }
 
-.dokuwiki .page .smartindex-admin-list
+#smartindex__admin-organizer-list
 {
     padding-left: 0em;
     /*padding-right: 1em;*/
 }
 
-.dokuwiki .page .smartindex-admin-list li
+#smartindex__admin-organizer-list li
 {
     color: #6093e5;
     padding-top: 10px;
@@ -364,34 +364,39 @@ div.smartindex__namespace-organizer-wrapper
     height: 15px;
 }
 
-.dokuwiki .page .smartindex-admin-list li.new
+#smartindex__admin-organizer-list li.new
 {
     background-color: #f9f8ea;
 }
 
-.dokuwiki .page .smartindex-admin-list li.namespace i
+#smartindex__admin-organizer-list li.namespace i
 {
     font-size: 15px;
 }
 
-.dokuwiki .page .smartindex-admin-list li.namespace i.structure-icon
+#smartindex__admin-organizer-list li.namespace i.structure-icon
 {
     margin-left: 10px;
     margin-right: 10px;
     font-weight: 900;
 }
 
-.dokuwiki .page .smartindex-admin-list li.page i.structure-icon
+#smartindex__admin-organizer-list li.page i.structure-icon
 {
     margin-left: 20px;
     margin-right: 10px;
 }
 
-.dokuwiki .page .smartindex-admin-list li i.sortable-icon
+#smartindex__admin-organizer-list li i.sortable-icon
 {
     float: right;
     color: #6093e5;
     margin-right: 10px;
+}
+
+.smartindex__namespace-organizer-wrapper button i
+{
+    padding-right: 10px;
 }
 
 /* ADMIN PAGE ---END */

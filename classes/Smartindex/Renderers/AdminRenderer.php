@@ -47,9 +47,11 @@ class AdminRenderer implements \Smartindex\Renderers\iIndexRenderer {
         $template = new \Monotek\MiniTPL\Template(TEMPLATES_DIR);
         $template->load("admin.tpl");
         $pages = $sorter->sort($data);
-        $template->assign("namespaces", $pages[0]);
         $template->assign("namespace", $this->config->namespace);
+        $template->assign("page_titles", $pages[0]);
         $template->assign("isnamespace", $pages[1]);
+        $template->assign("page_ids", $pages[2  ]);
+        $template->assign("sectoken", getSecurityToken());
         $template->render();
     }
 

@@ -16,24 +16,38 @@ class action_plugin_smartindex extends DokuWiki_Action_Plugin
         if ($event->data !== 'plugin_smartindex') {
             return;
         }
-        //no other ajax call handlers needed
+
         $event->stopPropagation();
         $event->preventDefault();
 
-        //e.g. access additional request variables
-        global $INPUT; //available since release 2012-10-13 "Adora Belle"
-        $name = $INPUT->str('name');
 
-        //data
-        $data = array("Peter" => "35", "Ben" => "37", "Joe" => "43");
+        global $INPUT;
+        if ($INPUT->str('sectoken') !== getSecurityToken()) {
+            $response = array(
+                'status' => 'error',
+                'error' => "CSRF protection!"
+            );
+        } else {
+           $action = $INPUT->str('action');
 
-        //json library of DokuWiki
+            switch ($action) {
+                case 'save_namespace_order':
+                    $response = $this->save_namespace_order($INPUT);
+                    break;
+                default:
+                    $response = array(
+                        'status' => 'error',
+                        'error' => "Invalid action: $action");
+            }
+        }
+
         $json = new JSON();
-
-        //set content type
         header('Content-Type: application/json');
-        echo $json->encode($data);
+        echo $json->encode($response);
+    }
 
+    protected function save_namespace_order() {
+        return array("Hello" => "Inv");
     }
 
     public function _loadassets(Doku_Event &$event, $param) {

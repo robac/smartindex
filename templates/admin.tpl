@@ -1,5 +1,5 @@
 <div>
-    <h1>Namespace organizerr</h1>
+    <h1>Namespace organizer</h1>
     <br/>
     {if $namespace == ""}
     <h2>ROOT namespace</h2></center>
@@ -9,16 +9,18 @@
     <br/>
     <br/>
     <div class="smartindex__namespace-organizer-wrapper">
-        <input type="hidden" value="{$namespace}">
-        <ul id="sortable" class="smartindex-admin-list">
-            {for $i = 0; $i < count($namespaces); $i++}
+        <input id="smartindex__sectoken" type="hidden" value="{$sectoken}" />
+        <input id="smartindex__admin_namespace" type="hidden" value="{$namespace}">
+        <ul id="smartindex__admin-organizer-list" class="smartindex-admin-list">
+            {for $i = 0; $i < count($page_titles); $i++}
                 {if $isnamespace[$i]}
-                    <li class="ui-state-default namespace"><i class="structure-icon fa fa-folder"></i><b>{$namespaces[$i]}</b><i class="sortable-icon fa fa-arrows-alt-v"></i></li>
+                    {eval $li_class='namespace'; $i_icon='far fa-folder';}
                 {else}
-                    <li class="ui-state-default page"><i class="structure-icon fa fa-file"></i>{$namespaces[$i]}<i class="sortable-icon fa fa-arrows-alt-v"></i></li>
+                    {eval $li_class='page'; $i_icon='far fa-file';}
                 {/if}
+                <li class="ui-state-default {$li_class}"><i class="structure-icon {$i_icon}"></i>{$page_titles[$i]}<i class="sortable-icon fa fa-arrows-alt-v"></i><input type="hidden" value="{$page_ids[$i]}"></li>
             {/for}
         </ul>
-        <button id="smartindex__admin-organizer-save" class="ui-button ui-widget ui-corner-all">Save</button>
+        <button id="smartindex__admin-organizer-save" class="ui-button ui-widget ui-corner-all"><i class="fa fa-save"></i>Save</button>
     </div>
 </div>
