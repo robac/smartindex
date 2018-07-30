@@ -50,7 +50,7 @@ class AdminRenderer implements \Smartindex\Renderer\iIndexRenderer {
         $template->assign("namespace", $this->config->namespace);
         $template->assign("page_titles", $pages[0]);
         $template->assign("isnamespace", $pages[1]);
-        $template->assign("page_ids", $pages[2  ]);
+        $template->assign("page_ids", $pages[2]);
         $template->assign("sectoken", getSecurityToken());
         $template->render();
     }

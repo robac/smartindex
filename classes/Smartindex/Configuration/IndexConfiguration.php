@@ -109,12 +109,7 @@ class IndexConfiguration
 
     public function getRenderer()
     {
-        if (!isset($this->themesInfo[$this->theme][ThemesCollector::KEY_RENDERER_C])) {
-            return new \Smartindex\Renderer\DefaultRenderer($this);
-        } else {
-            require_once(THEMES_DIR . $this->theme . '/' . $this->themesInfo[$this->theme][ThemesCollector::KEY_RENDERER_F]);
-            //return new $this->themesInfo[$this->theme][ThemesCollector::KEY_RENDERER_C]($this);
-        }
+        return new \Smartindex\Renderer\DefaultRenderer($this);
     }
 
     public function checkRender()

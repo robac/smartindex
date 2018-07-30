@@ -26,12 +26,12 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
           $res .= "<div class=\"smartindex-error\">SmartIndex error: {$config->error}</div>";
           echo $res;
       } else {
-          $seeker = new DefaultIndexer($config);
-          $data = $seeker->getIndex($config);
+          $indexer = new DefaultIndexer($config);
+          $index = $indexer->getIndex($config);
 
           $renderer = new Smartindex\Renderer\AdminRenderer($config);
           $renderer->setWrapper(false);
-          $renderer->render($data, $res);
+          $renderer->render($index, $res);
           echo $res;
       }
   }
