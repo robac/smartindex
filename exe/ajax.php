@@ -1,4 +1,7 @@
 <?php
+
+use Smartindex\Configuration\SmartIndexConf;
+
 require_once (dirname(__FILE__).'/../inc.php');
 INC_constsDW();
 INC_includeDWCore();

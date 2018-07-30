@@ -1,5 +1,6 @@
 <?php
 
+use Smartindex\Configuration\SmartIndexConf;
 use Smartindex\Utils\HtmlHelper;
 
 require_once (dirname(__FILE__).'/inc.php');

@@ -1,5 +1,6 @@
 <?php
 
+use Smartindex\Configuration\SmartIndexConf;
 use Smartindex\Utils\HtmlHelper;
 
 class TreeRenderer implements iIndexRenderer {

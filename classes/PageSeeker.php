@@ -1,5 +1,7 @@
 <?php
 
+use Smartindex\Configuration\SmartIndexConf;
+
 class PageSeeker {
     const KEY_DIRS = 0;
     const KEY_PAGES = 1;
