@@ -1,6 +1,7 @@
 <?php
 
 use Smartindex\Configuration\SmartIndexConf;
+use Smartindex\Indexer\DefaultIndexer;
 
 require_once (dirname(__FILE__).'/../inc.php');
 INC_constsDW();

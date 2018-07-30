@@ -1,6 +1,7 @@
 <?php
 
 use Smartindex\Configuration\SmartIndexConf;
+use Smartindex\Indexer\DefaultIndexer;
 use Smartindex\Utils\HtmlHelper;
 use Smartindex\Utils\PageTools;
 
