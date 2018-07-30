@@ -54,13 +54,13 @@ class DefaultIndexer implements \Smartindex\Indexer\iIndexer
         return $index;
     }
 
-    private function search(&$data, $level)
+    private function search(&$index, $level)
     {
         $namespace = $this->info[$level][iIndexer::INFO_NS];
 
-        $data[$namespace][iIndexer::KEY_DIRS] = array();
-        $data[$namespace][iIndexer::KEY_PAGES] = array();
-        $data[$namespace][iIndexer::KEY_PAGES_TITLE] = array();
+        $index[$namespace][iIndexer::KEY_DIRS] = array();
+        $index[$namespace][iIndexer::KEY_PAGES] = array();
+        $index[$namespace][iIndexer::KEY_PAGES_TITLE] = array();
 
         $dh = @opendir($this->info[$level][iIndexer::INFO_DIR]);
         if (!$dh) return;
@@ -69,27 +69,27 @@ class DefaultIndexer implements \Smartindex\Indexer\iIndexer
             if (preg_match('/^[\._]/', $file)) continue;
             $filePath = $this->info[$level][iIndexer::INFO_DIR] . '/' . $file;
             if (is_dir($filePath)) {
-                $data[$namespace][iIndexer::KEY_DIRS][] = $file;
+                $index[$namespace][iIndexer::KEY_DIRS][] = $file;
                 continue;
             }
             $pagename = PageTools::excludePageExtension($file);
-            $data[$namespace][iIndexer::KEY_PAGES][] = $pagename;
+            $index[$namespace][iIndexer::KEY_PAGES][] = $pagename;
             $title = p_get_first_heading(PageTools::constructPageName($this->info[$level][iIndexer::INFO_NS], $pagename));
-            $data[$namespace][iIndexer::KEY_PAGES_TITLE][] = ($title != null) ? $title : $pagename;
+            $index[$namespace][iIndexer::KEY_PAGES_TITLE][] = ($title != null) ? $title : $pagename;
         }
         closedir($dh);
         /*        array_multisort(array_map('strtolower', $data[$namespace][iIndexer::KEY_PAGES_TITLE]), SORT_STRING,
                                 $data[$namespace][iIndexer::KEY_PAGES], SORT_STRING);*/
 
         if (($level < $this->config->openDepth) || $this->info[$level][iIndexer::INFO_FOLLOW]) {
-            foreach ($data[$namespace][iIndexer::KEY_DIRS] as $subdir) {
+            foreach ($index[$namespace][iIndexer::KEY_DIRS] as $subdir) {
                 $isFollow = $this->checkFollowPath($subdir, $level + 1);
                 if ($isFollow) {
 //                    $data[$namespace][iIndexer::KEY_FOLLOW] = true;
                 }
                 if (($level < $this->config->openDepth) || $isFollow) {
                     $this->addInfo($level + 1, $subdir);
-                    $this->search($data, $level + 1);
+                    $this->search($index, $level + 1);
                 }
             }
         }
