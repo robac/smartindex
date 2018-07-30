@@ -63,7 +63,7 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
         $config->followPath = $INFO['id'];
         $config->checkRender();
         if (is_null($config->error)) {
-            $seeker = new PageSeeker($config);
+            $seeker = new DefaultIndexer($config);
             $pages = $seeker->get($config);
         } else {
             $this->renderError($renderer->doc, $config->error);

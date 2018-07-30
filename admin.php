@@ -25,7 +25,7 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
           $res .= "<div class=\"smartindex-error\">SmartIndex error: {$config->error}</div>";
           echo $res;
       } else {
-          $seeker = new PageSeeker($config);
+          $seeker = new DefaultIndexer($config);
           $data = $seeker->get($config);
 
           $renderer = new Smartindex\Renderer\AdminRenderer($config);

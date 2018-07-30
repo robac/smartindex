@@ -3,7 +3,7 @@
 use Smartindex\Configuration\SmartIndexConf;
 use Smartindex\Utils\PageTools;
 
-class PageSeeker {
+class DefaultIndexer {
     const KEY_DIRS = 0;
     const KEY_PAGES = 1;
     const KEY_PAGES_TITLE = 2;
