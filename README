@@ -1,16 +1,13 @@
-test Plugin for DokuWiki
+Smartindex plugin for DokuWiki
 
-gfgggsg
+Syntax (mainly) plugin for DokuWiki.
 
-All documentation for this plugin can be found at
-http://poch.cz
+
+All documentation for this plugin can be found at https://github.com/robac/smartindex
 
 If you install this plugin manually, make sure it is installed in
-lib/plugins/test/ - if the folder is called different it
+lib/plugins/smartindex/ - if the folder is called different it
 will not work!
-
-Please refer to http://www.dokuwiki.org/plugins for additional info
-on how to install plugins in DokuWiki.
 
 ----
 Copyright (C) robert poch <robik@poch.cz>
