@@ -9,98 +9,122 @@ class IndexConfiguration
     const HIGHLITE_CLASS = 'smartindex-highlite';
     const THEME_CLASS_PATTERN = 'smartindex-{theme}-theme';
 
-    const PARAM_NAMESPACE = 'namespace';
-    const PARAM_NS_FRONT_PAGE = 'nsfrontpage';
-    const PARAM_HIGHLIGHT = 'highlite';
-    const PARAM_THEME = 'theme';
-    const PARAM_AJAX_DEPTH = 'ajaxdepth';
-    const PARAM_OPEN_DEPTH = 'opendepth';
-    const SHOW_MAIN_NAMESPACE = 'showmain';
+    private $tagAttributes = array(
+        TagAttributes::_NAMESPACE => array('namespace', 'string'),
+        TagAttributes::NS_FRONT_PAGE => array('nsFrontPage', 'string'),
+        TagAttributes::HIGHLIGHT => array('highlight', 'boolean'),
+        TagAttributes::THEME => array('theme', 'string'),
+        TagAttributes::AJAX_DEPTH => array('ajaxDepth', 'numeric'),
+        TagAttributes::OPEN_DEPTH => array('openDepth', 'numeric'),
+        TagAttributes::SHOW_MAIN_NAMESPACE => array('showMain', 'string'),
+    );
 
-
-    public $namespace = '';
-    public $highlite = true;
-    public $baseDir = NULL;
-    public $followPath = '';
-    public $treeId = NULL;
-    public $nsFrontPage = 'start';
-    public $theme = 'default';
-    public $ajaxDepth = 2;
-    public $openDepth = 0;
-    public $cssClass;
-    public $target = 'both';
-    public $showMain = false;
+    protected $attributes = array(
+        'namespace' => '',
+        'highlight' => true,
+        'baseDir' => NULL,
+        'followPath' => '',
+        'treeId' => NULL,
+        'nsFrontPage' => 'start',
+        'theme' => 'default',
+        'ajaxDepth' => 1,
+        'openDepth' => 1,
+        'cssClass' => '',
+        'target' => 'both',
+        'showMain' => false
+    );
 
     public $error = NULL;
 
     private $themesInfo;
 
-    public function readFromTag($match)
+    protected $validationError = NULL;
+
+    public function __construct(Array $attributes = NULL)
     {
-        $params = substr($match, 12, strlen($match) - 14);
-        preg_match_all('/([a-zA-Z\-]+)\s*=\s*"([^"]*)"/i', $params, $res, PREG_SET_ORDER);
-        foreach ($res as $val) {
-            switch (strtolower($val[1])) {
-                case self::PARAM_NAMESPACE:
-                    $this->namespace = $val[2];
-                    break;
-
-                case self::PARAM_NS_FRONT_PAGE:
-                    $this->nsFrontPage = $val[2];
-                    break;
-
-                case self::PARAM_THEME:
-                    $this->theme = $val[2];
-                    break;
-
-                case self::PARAM_HIGHLIGHT:
-                    $this->highlite = \Smartindex\Utils\Utils::parseBoolean($val[2]);
-                    break;
-
-                case self::SHOW_MAIN_NAMESPACE:
-                    $this->showMain = \Smartindex\Utils\Utils::parseBoolean($val[2]);
-                    break;
-
-                case self::PARAM_OPEN_DEPTH:
-                    $this->openDepth = $val[2];
-                    break;
-
-                case self::PARAM_AJAX_DEPTH:
-                    $this->ajaxDepth = $val[2];
-                    break;
-
-                case self::TARGET:
-                    $this->target = $val[2];
-                    break;
-
-                default:
-                    $this->error = "invalid param {$val[1]}";
-            }
-
+        if ( ! is_null($attributes)) {
+            $this ->setAttributes($attributes);
         }
     }
 
-    public function checkHandle()
+    public function getValidationError() {
+        return $this->validationError;
+    }
+
+    public function setAttributes(Array $attributes) {
+        foreach ($attributes as $k => $v) {
+            if (array_key_exists($k, $this->attributes)) {
+                $this->attributes[$k] = $v;
+            } else {
+                throw new \Smartindex\Exception\ConfigurationException("Invalid configuration attribute: $k");
+            }
+        }
+    }
+
+    public function getAttribute($name) {
+        return $this->attributes[$name];
+    }
+
+    public function setAttribute($name, $value) {
+        if (array_key_exists($name, $this->attributes)) {
+            $this->attributes[$name] = $value;
+        } else {
+            throw new \Smartindex\Exception\ConfigurationException("Invalid configuration attribute: $name");
+        }
+    }
+
+    public function setAttributesFromTag($match)
     {
+        $params = substr($match, 12, strlen($match) - 14);
+        preg_match_all('/([a-zA-Z\-]+)\s*=\s*"([^"]*)"/i', $params, $res, PREG_SET_ORDER);
+
+        foreach ($res as $val) {
+            $tag_attr = $val[1];
+            $value = $val[2];
+
+            if ( ! array_key_exists($tag_attr, $this->tagAttributes)) {
+                throw new \Smartindex\Exception\ConfigurationException("unknown tag attribute $tag_attr");
+            }
+
+            $conf_attr = $this->tagAttributes[$tag_attr][0];
+            $conf_type = $this->tagAttributes[$tag_attr][1];
+
+            if ( ! array_key_exists($conf_attr, $this->attributes)) {
+                throw new \Smartindex\Exception\ConfigurationException("unknown internal attribute $conf_attr");
+            }
+
+            switch($conf_type) {
+                case 'string':
+                    $this->attributes[$conf_attr] = $value;
+                    break;
+                case 'booolean':
+                    $this->attributes[$conf_attr] = \Smartindex\Utils\Utils::parseBoolean($value);
+                    break;
+                case 'numeric':
+                    $this->attributes[$conf_attr] = \Smartindex\Utils\Utils::parseNumeric($value);
+                    break;
+                default:
+                    throw new \Smartindex\Exception\ConfigurationException("unknown attribute type $conf_type");
+            }
+        }
+    }
+
+    public function validate() {
         global $conf;
 
-        if (is_null($this->baseDir)) {
-            $this->baseDir = $conf['datadir'];
-        }
-
-        if ($this->openDepth < 1) {
-            $this->error = "Chyba recLevel";
-        }
-
-        if (is_null($this->highlite)) {
-            $this->error = "chyba highlite";
+        if (is_null($this->attributes['baseDir'])) {
+            $this->attributes['baseDir'] = $conf['datadir'];
         }
 
         if (is_null($this->ajaxDepth)) {
             $this->ajaxDepth = $this->openDepth;
         }
 
+        if ($this->attributes['openDepth'] < 1) {
+            throw new \Smartindex\Exception\ConfigurationException("invalid attribute openDepth $this->attributes['openDepth'].");
+        }
     }
+
 
     private function loadThemesInfo()
     {
@@ -114,16 +138,16 @@ class IndexConfiguration
 
     public function checkRender()
     {
-        if (is_null($this->treeId)) {
-            $this->treeId = \Smartindex\Utils\Utils::getFloatMicrotime("smartindex_");
+        if (is_null($this->attributes['treeId'])) {
+            $this->attributes['treeId'] = \Smartindex\Utils\Utils::getFloatMicrotime("smartindex_");
         }
 
         $this->loadThemesInfo();
-        if (!isset($this->themesInfo[$this->theme])) {
+        if ( ! isset($this->themesInfo[$this->attributes['theme']])) {
             $this->error = "nezname tema";
         }
 
-        $this->cssClass = $this->themesInfo[$this->theme][ThemesCollector::KEY_CSS];
+        $this->attributes['cssClass'] = $this->themesInfo[$this->attributes['theme']][ThemesCollector::KEY_CSS];
     }
 
 }
