@@ -9,16 +9,6 @@ class IndexConfiguration
     const HIGHLITE_CLASS = 'smartindex-highlite';
     const THEME_CLASS_PATTERN = 'smartindex-{theme}-theme';
 
-    private $tagAttributes = array(
-        TagAttributes::_NAMESPACE => array('namespace', 'string'),
-        TagAttributes::NS_FRONT_PAGE => array('nsFrontPage', 'string'),
-        TagAttributes::HIGHLIGHT => array('highlight', 'boolean'),
-        TagAttributes::THEME => array('theme', 'string'),
-        TagAttributes::AJAX_DEPTH => array('ajaxDepth', 'numeric'),
-        TagAttributes::OPEN_DEPTH => array('openDepth', 'numeric'),
-        TagAttributes::SHOW_MAIN_NAMESPACE => array('showMain', 'string'),
-    );
-
     protected $attributes = array(
         'namespace' => '',
         'highlight' => true,
@@ -65,6 +55,7 @@ class IndexConfiguration
         return $this->attributes[$name];
     }
 
+
     public function setAttribute($name, $value) {
         if (array_key_exists($name, $this->attributes)) {
             $this->attributes[$name] = $value;
@@ -73,41 +64,6 @@ class IndexConfiguration
         }
     }
 
-    public function setAttributesFromTag($match)
-    {
-        $params = substr($match, 12, strlen($match) - 14);
-        preg_match_all('/([a-zA-Z\-]+)\s*=\s*"([^"]*)"/i', $params, $res, PREG_SET_ORDER);
-
-        foreach ($res as $val) {
-            $tag_attr = $val[1];
-            $value = $val[2];
-
-            if ( ! array_key_exists($tag_attr, $this->tagAttributes)) {
-                throw new \Smartindex\Exception\ConfigurationException("unknown tag attribute $tag_attr");
-            }
-
-            $conf_attr = $this->tagAttributes[$tag_attr][0];
-            $conf_type = $this->tagAttributes[$tag_attr][1];
-
-            if ( ! array_key_exists($conf_attr, $this->attributes)) {
-                throw new \Smartindex\Exception\ConfigurationException("unknown internal attribute $conf_attr");
-            }
-
-            switch($conf_type) {
-                case 'string':
-                    $this->attributes[$conf_attr] = $value;
-                    break;
-                case 'booolean':
-                    $this->attributes[$conf_attr] = \Smartindex\Utils\Utils::parseBoolean($value);
-                    break;
-                case 'numeric':
-                    $this->attributes[$conf_attr] = \Smartindex\Utils\Utils::parseNumeric($value);
-                    break;
-                default:
-                    throw new \Smartindex\Exception\ConfigurationException("unknown attribute type $conf_type");
-            }
-        }
-    }
 
     public function validate() {
         global $conf;

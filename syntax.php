@@ -32,10 +32,9 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
 
     public function handle($match, $state, $pos, &$handler){
         try {
-        $config = new IndexConfiguration();
-        $config->setAttributesFromTag($match);
-        $config->setAttribute('followPath', $INFO['id']);
-        $config->validate();
+            $config = \Smartindex\Configuration\TagAttributes::createConfigurationFromTag($match);
+            $config->setAttribute('followPath', $INFO['id']);
+            $config->validate();
         } catch (\Exception $e) {
             $this->error = $e->getMessage();
         }
