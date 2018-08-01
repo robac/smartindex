@@ -24,11 +24,8 @@ class IndexConfiguration
         'showMain' => false
     );
 
-    public $error = NULL;
-
     private $themesInfo;
 
-    protected $validationError = NULL;
 
     public function __construct(Array $attributes = NULL)
     {
@@ -37,9 +34,6 @@ class IndexConfiguration
         }
     }
 
-    public function getValidationError() {
-        return $this->validationError;
-    }
 
     public function setAttributes(Array $attributes) {
         foreach ($attributes as $k => $v) {
@@ -50,6 +44,7 @@ class IndexConfiguration
             }
         }
     }
+
 
     public function getAttribute($name) {
         return $this->attributes[$name];
