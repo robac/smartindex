@@ -1,6 +1,8 @@
 <?php
 if (!defined('DOKU_INC')) die();
 
+require_once 'inc.php';
+
 class action_plugin_smartindex extends DokuWiki_Action_Plugin
 {
 
@@ -20,30 +22,8 @@ class action_plugin_smartindex extends DokuWiki_Action_Plugin
         $event->stopPropagation();
         $event->preventDefault();
 
+        \Smartindex\Ajax\AjaxRequestHandler::handle($event, $param);
 
-        global $INPUT;
-        if ($INPUT->str('sectoken') !== getSecurityToken()) {
-            $response = array(
-                'status' => 'error',
-                'error' => "CSRF protection!"
-            );
-        } else {
-           $action = $INPUT->str('action');
-
-            switch ($action) {
-                case 'save_namespace_order':
-                    $response = $this->save_namespace_order($INPUT);
-                    break;
-                default:
-                    $response = array(
-                        'status' => 'error',
-                        'error' => "Invalid action: $action");
-            }
-        }
-
-        $json = new JSON();
-        header('Content-Type: application/json');
-        echo $json->encode($response);
     }
 
     protected function save_namespace_order() {
