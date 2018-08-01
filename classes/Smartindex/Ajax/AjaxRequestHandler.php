@@ -15,29 +15,30 @@ class AjaxRequestHandler
 
     protected function action_render_subtree($input) {
         global $conf;
-        $index = "";
-        $config = new \Smartindex\Configuration\IndexConfiguration();
-        $config->namespace = $input->str('namespace');
-        $config->openDepth = $input->str('depth');
-        $config->theme = $input->str('theme');;
-        $config->checkHandle();
-        $config->checkRender();
-        /*if (!is_null($config->error)) {
+        try {
+            $config = new \Smartindex\Configuration\IndexConfiguration(array(
+                'namespace' => $input->str('namespace'),
+                'openDepth' => $input->str('depth'),
+                'theme'     => $input->str('theme'),
+            ));
+            $config->validate();
+            $config->checkRender();
+        } catch (\Exception $e) {
             $this->setErrorResponse("Martindex configuration error: $config->error");
-        } else {*/
-            $indexer = new \Smartindex\Indexer\DefaultIndexer($config);
-            $data = $indexer->getIndex($config);
+            return;
+        }
 
-            $renderer = $config->getRenderer();
-            $renderer->setWrapper(false);
-            $renderer->render($data, $index);
+        $indexer = new \Smartindex\Indexer\DefaultIndexer($config);
+        $data = $indexer->getIndex($config);
 
-            $this->response = array(
-                'status' => 'success',
-                'index' => $index
-            );
-       // }
+        $renderer = $config->getRenderer();
+        $renderer->setWrapper(false);
+        $renderer->render($data, $index);
 
+        $this->response = array(
+            'status' => 'success',
+            'index' => $index
+        );
     }
 
     private function setErrorResponse($message) {

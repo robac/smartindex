@@ -15,25 +15,28 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
   }
  
   function html() {
-      $config = new IndexConfiguration();
-      PageTools::excludePageNamespaces($_REQUEST['id'], $namespace, $page);
-      $config->namespace = $namespace;
-      $config->openDepth = "5";
-      $config->theme = "default";
-      $config->checkHandle();
-      $config->checkRender();
-      if ( ! is_null($config->error)) {
-          $res .= "<div class=\"smartindex-error\">SmartIndex error: {$config->error}</div>";
-          echo $res;
-      } else {
-          $indexer = new DefaultIndexer($config);
-          $index = $indexer->getIndex($config);
 
-          $renderer = new Smartindex\Renderer\AdminRenderer($config);
-          $renderer->setWrapper(false);
-          $renderer->render($index, $res);
-          echo $res;
+      try {
+          PageTools::excludePageNamespaces($_REQUEST['id'], $namespace, $page);
+          $config = new IndexConfiguration(array(
+              'namespace' => $namespace,
+              'openDepth' => 1,
+              'theme' => 'default'
+          ));
+          $config->validate();
+          $config->checkRender();
+      } catch (\Exception $e) {
+          echo "<div class=\"smartindex-error\"> '.$e->getMessage().' {$config->error}</div>";
+          return;
       }
+
+      $indexer = new DefaultIndexer($config);
+      $index = $indexer->getIndex($config);
+
+      $renderer = new Smartindex\Renderer\AdminRenderer($config);
+      $renderer->setWrapper(false);
+      $renderer->render($index, $res);
+      echo $res;
   }
   
   function getMenuText($language) {

@@ -30,11 +30,11 @@ class DefaultIndexer implements \Smartindex\Indexer\iIndexer
     private function init()
     {
         $this->info = array();
-        $this->info[1][iIndexer::INFO_NS] = $this->config->namespace;
-        $this->info[1][iIndexer::INFO_DIR] = PageTools::getPageDirFromNamespace($this->config->baseDir, $this->config->namespace);
+        $this->info[1][iIndexer::INFO_NS] = $this->config->getAttribute('namespace');
+        $this->info[1][iIndexer::INFO_DIR] = PageTools::getPageDirFromNamespace($this->config->getAttribute('baseDir'), $this->config->getAttribute('namespace'));
         $this->info[1][iIndexer::INFO_FOLLOW] = true;
 
-        $this->follow = explode(PageTools::$NS_SEPARATOR, $this->config->followPath);
+        $this->follow = explode(PageTools::$NS_SEPARATOR, $this->config->getAttribute('followPath'));
         unset($this->follow[count($this->follow) - 1]);
         array_unshift($this->follow, NULL, NULL);
     }
@@ -81,13 +81,13 @@ class DefaultIndexer implements \Smartindex\Indexer\iIndexer
         /*        array_multisort(array_map('strtolower', $data[$namespace][iIndexer::KEY_PAGES_TITLE]), SORT_STRING,
                                 $data[$namespace][iIndexer::KEY_PAGES], SORT_STRING);*/
 
-        if (($level < $this->config->openDepth) || $this->info[$level][iIndexer::INFO_FOLLOW]) {
+        if (($level < $this->config->getAttribute('openDepth')) || $this->info[$level][iIndexer::INFO_FOLLOW]) {
             foreach ($index[$namespace][iIndexer::KEY_DIRS] as $subdir) {
                 $isFollow = $this->checkFollowPath($subdir, $level + 1);
                 if ($isFollow) {
 //                    $data[$namespace][iIndexer::KEY_FOLLOW] = true;
                 }
-                if (($level < $this->config->openDepth) || $isFollow) {
+                if (($level < $this->config->getAttribute('openDepth')) || $isFollow) {
                     $this->addInfo($level + 1, $subdir);
                     $this->search($index, $level + 1);
                 }

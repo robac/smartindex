@@ -14,8 +14,8 @@ class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
         $this->useWrapper = $useWrapper;
         
         $this->wrapperClasses[] = \Smartindex\Configuration\IndexConfiguration::TREE_CLASS;
-        $this->wrapperClasses[] = $this->config->cssClass;
-        if ($this->config->highlite) {
+        $this->wrapperClasses[] = $this->config->getAttribute('cssClass');
+        if ($this->config->getAttribute('highlight')) {
             $this->wrapperClasses[] = \Smartindex\Configuration\IndexConfiguration::HIGHLITE_CLASS;
         }
         
@@ -33,16 +33,15 @@ class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
         
         $this->basicData = $data;
         //if ($this->config->showMain) $document .= "<ul><li class=\"namespace open\"><div><a href=\"#\">root</a></div>";
-        $this->buildList($data, $this->config->namespace, $document, 1);
-        //if ($this->config->showMain) $document .= "</li></ul>";
-        
+        $this->buildList($data, $this->config->getAttribute('namespace'), $document, 1);
+
         if ($this->useWrapper) {
             $document .= "</div>";
         }
     }
     
     private function buildList($data, $namespace, &$document, $level) {
-        if (!array_key_exists($namespace, $data))
+        if ( ! array_key_exists($namespace, $data))
                 return "";
         
         $document .= "<ul>";
@@ -50,7 +49,7 @@ class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
         foreach($data[$namespace][\Smartindex\Indexer\iIndexer::KEY_DIRS] as $ns)  {
             $classes = array(self::CLASS_NAMESPACE);
             
-            if (($this->config->openDepth > $level) || (isset($data[$ns][\Smartindex\Indexer\iIndexer::KEY_FOLLOW]))) {
+            if (($this->config->getAttribute('openDepth') > $level) || (isset($data[$ns][\Smartindex\Indexer\iIndexer::KEY_FOLLOW]))) {
                 $classes[] = self::CLASS_OPEN;
             } else {
                 $classes[] = self::CLASS_CLOSED;

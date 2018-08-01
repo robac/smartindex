@@ -10,6 +10,8 @@ INC_constsDW();
 INC_constsSmartindex();
 
 class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
+    private $error = NULL;
+
     public function getType() {
         return 'substition';
     }
@@ -29,10 +31,14 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
 
 
     public function handle($match, $state, $pos, &$handler){
+        try {
         $config = new IndexConfiguration();
-        $config->readFromTag($match);
-        $config->followPath = $INFO['id']; 
-        $config->checkHandle();
+        $config->setAttributesFromTag($match);
+        $config->setAttribute('followPath', $INFO['id']);
+        $config->validate();
+        } catch (\Exception $e) {
+            $this->error = $e->getMessage();
+        }
         return serialize($config);
     }
     
@@ -61,27 +67,27 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
         
         
         
-        $config->followPath = $INFO['id'];
+        $config->setAttribute('followPath', $INFO['id']);
         $config->checkRender();
-        if (is_null($config->error)) {
+        if (is_null($this->error)) {
             $seeker = new DefaultIndexer($config);
             $pages = $seeker->getIndex($config);
         } else {
-            $this->renderError($renderer->doc, $config->error);
+            $this->renderError($renderer->doc, $this->error);
             return true;
         }
         
         $indexBuilder = $config->getRenderer();
         
-        $indexBuilder->setWrapper(true, $config->treeId);
+        $indexBuilder->setWrapper(true, $config->getAttribute('treeId'));
         $indexBuilder->render($pages, $renderer->doc);
         
         $ajaxConfig = new stdClass();
         $ajaxConfig->url  = AJAX_URL;
-        $ajaxConfig->depth = $config->ajaxDepth;
-        $ajaxConfig->theme = $config->theme;
+        $ajaxConfig->depth = $config->getAttribute('ajaxDepth');
+        $ajaxConfig->theme = $config->getAttribute('theme');
 
-        $renderer->doc .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($config->treeId."_conf", $ajaxConfig));
+        $renderer->doc .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($config->getAttribute('treeId')."_conf", $ajaxConfig));
         return true;
     }
 }

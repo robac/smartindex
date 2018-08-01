@@ -12,5 +12,9 @@ class Utils {
     public static function parseBoolean($string) {
         return ($string === "true") ? true : (($string === "false") ? false : null);
     }
-    
+
+    public static function parseNumeric($string) {
+        return intval($string);
+    }
+
 }
