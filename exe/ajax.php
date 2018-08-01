@@ -41,20 +41,6 @@ class AjaxRequestHandler {
   
     }
 
-    private function handle_admin() {
-    
-    }
-    
-    private function handle_collect_themes() {
-        if (!auth_isadmin()) {
-            echo "Just for administrators!";
-        }
-
-        $col = new ThemesCollector();
-        $col->collect();
-        echo "collected ok";
-    }
-    
     private function handle_page_info() {
         $page = $_POST['page'];
 

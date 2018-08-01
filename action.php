@@ -22,8 +22,9 @@ class action_plugin_smartindex extends DokuWiki_Action_Plugin
         $event->stopPropagation();
         $event->preventDefault();
 
-        \Smartindex\Ajax\AjaxRequestHandler::handle($event, $param);
-
+        $handler = new \Smartindex\Ajax\AjaxRequestHandler();
+        $handler->handle($event, $param);
+        $handler->outputResponse();
     }
 
     protected function save_namespace_order() {

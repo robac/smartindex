@@ -20,7 +20,7 @@ SI_SELECTOR_PAGE = 'li.'+SI_CLASS_PAGE+' > div';
 SI_URLPARAMETER_NAMESPACE = 'idx';
 
 
-SI_ACTION_LOADSUBTREE = 'load_namespace';
+SI_ACTION_LOADSUBTREE = 'render_subtree';
 SI_INPUTDIALOG_OPTIONS =
     {
         "closeOnEscape" : true,
@@ -72,10 +72,12 @@ function SI_getIndexConfiguration(index) {
 function SI_createLoadNamespaceRequestData(index_config, link) {
     var data =
         {
+            call: 'plugin_smartindex',
+            sectoken: jQuery("input[name='sectok']").val(),
+            action    : 'render_subtree',
             namespace : SI_getURLParameter(link.attr("href"), SI_URLPARAMETER_NAMESPACE),
             depth     : index_config.depth,
             theme     : index_config.theme,
-            action    : SI_ACTION_LOADSUBTREE
         };
     return data;
 }
@@ -92,10 +94,20 @@ function SI_loadNamespaceSubtree(event) {
     if (! element.children("ul").length) {
         element.addClass(SI_CLASS_WAITINIG);
 
-        jQuery.post(event.data.url, SI_createLoadNamespaceRequestData(event.data, link), function(data){
+        /*jQuery.post(event.data.url, SI_createLoadNamespaceRequestData(event.data, link), function(data){
                 element.append(data);
                 element.removeClass(SI_CLASS_WAITINIG).removeClass(SI_CLASS_CLOSEDNAMESPACE).addClass(SI_CLASS_OPENNAMESPACE);
-        });
+        });*/
+
+        jQuery.post(
+            DOKU_BASE + 'lib/exe/ajax.php',
+            SI_createLoadNamespaceRequestData(event.data, link),
+            function (response) {
+                element.append(response.index);
+                element.removeClass(SI_CLASS_WAITINIG).removeClass(SI_CLASS_CLOSEDNAMESPACE).addClass(SI_CLASS_OPENNAMESPACE);
+            },
+            'json'
+        );
     }
     element.removeClass(SI_CLASS_CLOSEDNAMESPACE).addClass(SI_CLASS_OPENNAMESPACE);
 
