@@ -25,7 +25,8 @@ class IndexConfiguration
         'openDepth' => 1,
         'cssClass' => '',
         'target' => 'both',
-        'showMain' => false
+        'showMain' => false,
+        'wrapper' => NULL,
     );
 
     private $themesInfo;
