@@ -17,4 +17,7 @@ class Utils {
         return intval($string);
     }
 
+    public static function generateIndexId() {
+        return Utils::getFloatMicrotime("smartindex_");
+    }
 }

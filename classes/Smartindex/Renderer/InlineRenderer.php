@@ -41,6 +41,6 @@ class InlineRenderer implements iRenderer
         $JSONConfig->depth = $this->config->getAttribute('ajaxDepth');
         $JSONConfig->theme = $this->config->getAttribute('theme');
 
-        $document .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($this->config->getAttribute('treeId')."_conf", $JSONConfig));
+        $document .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($this->config->getAttribute('indexId')."_conf", $JSONConfig));
     }
 }

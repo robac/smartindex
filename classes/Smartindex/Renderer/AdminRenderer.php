@@ -19,7 +19,7 @@ class AdminRenderer implements iIndexRenderer {
         $this->useWrapper = $useWrapper;
 
         $this->wrapperClasses[] = IndexConfiguration::TREE_CLASS;
-        $this->wrapperClasses[] = $this->config->getAttribute('cssClass');
+        $this->wrapperClasses[] = $this->config->getAttribute('indexClass');
         if ($this->config->getAttribute('highlite')) {
             $this->wrapperClasses[] = IndexConfiguration::HIGHLIGHT_CLASS;
         }

@@ -3,6 +3,7 @@
 namespace Smartindex\Configuration;
 
 use Smartindex\Exception\ConfigurationException;
+use Smartindex\Manager\ThemeManager;
 use Smartindex\Renderer\DefaultIndexRenderer;
 use Smartindex\Utils\Utils;
 use ThemesCollector;
@@ -18,13 +19,15 @@ class IndexConfiguration
         'highlight' => true,
         'baseDir' => NULL,
         'followPath' => '',
-        'treeId' => NULL,
+        'indexId' => NULL,
         'nsFrontPage' => 'start',
         'theme' => 'default',
         'ajaxDepth' => 1,
         'openDepth' => 1,
-        'cssClass' => '',
+        'indexClass' => '',
         'showMain' => false,
+        'syntaxRenderer' => NULL,
+        'indexRenderer' => NULL
     );
 
     private $themesInfo;
@@ -35,6 +38,8 @@ class IndexConfiguration
         if ( ! is_null($attributes)) {
             $this ->setAttributes($attributes);
         }
+
+        $this->attributes['indexId'] = Utils::generateIndexId();
     }
 
 
@@ -63,7 +68,7 @@ class IndexConfiguration
     }
 
 
-    public function validate() {
+    public function validate($include_renderers = true) {
         global $conf;
 
         if (is_null($this->attributes['baseDir'])) {
@@ -77,31 +82,21 @@ class IndexConfiguration
         if ($this->attributes['openDepth'] < 1) {
             throw new ConfigurationException("invalid attribute openDepth $this->attributes['openDepth'].");
         }
-    }
 
-
-    private function loadThemesInfo()
-    {
-        $this->themesInfo = unserialize(file_get_contents(SMARTINDEX_DIR . 'theme.dat'));
-    }
-
-    public function getRenderer()
-    {
-        return new DefaultIndexRenderer($this);
-    }
-
-    public function checkRender()
-    {
-        if (is_null($this->attributes['treeId'])) {
-            $this->attributes['treeId'] = Utils::getFloatMicrotime("smartindex_");
+        if ($include_renderers && (is_null($this->attributes['syntaxRenderer']))) {
+            throw new ConfigurationException("there is not syntax renderer.");
         }
 
-        $this->loadThemesInfo();
-        if ( ! isset($this->themesInfo[$this->attributes['theme']])) {
-            $this->error = "nezname tema";
+        if ($include_renderers &&(is_null($this->attributes['indexRenderer']))) {
+            throw new ConfigurationException("there is not index renderer.");
         }
-
-        $this->attributes['cssClass'] = $this->themesInfo[$this->attributes['theme']][ThemesCollector::KEY_CSS];
     }
 
+    public function loadTheme() {
+        $manager = new ThemeManager($this);
+        $theme_info = $manager->getThemeInfo($this->attributes['theme']);
+        $this->attributes['syntaxRenderer'] = new $theme_info['syntaxRenderer']($this);
+        $this->attributes['indexRenderer'] = new $theme_info['indexRenderer']($this);
+        $this->attributes['indexClass'] = $theme_info['css-class'];
+    }
 }

@@ -37,7 +37,6 @@ function INC_constsSmartindex() {
     DEFINE('TEMPLATES_DIR', SMARTINDEX_DIR.'templates/');
     DEFINE('SMARTINDEX_URL', DOKU_BASE.'lib/plugins/smartindex/');
     DEFINE('THEMES_URL', SMARTINDEX_URL.'themes/');
-    DEFINE('AJAX_URL', SMARTINDEX_URL.'exe/ajax.php');
 }
 
 function INC_includeDWCore() {

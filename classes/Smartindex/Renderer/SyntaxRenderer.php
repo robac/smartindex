@@ -2,6 +2,7 @@
 
 namespace Smartindex\Renderer;
 
+use Smartindex\Factory\RendererFactory;
 use Smartindex\Utils\HtmlHelper;
 use Smartindex\Configuration\IndexConfiguration;
 
@@ -16,11 +17,11 @@ class SyntaxRenderer implements iRenderer
 
     public function render(&$document)
     {
-        $index_renderer = new DefaultIndexRenderer($this->config);
+        $index_renderer = $this->config->getAttribute('indexRenderer');
         $json_renderer = new InlineRenderer($this->config);
         $json_renderer->setType('JsonTreeConfig');
 
-        $document .= "<div". HtmlHelper::createIdClassesPart($this->config->getAttribute('treeId'), $this->getWrapperClasses()).">";
+        $document .= "<div". HtmlHelper::createIdClassesPart($this->config->getAttribute('indexId'), $this->getWrapperClasses()).">";
         $index_renderer->render($document);
         $document .= "</div>";
         $json_renderer->render($document);
@@ -29,7 +30,7 @@ class SyntaxRenderer implements iRenderer
     public function getWrapperClasses() {
         $wrapperClasses = array();
         $wrapperClasses[] = IndexConfiguration::TREE_CLASS;
-        $wrapperClasses[] = $this->config->getAttribute('cssClass');
+        $wrapperClasses[] = $this->config->getAttribute('indexClass');
         if ($this->config->getAttribute('highlight')) {
             $wrapperClasses[] = IndexConfiguration::HIGHLIGHT_CLASS;
         }

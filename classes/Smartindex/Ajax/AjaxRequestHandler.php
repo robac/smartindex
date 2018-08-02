@@ -3,6 +3,7 @@
 namespace Smartindex\Ajax;
 
 use Smartindex\Configuration\IndexConfiguration;
+use Smartindex\Factory\RendererFactory;
 use Smartindex\Indexer\DefaultIndexer;
 
 class AjaxRequestHandler
@@ -23,14 +24,14 @@ class AjaxRequestHandler
                 'openDepth' => $input->str('depth'),
                 'theme'     => $input->str('theme'),
             ));
+            $config->loadTheme();
             $config->validate();
-            $config->checkRender();
         } catch (\Exception $e) {
             $this->setErrorResponse("Martindex configuration error: $config->error");
             return;
         }
 
-        $renderer = $config->getRenderer();
+        $renderer = $config->getAttribute('indexRenderer');
         $renderer->render($data);
 
         $this->response = array(

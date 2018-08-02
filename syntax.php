@@ -5,6 +5,7 @@ use Smartindex\Indexer\DefaultIndexer;
 use Smartindex\Utils\HtmlHelper;
 use Smartindex\Configuration\TagAttributes;
 use Monotek\MiniTPL\Template;
+use Smartindex\Factory\RendererFactory;
 use Smartindex\Renderer\SyntaxRenderer;
 
 require_once (dirname(__FILE__).'/inc.php');
@@ -39,6 +40,7 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
             $config = TagAttributes::createConfigurationFromTag($match, array(
                 'followPath' => $INFO['id'],
             ));
+            $config->loadTheme();
             $config->validate();
         } catch (\Exception $e) {
             $this->error = $e->getMessage();
@@ -64,8 +66,7 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
             return true;
         }
 
-        $config->checkRender();
-        $renderer = new SyntaxRenderer($config);
+        $renderer = $config->getAttribute('syntaxRenderer');
         $renderer->render($doku_renderer->doc);
 
         return true;

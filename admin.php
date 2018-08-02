@@ -25,7 +25,6 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
               'theme' => 'default'
           ));
           $config->validate();
-          $config->checkRender();
       } catch (\Exception $e) {
           echo "<div class=\"smartindex-error\"> '.$e->getMessage().' {$config->error}</div>";
           return;
