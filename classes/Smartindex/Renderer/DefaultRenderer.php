@@ -1,12 +1,13 @@
 <?php
 namespace Smartindex\Renderer;
 
+use Smartindex\Indexer\iIndexer;
 use Smartindex\Utils\HtmlHelper;
 use Smartindex\Renderer\iIndexRenderer;
 use Smartindex\Configuration\IndexConfiguration;
-use Smartindex\Configuration\IndexTools;
+use Smartindex\Utils\IndexTools;
 
-class DefaultRenderer implements IndexRenderer {
+class DefaultRenderer implements iIndexRenderer {
     private $useWrapper = true;
     private $wrapperClasses = array();
     private $wrapperId;
@@ -43,12 +44,13 @@ class DefaultRenderer implements IndexRenderer {
             $document .= "</div>";
         }
 
-        $ajaxConfig = new stdClass();
+        $ajaxConfig = new \stdClass();
         $ajaxConfig->url  = AJAX_URL;
         $ajaxConfig->depth = $this->config->getAttribute('ajaxDepth');
         $ajaxConfig->theme = $this->config->getAttribute('theme');
 
-        $document->doc .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($this->config->getAttribute('treeId')."_conf", $ajaxConfig));
+        $x = HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($this->config->getAttribute('treeId')."_conf", $ajaxConfig));
+        $document .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($this->config->getAttribute('treeId')."_conf", $ajaxConfig));
     }
     
     private function buildList($data, $namespace, &$document, $level) {
