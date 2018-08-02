@@ -38,6 +38,14 @@ class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
         if ($this->useWrapper) {
             $document .= "</div>";
         }
+
+        $ajaxConfig = new stdClass();
+        $ajaxConfig->url  = AJAX_URL;
+        $ajaxConfig->depth = $this->config->getAttribute('ajaxDepth');
+        $ajaxConfig->theme = $this->config->getAttribute('theme');
+
+        $document->doc .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($this->config->getAttribute('treeId')."_conf", $ajaxConfig));
+
     }
     
     private function buildList($data, $namespace, &$document, $level) {

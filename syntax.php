@@ -4,6 +4,7 @@ use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Indexer\DefaultIndexer;
 use Smartindex\Utils\HtmlHelper;
 use Smartindex\Configuration\TagAttributes;
+use Monotek\MiniTPL\Template;
 
 require_once (dirname(__FILE__).'/inc.php');
 INC_requireDW();
@@ -25,32 +26,24 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
         return 100;
     }
 
-
     public function connectTo($mode) {
         $this->Lexer->addSpecialPattern('<smartindex(?i:\s+[a-zA-Z\-]+\s*=\s*"[^"]*")*\s*/>', $mode, 'plugin_smartindex');
     }
 
 
     public function handle($match, $state, $pos, Doku_Handler $handler){
+        global $INFO;
+
         try {
-            $config = \Smartindex\Configuration\TagAttributes::createConfigurationFromTag($match);
-            $config->setAttribute('followPath', $INFO['id']);
+            $config = TagAttributes::createConfigurationFromTag($match, array(
+                'followPath' => $INFO['id']
+            ));
             $config->validate();
         } catch (\Exception $e) {
             $this->error = $e->getMessage();
         }
+
         return serialize($config);
-    }
-    
-    public function removeDirs($dir, $filename) {
-        return str_replace("\\", ":", substr($filename, strlen($dir)+1));
-    }
-    
-    public function renderError(&$document, $error) {
-        $template = new \Monotek\MiniTPL\Template(TEMPLATES_DIR);
-        $template->load("error.tpl");
-        $template->assign("error", $error);
-        $document .= $template->get();
     }
     
     public function render($mode, Doku_Renderer $doku_renderer, $data) {
@@ -84,12 +77,13 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
         $renderer->setWrapper(true, $config->getAttribute('treeId'));
         $renderer->render($index, $doku_renderer->doc);
         
-        $ajaxConfig = new stdClass();
-        $ajaxConfig->url  = AJAX_URL;
-        $ajaxConfig->depth = $config->getAttribute('ajaxDepth');
-        $ajaxConfig->theme = $config->getAttribute('theme');
-
-        $doku_renderer->doc .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($config->getAttribute('treeId')."_conf", $ajaxConfig));
         return true;
+    }
+
+    private function renderError(&$document, $error) {
+        $template = new Template(TEMPLATES_DIR);
+        $template->load("error.tpl");
+        $template->assign("error", $error);
+        $document .= $template->get();
     }
 }
