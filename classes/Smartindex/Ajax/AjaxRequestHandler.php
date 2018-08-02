@@ -30,15 +30,12 @@ class AjaxRequestHandler
             return;
         }
 
-        $indexer = new DefaultIndexer($config);
-        $data = $indexer->getIndex();
-
         $renderer = $config->getRenderer();
-        $renderer->render($data, $index);
+        $renderer->render($data);
 
         $this->response = array(
             'status' => 'success',
-            'index' => $index
+            'index' => $data
         );
     }
 
