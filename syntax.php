@@ -3,6 +3,7 @@
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Indexer\DefaultIndexer;
 use Smartindex\Utils\HtmlHelper;
+use Smartindex\Configuration\TagAttributes;
 
 require_once (dirname(__FILE__).'/inc.php');
 INC_requireDW();
@@ -46,10 +47,10 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
     }
     
     public function renderError(&$document, $error) {
-        $document .= '<div class="smartindex-error">';
-        $document .= '<strong>SmartIndex error:</strong><br/>';
-        $document .= $error;
-        $document .= '</div>';
+        $template = new \Monotek\MiniTPL\Template(TEMPLATES_DIR);
+        $template->load("error.tpl");
+        $template->assign("error", $error);
+        $document .= $template->get();
     }
     
     public function render($mode, &$renderer, $data) {
@@ -59,7 +60,9 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
         global $conf;
         global $INFO;
         
-        $config = unserialize($data);
+        $config = unserialize($data, array(
+            'IndexConfiguration'
+        ));
         
         if (($config->target=='desktop' && $INFO['ismobile']===true))
             return true;
@@ -69,17 +72,17 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
         $config->setAttribute('followPath', $INFO['id']);
         $config->checkRender();
         if (is_null($this->error)) {
-            $seeker = new DefaultIndexer($config);
-            $pages = $seeker->getIndex($config);
+            $indexer = new DefaultIndexer($config);
+            $index = $indexer->getIndex($config);
         } else {
             $this->renderError($renderer->doc, $this->error);
             return true;
         }
         
-        $indexBuilder = $config->getRenderer();
+        $renderer = $config->getRenderer();
         
-        $indexBuilder->setWrapper(true, $config->getAttribute('treeId'));
-        $indexBuilder->render($pages, $renderer->doc);
+        $renderer->setWrapper(true, $config->getAttribute('treeId'));
+        $renderer->render($index, $renderer->doc);
         
         $ajaxConfig = new stdClass();
         $ajaxConfig->url  = AJAX_URL;
