@@ -6,7 +6,6 @@ use Smartindex\Exception\ConfigurationException;
 use Smartindex\Manager\ThemeManager;
 use Smartindex\Renderer\DefaultIndexRenderer;
 use Smartindex\Utils\Utils;
-use ThemesCollector;
 
 class IndexConfiguration
 {
