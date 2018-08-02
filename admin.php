@@ -17,7 +17,7 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
   function html() {
 
       try {
-          PageTools::excludePageNamespaces($_REQUEST['id'], $namespace, $page);
+          PageTools::getPageFromId($_REQUEST['id'], $namespace, $page);
           $config = new IndexConfiguration(array(
               'namespace' => $namespace,
               'openDepth' => 1,
