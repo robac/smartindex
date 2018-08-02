@@ -31,7 +31,7 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
     }
 
 
-    public function handle($match, $state, $pos, &$handler){
+    public function handle($match, $state, $pos, Doku_Handler $handler){
         try {
             $config = \Smartindex\Configuration\TagAttributes::createConfigurationFromTag($match);
             $config->setAttribute('followPath', $INFO['id']);
@@ -53,7 +53,7 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
         $document .= $template->get();
     }
     
-    public function render($mode, &$renderer, $data) {
+    public function render($mode, Doku_Renderer $doku_renderer, $data) {
         if($mode != 'xhtml') 
             return false;
 
@@ -75,21 +75,21 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
             $indexer = new DefaultIndexer($config);
             $index = $indexer->getIndex();
         } else {
-            $this->renderError($renderer->doc, $this->error);
+            $this->renderError($doku_renderer->doc, $this->error);
             return true;
         }
         
         $renderer = $config->getRenderer();
         
         $renderer->setWrapper(true, $config->getAttribute('treeId'));
-        $renderer->render($index, $renderer->doc);
+        $renderer->render($index, $doku_renderer->doc);
         
         $ajaxConfig = new stdClass();
         $ajaxConfig->url  = AJAX_URL;
         $ajaxConfig->depth = $config->getAttribute('ajaxDepth');
         $ajaxConfig->theme = $config->getAttribute('theme');
 
-        $renderer->doc .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($config->getAttribute('treeId')."_conf", $ajaxConfig));
+        $doku_renderer->doc .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($config->getAttribute('treeId')."_conf", $ajaxConfig));
         return true;
     }
 }
