@@ -24,14 +24,14 @@ class IndexTools
     }
 
 
-    public static function excludePageNamespaces($pageId, &$namespace, &$page)
+    public static function getPageFromId($id, &$namespace, &$page)
     {
-        if ($pos = strripos($pageId, ":")) {
-            $namespace = substr($pageId, 0, $pos);
-            $page = substr($pageId, $pos + 1);
+        if ($pos = strripos($id, ":")) {
+            $namespace = substr($id, 0, $pos);
+            $page = substr($id, $pos + 1);
         } else {
             $namespace = "";
-            $page = $pageId;
+            $page = $id;
         }
     }
 

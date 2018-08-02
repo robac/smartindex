@@ -17,11 +17,7 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
   function html() {
 
       try {
-<<<<<<< HEAD
           IndexTools::getPageFromId($_REQUEST['id'], $namespace, $page);
-=======
-          PageTools::excludePageNamespaces($_REQUEST['id'], $namespace, $page);
->>>>>>> parent of 0495f83... minor refactors - renaming
           $config = new IndexConfiguration(array(
               'namespace' => $namespace,
               'openDepth' => 1,
