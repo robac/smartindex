@@ -16,7 +16,7 @@ class TagAttributes
     );
 
 
-    public static function createConfigurationFromTag($match) {
+    public static function createConfigurationFromTag($match, $additional = NULL) {
         $attributes = array();
 
         $params = substr($match, 12, strlen($match) - 14);
@@ -46,6 +46,10 @@ class TagAttributes
                 default:
                     throw new \Smartindex\Exception\ConfigurationException("unknown attribute type $conf_type");
             }
+        }
+
+        if ( ! is_null($additional)) {
+            $attributes = array_merge($attributes, $additional);
         }
 
         return new IndexConfiguration($attributes);

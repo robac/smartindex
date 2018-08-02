@@ -46,7 +46,7 @@ class DefaultIndexer implements \Smartindex\Indexer\iIndexer
     }
 
 
-    public function getIndex(IndexConfiguration $config)
+    public function getIndex()
     {
         $index = array();
         $this->search($index, 1);

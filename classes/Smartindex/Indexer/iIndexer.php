@@ -17,5 +17,6 @@ interface iIndexer
     const INFO_DIR = 1;
     const INFO_FOLLOW = 2;
 
-    public function getIndex(IndexConfiguration $config);
+    public function __construct(IndexConfiguration $config);
+    public function getIndex();
 }
