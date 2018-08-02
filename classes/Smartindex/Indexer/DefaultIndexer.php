@@ -3,7 +3,7 @@
 namespace Smartindex\Indexer;
 
 use Smartindex\Configuration\IndexConfiguration;
-use Smartindex\Utils\PageTools;
+use Smartindex\Utils\IndexTools;
 
 class DefaultIndexer implements \Smartindex\Indexer\iIndexer
 {
@@ -31,17 +31,17 @@ class DefaultIndexer implements \Smartindex\Indexer\iIndexer
     {
         $this->info = array();
         $this->info[1][iIndexer::INFO_NS] = $this->config->getAttribute('namespace');
-        $this->info[1][iIndexer::INFO_DIR] = PageTools::getPageDirFromNamespace($this->config->getAttribute('baseDir'), $this->config->getAttribute('namespace'));
+        $this->info[1][iIndexer::INFO_DIR] = IndexTools::getPageDirFromNamespace($this->config->getAttribute('baseDir'), $this->config->getAttribute('namespace'));
         $this->info[1][iIndexer::INFO_FOLLOW] = true;
 
-        $this->follow = explode(PageTools::$NS_SEPARATOR, $this->config->getAttribute('followPath'));
+        $this->follow = explode(IndexTools::$NS_SEPARATOR, $this->config->getAttribute('followPath'));
         unset($this->follow[count($this->follow) - 1]);
         array_unshift($this->follow, NULL, NULL);
     }
 
     private function addInfo($level, $dir)
     {
-        $this->info[$level][iIndexer::INFO_NS] = PageTools::constructPageName($this->info[$level - 1][iIndexer::INFO_NS], $dir);
+        $this->info[$level][iIndexer::INFO_NS] = IndexTools::constructPageName($this->info[$level - 1][iIndexer::INFO_NS], $dir);
         $this->info[$level][iIndexer::INFO_DIR] = $this->info[$level - 1][iIndexer::INFO_DIR] . '/' . $NS_SEPARATOR . $dir;
     }
 
@@ -72,9 +72,9 @@ class DefaultIndexer implements \Smartindex\Indexer\iIndexer
                 $index[$namespace][iIndexer::KEY_DIRS][] = $file;
                 continue;
             }
-            $pagename = PageTools::excludePageExtension($file);
+            $pagename = IndexTools::excludePageExtension($file);
             $index[$namespace][iIndexer::KEY_PAGES][] = $pagename;
-            $title = p_get_first_heading(PageTools::constructPageName($this->info[$level][iIndexer::INFO_NS], $pagename));
+            $title = p_get_first_heading(IndexTools::constructPageName($this->info[$level][iIndexer::INFO_NS], $pagename));
             $index[$namespace][iIndexer::KEY_PAGES_TITLE][] = ($title != null) ? $title : $pagename;
         }
         closedir($dh);

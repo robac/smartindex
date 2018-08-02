@@ -2,7 +2,7 @@
 
 namespace Smartindex\Utils;
 
-class PageTools
+class IndexTools
 {
 
     public static $NS_SEPARATOR = ':';

@@ -57,10 +57,10 @@ class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
 
                 
             $document .= "<li". \Smartindex\Utils\HtmlHelper::createIdClassesPart(NULL, $classes)."><div>"
-                         . \Smartindex\Utils\HtmlHelper::createSitemapLink(\Smartindex\Utils\PageTools::constructPageName($namespace, $ns), $ns)
+                         . \Smartindex\Utils\HtmlHelper::createSitemapLink(\Smartindex\Utils\IndexTools::constructPageName($namespace, $ns), $ns)
                          ."</div>";
             
-            $this->buildList($data, \Smartindex\Utils\PageTools::constructPageName($namespace, $ns), $document, $level+1);
+            $this->buildList($data, \Smartindex\Utils\IndexTools::constructPageName($namespace, $ns), $document, $level+1);
             $document .= "</li>";
         }
         
@@ -70,7 +70,7 @@ class DefaultRenderer implements \Smartindex\Renderer\iIndexRenderer {
             if ($heading == "")
                 $heading = $page;
             $document .= "<li". \Smartindex\Utils\HtmlHelper::createIdClassesPart(NULL, array(self::CLASS_PAGE))."><div>"
-                         . \Smartindex\Utils\HtmlHelper::createInternalLink(\Smartindex\Utils\PageTools::constructPageName($namespace, $page), NULL, $heading, NULL, NULL)
+                         . \Smartindex\Utils\HtmlHelper::createInternalLink(\Smartindex\Utils\IndexTools::constructPageName($namespace, $page), NULL, $heading, NULL, NULL)
                          ."</div ></li>";
         }
         

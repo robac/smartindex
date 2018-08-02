@@ -2,7 +2,7 @@
 
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Indexer\DefaultIndexer;
-use Smartindex\Utils\PageTools;
+use Smartindex\Utils\IndexTools;
 
 require_once (dirname(__FILE__).'/inc.php');
 INC_requireDW();
@@ -17,7 +17,7 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
   function html() {
 
       try {
-          PageTools::getPageFromId($_REQUEST['id'], $namespace, $page);
+          IndexTools::getPageFromId($_REQUEST['id'], $namespace, $page);
           $config = new IndexConfiguration(array(
               'namespace' => $namespace,
               'openDepth' => 1,
