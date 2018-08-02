@@ -73,7 +73,7 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
         $config->checkRender();
         if (is_null($this->error)) {
             $indexer = new DefaultIndexer($config);
-            $index = $indexer->getIndex($config);
+            $index = $indexer->getIndex();
         } else {
             $this->renderError($renderer->doc, $this->error);
             return true;

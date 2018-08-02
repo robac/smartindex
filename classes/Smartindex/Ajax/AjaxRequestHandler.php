@@ -29,7 +29,7 @@ class AjaxRequestHandler
         }
 
         $indexer = new \Smartindex\Indexer\DefaultIndexer($config);
-        $data = $indexer->getIndex($config);
+        $data = $indexer->getIndex();
 
         $renderer = $config->getRenderer();
         $renderer->setWrapper(false);

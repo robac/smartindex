@@ -31,7 +31,7 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
       }
 
       $indexer = new DefaultIndexer($config);
-      $index = $indexer->getIndex($config);
+      $index = $indexer->getIndex();
 
       $renderer = new Smartindex\Renderer\AdminRenderer($config);
       $renderer->setWrapper(false);
