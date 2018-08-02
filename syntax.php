@@ -36,7 +36,8 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
 
         try {
             $config = TagAttributes::createConfigurationFromTag($match, array(
-                'followPath' => $INFO['id']
+                'followPath' => $INFO['id'],
+                'wrapper' => true,
             ));
             $config->validate();
         } catch (\Exception $e) {
@@ -47,36 +48,26 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
     }
     
     public function render($mode, Doku_Renderer $doku_renderer, $data) {
-        if($mode != 'xhtml') 
-            return false;
-
         global $conf;
         global $INFO;
-        
+
+        if($mode != 'xhtml')
+            return false;
+
         $config = unserialize($data, array(
             'IndexConfiguration'
         ));
         
-        if (($config->target=='desktop' && $INFO['ismobile']===true))
-            return true;
-        
-        
-        
-        $config->setAttribute('followPath', $INFO['id']);
-        $config->checkRender();
-        if (is_null($this->error)) {
-            $indexer = new DefaultIndexer($config);
-            $index = $indexer->getIndex();
-        } else {
+
+        if ( ! is_null($this->error)) {
             $this->renderError($doku_renderer->doc, $this->error);
             return true;
         }
-        
+
+        $config->checkRender();
         $renderer = $config->getRenderer();
-        
-        $renderer->setWrapper(true, $config->getAttribute('treeId'));
-        $renderer->render($index, $doku_renderer->doc);
-        
+        $renderer->render($doku_renderer->doc);
+
         return true;
     }
 
