@@ -2,6 +2,8 @@
 
 namespace Smartindex\Configuration;
 
+use Smartindex\Exception\ConfigurationException;
+use Smartindex\Utils\Utils;
 
 class TagAttributes
 {
@@ -27,7 +29,7 @@ class TagAttributes
             $value = $val[2];
 
             if ( ! array_key_exists($tag_attr, self::$tagAttributes)) {
-                throw new \Smartindex\Exception\ConfigurationException("unknown tag attribute $tag_attr");
+                throw new ConfigurationException("unknown tag attribute $tag_attr");
             }
 
             $conf_attr = self::$tagAttributes[$tag_attr][0];
@@ -38,13 +40,13 @@ class TagAttributes
                     $attributes[$conf_attr] = $value;
                     break;
                 case 'booolean':
-                    $attributes[$conf_attr] = \Smartindex\Utils\Utils::parseBoolean($value);
+                    $attributes[$conf_attr] = Utils::parseBoolean($value);
                     break;
                 case 'numeric':
-                    $attributes[$conf_attr] = \Smartindex\Utils\Utils::parseNumeric($value);
+                    $attributes[$conf_attr] = Utils::parseNumeric($value);
                     break;
                 default:
-                    throw new \Smartindex\Exception\ConfigurationException("unknown attribute type $conf_type");
+                    throw new ConfigurationException("unknown attribute type $conf_type");
             }
         }
 

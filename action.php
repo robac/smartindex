@@ -3,6 +3,8 @@ if (!defined('DOKU_INC')) die();
 
 require_once 'inc.php';
 
+use Smartindex\Ajax\AjaxRequestHandler;
+
 class action_plugin_smartindex extends DokuWiki_Action_Plugin
 {
 
@@ -22,7 +24,7 @@ class action_plugin_smartindex extends DokuWiki_Action_Plugin
         $event->stopPropagation();
         $event->preventDefault();
 
-        $handler = new \Smartindex\Ajax\AjaxRequestHandler();
+        $handler = new AjaxRequestHandler();
         $handler->handle($event, $param);
         $handler->outputResponse();
     }

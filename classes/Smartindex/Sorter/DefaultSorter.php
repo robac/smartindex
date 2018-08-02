@@ -2,11 +2,14 @@
 
 namespace Smartindex\Sorter;
 
-class DefaultSorter implements \Smartindex\Sorter\iPageSorter
+use Smartindex\Sorter\iPageSorter;
+use Smartindex\Configuration\IndexConfiguration;
+
+class DefaultSorter implements iPageSorter
 {
     private $config;
 
-    public function __construct(\Smartindex\Configuration\IndexConfiguration $config)
+    public function __construct(IndexConfiguration $config)
     {
         $this->config = $config;
     }

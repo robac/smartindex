@@ -2,6 +2,8 @@
 
 namespace Smartindex\Ajax;
 
+use Smartindex\Configuration\IndexConfiguration;
+use Smartindex\Indexer\DefaultIndexer;
 
 class AjaxRequestHandler
 {
@@ -16,7 +18,7 @@ class AjaxRequestHandler
     protected function action_render_subtree($input) {
         global $conf;
         try {
-            $config = new \Smartindex\Configuration\IndexConfiguration(array(
+            $config = new IndexConfiguration(array(
                 'namespace' => $input->str('namespace'),
                 'openDepth' => $input->str('depth'),
                 'theme'     => $input->str('theme'),
@@ -28,7 +30,7 @@ class AjaxRequestHandler
             return;
         }
 
-        $indexer = new \Smartindex\Indexer\DefaultIndexer($config);
+        $indexer = new DefaultIndexer($config);
         $data = $indexer->getIndex();
 
         $renderer = $config->getRenderer();

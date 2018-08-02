@@ -1,6 +1,10 @@
 <?php
 
 namespace Smartindex\Configuration;
+
+use Smartindex\Exception\ConfigurationException;
+use Smartindex\Renderer\DefaultRenderer;
+use Smartindex\Utils\Utils;
 use ThemesCollector;
 
 class IndexConfiguration
@@ -40,7 +44,7 @@ class IndexConfiguration
             if (array_key_exists($k, $this->attributes)) {
                 $this->attributes[$k] = $v;
             } else {
-                throw new \Smartindex\Exception\ConfigurationException("Invalid configuration attribute: $k");
+                throw new ConfigurationException("Invalid configuration attribute: $k");
             }
         }
     }
@@ -55,7 +59,7 @@ class IndexConfiguration
         if (array_key_exists($name, $this->attributes)) {
             $this->attributes[$name] = $value;
         } else {
-            throw new \Smartindex\Exception\ConfigurationException("Invalid configuration attribute: $name");
+            throw new ConfigurationException("Invalid configuration attribute: $name");
         }
     }
 
@@ -72,7 +76,7 @@ class IndexConfiguration
         }
 
         if ($this->attributes['openDepth'] < 1) {
-            throw new \Smartindex\Exception\ConfigurationException("invalid attribute openDepth $this->attributes['openDepth'].");
+            throw new ConfigurationException("invalid attribute openDepth $this->attributes['openDepth'].");
         }
     }
 
@@ -84,13 +88,13 @@ class IndexConfiguration
 
     public function getRenderer()
     {
-        return new \Smartindex\Renderer\DefaultRenderer($this);
+        return new DefaultRenderer($this);
     }
 
     public function checkRender()
     {
         if (is_null($this->attributes['treeId'])) {
-            $this->attributes['treeId'] = \Smartindex\Utils\Utils::getFloatMicrotime("smartindex_");
+            $this->attributes['treeId'] = Utils::getFloatMicrotime("smartindex_");
         }
 
         $this->loadThemesInfo();

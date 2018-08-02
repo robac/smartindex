@@ -4,8 +4,9 @@ namespace Smartindex\Indexer;
 
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Utils\IndexTools;
+use Smartindex\Indexer\iIndexer;
 
-class DefaultIndexer implements \Smartindex\Indexer\iIndexer
+class DefaultIndexer implements iIndexer
 {
     private $config;
     private $info;

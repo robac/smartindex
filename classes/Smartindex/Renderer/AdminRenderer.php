@@ -1,7 +1,11 @@
 <?php
 namespace Smartindex\Renderer;
 
-class AdminRenderer implements \Smartindex\Renderer\iIndexRenderer {
+use Smartindex\Renderer\iIndexRenderer;
+use Smartindex\Configuration\IndexConfiguration;
+use Smartindex\Sorter\DefaultSorter;
+
+class AdminRenderer implements iIndexRenderer {
 
     private $useWrapper = true;
     private $wrapperClasses = array();
@@ -14,21 +18,21 @@ class AdminRenderer implements \Smartindex\Renderer\iIndexRenderer {
     public function setWrapper($useWrapper, $id = NULL) {
         $this->useWrapper = $useWrapper;
 
-        $this->wrapperClasses[] = \Smartindex\Configuration\IndexConfiguration::TREE_CLASS;
+        $this->wrapperClasses[] = IndexConfiguration::TREE_CLASS;
         $this->wrapperClasses[] = $this->config->getAttribute('cssClass');
         if ($this->config->getAttribute('highlite')) {
-            $this->wrapperClasses[] = \Smartindex\Configuration\IndexConfiguration::HIGHLITE_CLASS;
+            $this->wrapperClasses[] = IndexConfiguration::HIGHLITE_CLASS;
         }
 
         $this->wrapperId = $id;
     }
 
-    public function __construct(\Smartindex\Configuration\IndexConfiguration $config) {
+    public function __construct(IndexConfiguration $config) {
         $this->config = $config;
     }
 
     public function render($data, &$document) {
-        $sorter = new \Smartindex\Sorter\DefaultSorter($this->config);
+        $sorter = new DefaultSorter($this->config);
         $template = new \Monotek\MiniTPL\Template(TEMPLATES_DIR);
         $template->load("admin.tpl");
         $pages = $sorter->sort($data);
