@@ -2,6 +2,7 @@
 namespace Smartindex\Renderer;
 
 use Smartindex\Indexer\iIndexer;
+use Smartindex\Indexer\DefaultIndexer;
 use Smartindex\Utils\HtmlHelper;
 use Smartindex\Renderer\iIndexRenderer;
 use Smartindex\Configuration\IndexConfiguration;
@@ -32,7 +33,7 @@ class DefaultIndexRenderer implements iIndexRenderer {
         $this->index = $indexer->getIndex();
 
         if ($this->config->getAttribute('wrapper')) {
-            $document .= "<div". HtmlHelper::createIdClassesPart($this->getAttribute('treeId'), $this->getWrapperClasses()).">";
+            $document .= "<div". HtmlHelper::createIdClassesPart($this->config->getAttribute('treeId'), $this->getWrapperClasses()).">";
         }
         
         $this->buildList($this->config->getAttribute('namespace'), $document, 1);
