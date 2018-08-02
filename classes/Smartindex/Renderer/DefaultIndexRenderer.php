@@ -7,40 +7,37 @@ use Smartindex\Renderer\iIndexRenderer;
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Utils\IndexTools;
 
-class DefaultRenderer implements iIndexRenderer {
-    private $useWrapper = true;
-    private $wrapperClasses = array();
-    private $wrapperId;
-    
+class DefaultIndexRenderer implements iIndexRenderer {
     private $config;
-    private $basicData;
+    private $index;
     
     
-    public function setWrapper($useWrapper, $id = NULL) {
-        $this->useWrapper = $useWrapper;
-        
-        $this->wrapperClasses[] = IndexConfiguration::TREE_CLASS;
-        $this->wrapperClasses[] = $this->config->getAttribute('cssClass');
+    public function getWrapperClasses() {
+        $wrapperClasses = array();
+        $wrapperClasses[] = IndexConfiguration::TREE_CLASS;
+        $wrapperClasses[] = $this->config->getAttribute('cssClass');
         if ($this->config->getAttribute('highlight')) {
-            $this->wrapperClasses[] = IndexConfiguration::HIGHLITE_CLASS;
+            $wrapperClasses[] = IndexConfiguration::HIGHLIGHT_CLASS;
         }
-        
-        $this->wrapperId = $id;
+
+        return $wrapperClasses;
     }
 
     public function __construct(IndexConfiguration $config) {
         $this->config = $config;
     }
     
-    public function render($data, &$document) {
-        if ($this->useWrapper) {
-            $document .= "<div". HtmlHelper::createIdClassesPart($this->wrapperId, $this->wrapperClasses).">";
+    public function render(&$document) {
+        $indexer = new DefaultIndexer($this->config);
+        $this->index = $indexer->getIndex();
+
+        if ($this->config->getAttribute('wrapper')) {
+            $document .= "<div". HtmlHelper::createIdClassesPart($this->getAttribute('treeId'), $this->getWrapperClasses()).">";
         }
         
-        $this->basicData = $data;
-        $this->buildList($data, $this->config->getAttribute('namespace'), $document, 1);
+        $this->buildList($this->config->getAttribute('namespace'), $document, 1);
 
-        if ($this->useWrapper) {
+        if ($this->config->getAttribute('wrapper')) {
             $document .= "</div>";
         }
 
@@ -53,16 +50,16 @@ class DefaultRenderer implements iIndexRenderer {
         $document .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($this->config->getAttribute('treeId')."_conf", $ajaxConfig));
     }
     
-    private function buildList($data, $namespace, &$document, $level) {
-        if ( ! array_key_exists($namespace, $data))
+    private function buildList($namespace, &$document, $level) {
+        if ( ! array_key_exists($namespace, $this->index))
                 return "";
         
         $document .= "<ul>";
         
-        foreach($data[$namespace][iIndexer::KEY_DIRS] as $ns)  {
+        foreach($this->index[$namespace][iIndexer::KEY_DIRS] as $ns)  {
             $classes = array(self::CLASS_NAMESPACE);
             
-            if (($this->config->getAttribute('openDepth') > $level) || (isset($data[$ns][iIndexer::KEY_FOLLOW]))) {
+            if (($this->config->getAttribute('openDepth') > $level) || (isset($this->index[$ns][iIndexer::KEY_FOLLOW]))) {
                 $classes[] = self::CLASS_OPEN;
             } else {
                 $classes[] = self::CLASS_CLOSED;
@@ -73,13 +70,13 @@ class DefaultRenderer implements iIndexRenderer {
                          . HtmlHelper::createSitemapLink(IndexTools::constructPageName($namespace, $ns), $ns)
                          ."</div>";
             
-            $this->buildList($data, IndexTools::constructPageName($namespace, $ns), $document, $level+1);
+            $this->buildList($this->index, IndexTools::constructPageName($namespace, $ns), $document, $level+1);
             $document .= "</li>";
         }
         
         
-        foreach($data[$namespace][iIndexer::KEY_PAGES] as $key => $page) {
-            $heading = $data[$namespace][iIndexer::KEY_PAGES_TITLE][$key];
+        foreach($this->index[$namespace][iIndexer::KEY_PAGES] as $key => $page) {
+            $heading = $this->index[$namespace][iIndexer::KEY_PAGES_TITLE][$key];
             if ($heading == "")
                 $heading = $page;
             $document .= "<li". HtmlHelper::createIdClassesPart(NULL, array(self::CLASS_PAGE))."><div>"

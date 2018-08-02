@@ -3,6 +3,7 @@
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Indexer\DefaultIndexer;
 use Smartindex\Utils\IndexTools;
+use Smartindex\Renderer\AdminRenderer;
 
 require_once (dirname(__FILE__).'/inc.php');
 INC_requireDW();
@@ -33,8 +34,7 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
       $indexer = new DefaultIndexer($config);
       $index = $indexer->getIndex();
 
-      $renderer = new Smartindex\Renderer\AdminRenderer($config);
-      $renderer->setWrapper(false);
+      $renderer = new AdminRenderer($config);
       $renderer->render($index, $res);
       echo $res;
   }

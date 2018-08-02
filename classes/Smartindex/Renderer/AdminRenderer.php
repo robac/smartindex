@@ -21,7 +21,7 @@ class AdminRenderer implements iIndexRenderer {
         $this->wrapperClasses[] = IndexConfiguration::TREE_CLASS;
         $this->wrapperClasses[] = $this->config->getAttribute('cssClass');
         if ($this->config->getAttribute('highlite')) {
-            $this->wrapperClasses[] = IndexConfiguration::HIGHLITE_CLASS;
+            $this->wrapperClasses[] = IndexConfiguration::HIGHLIGHT_CLASS;
         }
 
         $this->wrapperId = $id;
@@ -31,11 +31,11 @@ class AdminRenderer implements iIndexRenderer {
         $this->config = $config;
     }
 
-    public function render($data, &$document) {
+    public function render($index, &$document) {
         $sorter = new DefaultSorter($this->config);
         $template = new \Monotek\MiniTPL\Template(TEMPLATES_DIR);
         $template->load("admin.tpl");
-        $pages = $sorter->sort($data);
+        $pages = $sorter->sort($index);
         $template->assign("namespace", $this->config->getAttribute('namespace'));
         $template->assign("page_titles", $pages[0]);
         $template->assign("isnamespace", $pages[1]);

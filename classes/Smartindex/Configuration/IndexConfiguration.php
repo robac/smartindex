@@ -3,14 +3,14 @@
 namespace Smartindex\Configuration;
 
 use Smartindex\Exception\ConfigurationException;
-use Smartindex\Renderer\DefaultRenderer;
+use Smartindex\Renderer\DefaultIndexRenderer;
 use Smartindex\Utils\Utils;
 use ThemesCollector;
 
 class IndexConfiguration
 {
     const TREE_CLASS = 'smartindex-treeview';
-    const HIGHLITE_CLASS = 'smartindex-highlite';
+    const HIGHLIGHT_CLASS = 'smartindex-highlite';
     const THEME_CLASS_PATTERN = 'smartindex-{theme}-theme';
 
     protected $attributes = array(
@@ -24,7 +24,6 @@ class IndexConfiguration
         'ajaxDepth' => 1,
         'openDepth' => 1,
         'cssClass' => '',
-        'target' => 'both',
         'showMain' => false,
         'wrapper' => NULL,
     );
@@ -89,7 +88,7 @@ class IndexConfiguration
 
     public function getRenderer()
     {
-        return new DefaultRenderer($this);
+        return new DefaultIndexRenderer($this);
     }
 
     public function checkRender()

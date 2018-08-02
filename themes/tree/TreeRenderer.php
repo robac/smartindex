@@ -29,7 +29,7 @@ class TreeRenderer implements iIndexRenderer {
         $this->wrapperClasses[] = IndexConfiguration::TREE_CLASS;
         $this->wrapperClasses[] = $this->config->cssClass;
         if ($this->config->highlite) {
-            $this->wrapperClasses[] = IndexConfiguration::HIGHLITE_CLASS;
+            $this->wrapperClasses[] = IndexConfiguration::HIGHLIGHT_CLASS;
         }
         
         $this->wrapperId = $id;

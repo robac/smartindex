@@ -34,7 +34,6 @@ class AjaxRequestHandler
         $data = $indexer->getIndex();
 
         $renderer = $config->getRenderer();
-        $renderer->setWrapper(false);
         $renderer->render($data, $index);
 
         $this->response = array(
