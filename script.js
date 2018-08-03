@@ -29,9 +29,6 @@ SI_INPUTDIALOG_OPTIONS =
     };
 
 
-
-
-
 /*
  * SmartIndex initialization.
  */
