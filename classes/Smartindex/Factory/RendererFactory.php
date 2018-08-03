@@ -6,6 +6,8 @@ use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Exception\ConfigurationException;
 use Smartindex\Exception\ThemeException;
 use Smartindex\Manager\ThemeManager;
+use Smartindex\Renderer\iIndexRenderer;
+use Smartindex\Renderer\iRenderer;
 
 
 class RendererFactory {
@@ -28,7 +30,13 @@ class RendererFactory {
             include_once($theme_info['syntaxRendererPath']);
         }
 
-        return new $theme_info['syntaxRenderer']($config);
+        $class = $theme_info['syntaxRenderer'];
+        $renderer = new $class($config);
+        if ($renderer instanceof iRenderer) {
+            return $renderer;
+        } else {
+            throw new ThemeException("Class $class doesn\'t implements interface iRenderer.");
+        }
     }
 
     public static function getIndexRenderer(IndexConfiguration $config, $loadTheme = true) {
@@ -38,6 +46,12 @@ class RendererFactory {
             include_once($theme_info['indexRendererPath']);
         }
 
-        return new $theme_info['indexRenderer']($config);
+        $class = $theme_info['indexRenderer'];
+        $renderer = new $class($config);
+        if ($renderer instanceof iIndexRenderer) {
+            return $renderer;
+        } else {
+            throw new ThemeException("Class $class doesn\'t implements interface iIndexRenderer.");
+        }
     }
 }
