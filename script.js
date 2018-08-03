@@ -1,5 +1,3 @@
-/* DOKUWIKI:include assets/context-menu/jquery.ui.position.js */
-/* DOKUWIKI:include assets/context-menu/jquery.contextMenu.min.js */
 /* DOKUWIKI:include assets/smartindex/admin.js */
 
 SI_CLASS_INDEX = 'div.smartindex-treeview';

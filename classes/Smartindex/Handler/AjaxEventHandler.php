@@ -1,12 +1,12 @@
 <?php
 
-namespace Smartindex\Ajax;
+namespace Smartindex\Handler;
 
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Factory\RendererFactory;
 use Smartindex\Indexer\DefaultIndexer;
 
-class AjaxRequestHandler
+class AjaxEventHandler implements iEventHandler
 {
     private $response;
 
@@ -31,7 +31,7 @@ class AjaxRequestHandler
             return;
         }
 
-        $renderer = $config->getAttribute('indexRenderer');
+        $renderer = RendererFactory::getIndexRenderer($config);
         $renderer->render($data);
 
         $this->response = array(
@@ -48,7 +48,7 @@ class AjaxRequestHandler
     }
 
 
-    public function handle(\Doku_Event $event, $param) {
+    public function handle(\Doku_Event &$event, $param) {
 
         global $INPUT;
         //security token check

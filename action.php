@@ -3,7 +3,8 @@ if (!defined('DOKU_INC')) die();
 
 require_once 'inc.php';
 
-use Smartindex\Ajax\AjaxRequestHandler;
+use Smartindex\Handler\AjaxEventHandler;
+use Smartindex\Handler\LoadAssetsEventHandler;
 
 class action_plugin_smartindex extends DokuWiki_Action_Plugin
 {
@@ -24,7 +25,7 @@ class action_plugin_smartindex extends DokuWiki_Action_Plugin
         $event->stopPropagation();
         $event->preventDefault();
 
-        $handler = new AjaxRequestHandler();
+        $handler = new AjaxEventHandler();
         $handler->handle($event, $param);
         $handler->outputResponse();
     }
@@ -34,27 +35,7 @@ class action_plugin_smartindex extends DokuWiki_Action_Plugin
     }
 
     public function _loadassets(Doku_Event &$event, $param) {
-
-        global $conf;
-
-        $base_url   = DOKU_BASE . 'lib/plugins/smartindex/assets';
-        $font_icons = array();
-
-        # Load Font-Awesome (skipped for Bootstrap3 template)
-        if ($this->getConf('loadContextMenuCSS')) {
-            $font_icons[] = "$base_url/context-menu/css/jquery.contextMenu.min.css";
-        }
-
-        if ($this->getConf('loadFontAwesomeCSS')) {
-            $font_icons[] = "$base_url/font-awesome/css/font-awesome.min.css";
-        }
-
-        foreach ($font_icons as $font_icon) {
-            $event->data['link'][] = array(
-                'type'    => 'text/css',
-                'rel'     => 'stylesheet',
-                'href'    => $font_icon);
-        }
-
+        $handler = new LoadAssetsEventHandler($this);
+        $handler->handle($event, $param);
     }
 }
