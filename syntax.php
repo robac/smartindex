@@ -66,7 +66,7 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
             return true;
         }
 
-        $renderer = $config->getAttribute('syntaxRenderer');
+        $renderer = RendererFactory::getSyntaxRenderer($config);
         $renderer->render($doku_renderer->doc);
 
         return true;

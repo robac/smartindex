@@ -17,7 +17,7 @@ class SyntaxRenderer implements iRenderer
 
     public function render(&$document)
     {
-        $index_renderer = $this->config->getAttribute('indexRenderer');
+        $index_renderer = RendererFactory::getIndexRenderer($this->config);
         $json_renderer = new InlineRenderer($this->config);
         $json_renderer->setType('JsonTreeConfig');
 

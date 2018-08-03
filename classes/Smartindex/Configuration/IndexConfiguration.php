@@ -26,6 +26,7 @@ class IndexConfiguration
         'indexClass' => '',
         'showMain' => false,
         'syntaxRenderer' => NULL,
+        'theme-info' => NULL,
         'indexRenderer' => NULL
     );
 
@@ -78,24 +79,18 @@ class IndexConfiguration
             $this->ajaxDepth = $this->openDepth;
         }
 
+        if (is_null($this->attributes['theme-info'])) {
+            $this->loadTheme();
+        }
+
         if ($this->attributes['openDepth'] < 1) {
             throw new ConfigurationException("invalid attribute openDepth $this->attributes['openDepth'].");
-        }
-
-        if ($include_renderers && (is_null($this->attributes['syntaxRenderer']))) {
-            throw new ConfigurationException("there is not syntax renderer.");
-        }
-
-        if ($include_renderers &&(is_null($this->attributes['indexRenderer']))) {
-            throw new ConfigurationException("there is not index renderer.");
         }
     }
 
     public function loadTheme() {
         $manager = new ThemeManager($this);
-        $theme_info = $manager->getThemeInfo($this->attributes['theme']);
-        $this->attributes['syntaxRenderer'] = new $theme_info['syntaxRenderer']($this);
-        $this->attributes['indexRenderer'] = new $theme_info['indexRenderer']($this);
-        $this->attributes['indexClass'] = $theme_info['css-class'];
+        $this->attributes['theme-info'] = $manager->getThemeInfo($this->attributes['theme']);
+        $this->attributes['indexClass'] = $this->attributes['theme-info']['css-class'];
     }
 }
