@@ -31,7 +31,7 @@ class DefaultIndexer implements iIndexer
     {
         $this->info = array();
         $this->info[1][iIndexer::INFO_NS] = $this->config->getAttribute('namespace');
-        $this->info[1][iIndexer::INFO_DIR] = IndexTools::getPageDirFromNamespace($this->config->getAttribute('baseDir'), $this->config->getAttribute('namespace'));
+        $this->info[1][iIndexer::INFO_DIR] = IndexTools::getNamespacePagesDir($this->config->getAttribute('namespace'));
         $this->info[1][iIndexer::INFO_FOLLOW] = true;
 
         $this->follow = explode(IndexTools::$NS_SEPARATOR, $this->config->getAttribute('followPath'));

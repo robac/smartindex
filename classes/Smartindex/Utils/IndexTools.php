@@ -7,10 +7,16 @@ class IndexTools
 
     public static $NS_SEPARATOR = ':';
 
-    public static function getPageDirFromNamespace($dataDir, $namespace)
+    /**
+     * @param $dataDir
+     * @param $namespace
+     * @return string
+     */
+    public static function getNamespacePagesDir($namespace)
     {
+        global $conf;
         $namespace = trim($namespace, self::$NS_SEPARATOR);
-        return rtrim($dataDir, '/') . ((strlen($namespace) == 0) ? "" : "/") . str_replace(self::$NS_SEPARATOR, "/", $namespace);
+        return rtrim($conf['datadir'], '/') . ((strlen($namespace) == 0) ? "" : "/") . str_replace(self::$NS_SEPARATOR, "/", $namespace);
     }
 
     public static function getPageIdentifier($pagePath)

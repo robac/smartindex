@@ -16,7 +16,6 @@ class IndexConfiguration
     protected $attributes = array(
         'namespace' => '',
         'highlight' => true,
-        'baseDir' => NULL,
         'followPath' => '',
         'indexId' => NULL,
         'nsFrontPage' => 'start',
@@ -70,10 +69,6 @@ class IndexConfiguration
 
     public function validate($include_renderers = true) {
         global $conf;
-
-        if (is_null($this->attributes['baseDir'])) {
-            $this->attributes['baseDir'] = $conf['datadir'];
-        }
 
         if (is_null($this->ajaxDepth)) {
             $this->ajaxDepth = $this->openDepth;
