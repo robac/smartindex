@@ -19,6 +19,13 @@ class IndexTools
         return rtrim($conf['datadir'], '/') . ((strlen($namespace) == 0) ? "" : "/") . str_replace(self::$NS_SEPARATOR, "/", $namespace);
     }
 
+    public static function isFilePage($file) {
+        if (preg_match('/^[\._]/', $file)) {
+            return false;
+        }
+        return true;
+    }
+
     public static function getPageIdentifier($pagePath)
     {
         global $conf;

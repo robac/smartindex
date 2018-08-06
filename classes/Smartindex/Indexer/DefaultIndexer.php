@@ -66,7 +66,10 @@ class DefaultIndexer implements iIndexer
         if (!$dh) return;
 
         while (($file = readdir($dh)) !== false) {
-            if (preg_match('/^[\._]/', $file)) continue;
+
+            if ( ! IndexTools::isFilePage($file))
+                continue;
+
             $filePath = $this->info[$level][iIndexer::INFO_DIR] . '/' . $file;
             if (is_dir($filePath)) {
                 $index[$namespace][iIndexer::KEY_DIRS][] = $file;
