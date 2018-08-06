@@ -41,7 +41,7 @@ class NewIndexer implements \Smartindex\Indexer\iIndexer
 
     private function addInfo($level, $dir)
     {
-        $this->info[$level][iIndexer::INFO_NS] = IndexTools::constructPageName($this->info[$level - 1][iIndexer::INFO_NS], $dir);
+        $this->info[$level][iIndexer::INFO_NS] = IndexTools::getPageId($this->info[$level - 1][iIndexer::INFO_NS], $dir);
         $this->info[$level][iIndexer::INFO_DIR] = $this->info[$level - 1][iIndexer::INFO_DIR] . '/' . $NS_SEPARATOR . $dir;
     }
 
@@ -74,7 +74,7 @@ class NewIndexer implements \Smartindex\Indexer\iIndexer
             }
             $pagename = IndexTools::excludePageExtension($file);
             $index[$namespace][iIndexer::KEY_PAGES][] = $pagename;
-            $title = p_get_first_heading(IndexTools::constructPageName($this->info[$level][iIndexer::INFO_NS], $pagename));
+            $title = p_get_first_heading(IndexTools::getPageId($this->info[$level][iIndexer::INFO_NS], $pagename));
             $index[$namespace][iIndexer::KEY_PAGES_TITLE][] = ($title != null) ? $title : $pagename;
         }
         closedir($dh);

@@ -55,7 +55,7 @@ class IndexTools
         }
     }
 
-    public static function constructPageName($namespace, $page)
+    public static function getPageId($namespace, $page)
     {
         return ($namespace == "") ? $page : $namespace . self::$NS_SEPARATOR . $page;
     }

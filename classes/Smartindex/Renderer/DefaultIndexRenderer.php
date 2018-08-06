@@ -40,10 +40,10 @@ class DefaultIndexRenderer implements iIndexRenderer {
 
                 
             $document .= "<li". HtmlHelper::createIdClassesPart(NULL, $classes)."><div>"
-                         . HtmlHelper::createSitemapLink(IndexTools::constructPageName($namespace, $ns), $ns)
+                         . HtmlHelper::createSitemapLink(IndexTools::getPageId($namespace, $ns), $ns)
                          ."</div>";
             
-            $this->buildList($this->index, IndexTools::constructPageName($namespace, $ns), $document, $level+1);
+            $this->buildList($this->index, IndexTools::getPageId($namespace, $ns), $document, $level+1);
             $document .= "</li>";
         }
         
@@ -53,7 +53,7 @@ class DefaultIndexRenderer implements iIndexRenderer {
             if ($heading == "")
                 $heading = $page;
             $document .= "<li". HtmlHelper::createIdClassesPart(NULL, array(self::CLASS_PAGE))."><div>"
-                         . HtmlHelper::createInternalLink(IndexTools::constructPageName($namespace, $page), NULL, $heading, NULL, NULL)
+                         . HtmlHelper::createInternalLink(IndexTools::getPageId($namespace, $page), NULL, $heading, NULL, NULL)
                          ."</div ></li>";
         }
         
