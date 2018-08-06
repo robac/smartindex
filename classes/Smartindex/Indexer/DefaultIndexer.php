@@ -10,7 +10,6 @@ class DefaultIndexer implements iIndexer
 {
     private $config;
     private $info;
-    private $follow;
 
     public function __construct(IndexConfiguration $config)
     {
@@ -79,8 +78,6 @@ class DefaultIndexer implements iIndexer
             $index[$namespace][iIndexer::KEY_PAGES_TITLE][] = ($title != null) ? $title : $pagename;
         }
         closedir($dh);
-        /*        array_multisort(array_map('strtolower', $data[$namespace][iIndexer::KEY_PAGES_TITLE]), SORT_STRING,
-                                $data[$namespace][iIndexer::KEY_PAGES], SORT_STRING);*/
 
         if (($level < $this->config->getAttribute('openDepth')) || $this->info[$level][iIndexer::INFO_FOLLOW]) {
             foreach ($index[$namespace][iIndexer::KEY_DIRS] as $subdir) {
