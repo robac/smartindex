@@ -42,6 +42,17 @@ class HtmlHelper
         return $res;
     }
 
+    public static function getClassAttribute($classes) {
+        $clsList = HtmlHelper::createClassesList($classes);
+        $res = "";
+
+        if ($clsList != "") {
+            $res = " class=\"" . $clsList . "\"";
+        }
+
+        return $res;
+    }
+
     public static function createInternalLink($wikiid, $params, $text, $id = NULL, array $classes = NULL)
     {
         return HtmlHelper::createLink(wl($wikiid, $params), $text, $id, $classes);

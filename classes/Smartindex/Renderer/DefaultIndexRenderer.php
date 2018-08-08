@@ -3,6 +3,7 @@ namespace Smartindex\Renderer;
 
 use Smartindex\Index\iIndexBuilder;
 use Smartindex\Index\DefaultIndexBuilder;
+use Smartindex\Index\Index;
 use Smartindex\Renderer\iIndexRenderer;
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Utils\IndexTools;
@@ -24,26 +25,32 @@ class DefaultIndexRenderer implements iIndexRenderer {
     }
     
     private function renderNamespace($namespace, &$document, $level) {
-        $template = new \Monotek\MiniTPL\Template(TEMPLATES_DIR);
-        $template->load("default_index_renderer.tpl");
-        $template->assign("items", $this->index->namespace[$namespace]);
-        $document .= $template->get();
-
-        /*if ( ! array_key_exists($namespace, $this->index))
+        if ( ! array_key_exists($namespace, $this->index->namespace))
                 return "";
         
         $document .= "<ul>";
         
-        foreach($this->index[$namespace][iIndexBuilder::KEY_DIRS] as $ns)  {
-            $classes = array(self::CLASS_NAMESPACE);
-            
-            if (($this->config->getAttribute('loadLevel') > $level) || (isset($this->index[$ns][iIndexBuilder::KEY_FOLLOW]))) {
-                $classes[] = self::CLASS_OPEN;
+        foreach ($this->index->namespace[$namespace] as $item=>$data) {
+            if ($data[Index::IS_NS]) {
+                $classes = array(self::CLASS_NAMESPACE);
             } else {
-                $classes[] = self::CLASS_CLOSED;
+                $classes = array(self::CLASS_PAGE);
             }
 
-                
+            $document .=
+                "<li ".
+                HtmlHelper::getClassAttribute($classes).
+                "><div>"
+                .HtmlHelper::createSitemapLink(IndexTools::getPageId($namespace, $item), $data[Index::TITLE])
+                ."</div>";
+
+        }
+
+
+
+        /*foreach($this->index[$namespace][iIndexBuilder::KEY_DIRS] as $ns)  {
+            $classes = array(self::CLASS_NAMESPACE);
+            
             $document .= "<li". HtmlHelper::createIdClassesPart(NULL, $classes)."><div>"
                          . HtmlHelper::createSitemapLink(IndexTools::getPageId($namespace, $ns), $ns)
                          ."</div>";
@@ -60,9 +67,9 @@ class DefaultIndexRenderer implements iIndexRenderer {
             $document .= "<li". HtmlHelper::createIdClassesPart(NULL, array(self::CLASS_PAGE))."><div>"
                          . HtmlHelper::createInternalLink(IndexTools::getPageId($namespace, $page), NULL, $heading, NULL, NULL)
                          ."</div ></li>";
-        }
+        }*/
         
-        $document .= "</ul>";*/
+        $document .= "</ul>";
 
     }
 }
