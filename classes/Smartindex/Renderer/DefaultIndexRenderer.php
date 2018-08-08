@@ -1,8 +1,8 @@
 <?php
 namespace Smartindex\Renderer;
 
-use Smartindex\Indexer\iIndexBuilder;
-use Smartindex\Indexer\DefaultIndexBuilder;
+use Smartindex\Index\iIndexBuilder;
+use Smartindex\Index\DefaultIndexBuilder;
 use Smartindex\Renderer\iIndexRenderer;
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Utils\IndexTools;
@@ -17,14 +17,19 @@ class DefaultIndexRenderer implements iIndexRenderer {
     }
     
     public function render(&$document) {
-        $indexer = new DefaultIndexBuilder($this->config);
-        $this->index = $indexer->getIndex();
+        $indexBuilder = new DefaultIndexBuilder($this->config);
+        $this->index = $indexBuilder->getIndex();
 
-        $this->buildList($this->config->getAttribute('namespace'), $document, 1);
+        $this->renderNamespace($this->config->getAttribute('namespace'), $document, 1);
     }
     
-    private function buildList($namespace, &$document, $level) {
-        if ( ! array_key_exists($namespace, $this->index))
+    private function renderNamespace($namespace, &$document, $level) {
+        $template = new \Monotek\MiniTPL\Template(TEMPLATES_DIR);
+        $template->load("default_index_renderer.tpl");
+        $template->assign("items", $this->index->namespace[$namespace]);
+        $document .= $template->get();
+
+        /*if ( ! array_key_exists($namespace, $this->index))
                 return "";
         
         $document .= "<ul>";
@@ -43,7 +48,7 @@ class DefaultIndexRenderer implements iIndexRenderer {
                          . HtmlHelper::createSitemapLink(IndexTools::getPageId($namespace, $ns), $ns)
                          ."</div>";
             
-            $this->buildList($this->index, IndexTools::getPageId($namespace, $ns), $document, $level+1);
+            $this->renderNamespace($this->index, IndexTools::getPageId($namespace, $ns), $document, $level+1);
             $document .= "</li>";
         }
         
@@ -57,6 +62,7 @@ class DefaultIndexRenderer implements iIndexRenderer {
                          ."</div ></li>";
         }
         
-        $document .= "</ul>";
+        $document .= "</ul>";*/
+
     }
 }

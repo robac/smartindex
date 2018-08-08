@@ -1,6 +1,6 @@
 <?php
 
-namespace Smartindex\Indexer;
+namespace Smartindex\Index;
 
 use Smartindex\Configuration\IndexConfiguration;
 

@@ -1,13 +1,12 @@
 <?php
 
-namespace Smartindex\Indexer;
+namespace Smartindex\Index;
 
 
 class Index
 {
-    const ID = 0;
-    const TITLE = 1;
-    const IS_NS = 2;
+    const TITLE = 0;
+    const IS_NS = 1;
 
     public $namespace = array();
 

@@ -4,7 +4,7 @@ namespace Smartindex\Handler;
 
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Factory\RendererFactory;
-use Smartindex\Indexer\DefaultIndexBuilder;
+use Smartindex\Index\DefaultIndexBuilder;
 
 class AjaxEventHandler implements iEventHandler
 {

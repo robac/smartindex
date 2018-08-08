@@ -1,8 +1,6 @@
 <?php
 
 use Smartindex\Configuration\IndexConfiguration;
-use Smartindex\Indexer\DefaultIndexBuilder;
-use Smartindex\Utils\HtmlHelper;
 use Smartindex\Configuration\TagAttributes;
 use Monotek\MiniTPL\Template;
 use Smartindex\Factory\RendererFactory;

@@ -34,7 +34,7 @@ class AdminRenderer implements iIndexRenderer {
     public function render($index, &$document) {
         $sorter = new DefaultSorter($this->config);
         $template = new \Monotek\MiniTPL\Template(TEMPLATES_DIR);
-        $template->load("admin.tpl");
+        $template->load("admin_index_renderer.tpl");
         $pages = $sorter->sort($index);
         $template->assign("namespace", $this->config->getAttribute('namespace'));
         $template->assign("page_titles", $pages[0]);
