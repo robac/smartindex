@@ -22,6 +22,7 @@ class IndexConfiguration
         'theme' => 'default',
         'ajaxDepth' => 1,
         'openDepth' => 1,
+        'loadLevel' => 1,
         'indexClass' => '',
         'showMain' => false,
         'syntaxRenderer' => NULL,
@@ -70,16 +71,16 @@ class IndexConfiguration
     public function validate($include_renderers = true) {
         global $conf;
 
-        if (is_null($this->ajaxDepth)) {
-            $this->ajaxDepth = $this->openDepth;
-        }
+        /*if (is_null($this->ajaxDepth)) {
+            $this->ajaxDepth = $this->load;
+        }*/
 
         if (is_null($this->attributes['theme-info'])) {
             $this->loadTheme();
         }
 
-        if ($this->attributes['openDepth'] < 1) {
-            throw new ConfigurationException("invalid attribute openDepth $this->attributes['openDepth'].");
+        if ($this->attributes['loadLevel'] < 1) {
+            throw new ConfigurationException("invalid attribute loadLevel $this->attributes['loadLevel'].");
         }
     }
 

@@ -14,6 +14,7 @@ class TagAttributes
         'theme' => array('theme', 'string'),
         'ajaxDepth' => array('ajaxDepth', 'numeric'),
         'openDepth' => array('openDepth', 'numeric'),
+        'loadLevel' => array('loadLevel', 'numeric'),
         'showMain' => array('showMain', 'string'),
     );
 

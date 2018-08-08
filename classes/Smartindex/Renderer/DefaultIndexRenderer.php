@@ -1,8 +1,8 @@
 <?php
 namespace Smartindex\Renderer;
 
-use Smartindex\Indexer\iIndexer;
-use Smartindex\Indexer\DefaultIndexer;
+use Smartindex\Indexer\iIndexBuilder;
+use Smartindex\Indexer\DefaultIndexBuilder;
 use Smartindex\Renderer\iIndexRenderer;
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Utils\IndexTools;
@@ -17,7 +17,7 @@ class DefaultIndexRenderer implements iIndexRenderer {
     }
     
     public function render(&$document) {
-        $indexer = new DefaultIndexer($this->config);
+        $indexer = new DefaultIndexBuilder($this->config);
         $this->index = $indexer->getIndex();
 
         $this->buildList($this->config->getAttribute('namespace'), $document, 1);
@@ -29,10 +29,10 @@ class DefaultIndexRenderer implements iIndexRenderer {
         
         $document .= "<ul>";
         
-        foreach($this->index[$namespace][iIndexer::KEY_DIRS] as $ns)  {
+        foreach($this->index[$namespace][iIndexBuilder::KEY_DIRS] as $ns)  {
             $classes = array(self::CLASS_NAMESPACE);
             
-            if (($this->config->getAttribute('openDepth') > $level) || (isset($this->index[$ns][iIndexer::KEY_FOLLOW]))) {
+            if (($this->config->getAttribute('loadLevel') > $level) || (isset($this->index[$ns][iIndexBuilder::KEY_FOLLOW]))) {
                 $classes[] = self::CLASS_OPEN;
             } else {
                 $classes[] = self::CLASS_CLOSED;
@@ -48,8 +48,8 @@ class DefaultIndexRenderer implements iIndexRenderer {
         }
         
         
-        foreach($this->index[$namespace][iIndexer::KEY_PAGES] as $key => $page) {
-            $heading = $this->index[$namespace][iIndexer::KEY_PAGES_TITLE][$key];
+        foreach($this->index[$namespace][iIndexBuilder::KEY_PAGES] as $key => $page) {
+            $heading = $this->index[$namespace][iIndexBuilder::KEY_PAGES_TITLE][$key];
             if ($heading == "")
                 $heading = $page;
             $document .= "<li". HtmlHelper::createIdClassesPart(NULL, array(self::CLASS_PAGE))."><div>"

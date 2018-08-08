@@ -4,7 +4,7 @@ namespace Smartindex\Handler;
 
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Factory\RendererFactory;
-use Smartindex\Indexer\DefaultIndexer;
+use Smartindex\Indexer\DefaultIndexBuilder;
 
 class AjaxEventHandler implements iEventHandler
 {
@@ -21,7 +21,7 @@ class AjaxEventHandler implements iEventHandler
         try {
             $config = new IndexConfiguration(array(
                 'namespace' => $input->str('namespace'),
-                'openDepth' => $input->str('depth'),
+                'loadLevel' => $input->str('depth'),
                 'theme'     => $input->str('theme'),
             ));
             $config->loadTheme();

@@ -1,7 +1,7 @@
 <?php
 
 use Smartindex\Configuration\IndexConfiguration;
-use Smartindex\Indexer\DefaultIndexer;
+use Smartindex\Indexer\DefaultIndexBuilder;
 use Smartindex\Utils\IndexTools;
 use Smartindex\Renderer\AdminRenderer;
 
@@ -21,7 +21,7 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
           IndexTools::getPageFromId($_REQUEST['id'], $namespace, $page);
           $config = new IndexConfiguration(array(
               'namespace' => $namespace,
-              'openDepth' => 1,
+              'loadLevel' => 1,
               'theme' => 'default'
           ));
           $config->validate();
@@ -30,7 +30,7 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
           return;
       }
 
-      $indexer = new DefaultIndexer($config);
+      $indexer = new DefaultIndexBuilder($config);
       $index = $indexer->getIndex();
 
       $renderer = new AdminRenderer($config);

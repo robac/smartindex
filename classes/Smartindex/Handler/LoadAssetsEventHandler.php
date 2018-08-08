@@ -4,7 +4,7 @@ namespace Smartindex\Handler;
 
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Factory\RendererFactory;
-use Smartindex\Indexer\DefaultIndexer;
+use Smartindex\Indexer\DefaultIndexBuilder;
 
 class LoadAssetsEventHandler implements iEventHandler
 {

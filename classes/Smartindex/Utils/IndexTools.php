@@ -12,14 +12,14 @@ class IndexTools
      * @param $namespace
      * @return string
      */
-    public static function getNamespacePagesDir($namespace)
+    public static function getNamespaceDataDirectory($namespace)
     {
         global $conf;
         $namespace = trim($namespace, self::$NS_SEPARATOR);
         return rtrim($conf['datadir'], '/') . ((strlen($namespace) == 0) ? "" : "/") . str_replace(self::$NS_SEPARATOR, "/", $namespace);
     }
 
-    public static function isFilePage($file) {
+    public static function fileIsPage($file) {
         if (preg_match('/^[\._]/', $file)) {
             return false;
         }
@@ -67,6 +67,16 @@ class IndexTools
         return ($namespace == "") ? $page : $namespace . self::$NS_SEPARATOR . $page;
     }
 
+    public static function isSubnamespace($namespace, $child) {
+        $child .= self::$NS_SEPARATOR;
+
+        if ((strpos($namespace, $child) === 0))
+            return true;
+        else
+            return false;
+
+    }
+
     public static function isPathPart($path, $part)
     {
         if (is_null($path) || is_null($path)) {
@@ -81,5 +91,10 @@ class IndexTools
         } else {
             return false;
         }
+    }
+
+    //https://stackoverflow.com/a/15575293
+    public static function getPagePath($namespacePath, $pageFile) {
+        return $namespacePath . DIRECTORY_SEPARATOR . $pageFile;
     }
 }

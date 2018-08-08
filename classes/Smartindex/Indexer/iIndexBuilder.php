@@ -4,7 +4,7 @@ namespace Smartindex\Indexer;
 
 use Smartindex\Configuration\IndexConfiguration;
 
-interface iIndexer
+interface iIndexBuilder
 {
 //    const KEY_DIRS = 0;
     const KEY_DIRS = "namespaces";
