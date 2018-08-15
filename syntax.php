@@ -51,6 +51,8 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
         global $conf;
         global $INFO;
 
+        $start = microtime(true);
+
         if($mode != 'xhtml')
             return false;
 
@@ -66,7 +68,8 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
 
         $renderer = RendererFactory::getSyntaxRenderer($config);
         $renderer->render($doku_renderer->doc);
-
+        $duration = (microtime(true) - $start);
+        $doku_renderer->doc .= "<h1>$duration sec</h1>";
         return true;
     }
 

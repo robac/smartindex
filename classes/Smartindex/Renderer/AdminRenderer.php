@@ -31,10 +31,15 @@ class AdminRenderer implements iIndexRenderer {
         $this->config = $config;
     }
 
-    public function render($index, &$document) {
+    public function render(&$document) {
         $sorter = new DefaultSorter($this->config);
         $template = new \Monotek\MiniTPL\Template(TEMPLATES_DIR);
         $template->load("admin_index_renderer.tpl");
+
+        $index_renderer =
+
+
+
         $pages = $sorter->sort($index);
         $template->assign("namespace", $this->config->getAttribute('namespace'));
         $template->assign("page_titles", $pages[0]);

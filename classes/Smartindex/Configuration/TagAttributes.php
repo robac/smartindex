@@ -16,6 +16,7 @@ class TagAttributes
         'openDepth' => array('openDepth', 'numeric'),
         'loadLevel' => array('loadLevel', 'numeric'),
         'showMain' => array('showMain', 'string'),
+        'namespacesFirst' => array('namespacesFirst', 'boolean'),
     );
 
 
@@ -40,7 +41,7 @@ class TagAttributes
                 case 'string':
                     $attributes[$conf_attr] = $value;
                     break;
-                case 'booolean':
+                case 'boolean':
                     $attributes[$conf_attr] = Utils::parseBoolean($value);
                     break;
                 case 'numeric':

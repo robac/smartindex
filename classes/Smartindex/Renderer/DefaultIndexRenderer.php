@@ -27,7 +27,8 @@ class DefaultIndexRenderer implements iIndexRenderer {
     private function renderNamespace($namespace, &$document, $level) {
         if ( ! array_key_exists($namespace, $this->index->namespace))
                 return;
-        
+
+        $pages = "";
         $document .= "<ul>";
         
         foreach ($this->index->namespace[$namespace] as $item=>$data) {
@@ -42,12 +43,19 @@ class DefaultIndexRenderer implements iIndexRenderer {
                 $classes = array(self::CLASS_PAGE);
             }
 
-            $document .=
+            $itemHTML =
                 "<li ".
                 HtmlHelper::getClassAttribute($classes).
                 "><div>"
                 .HtmlHelper::createSitemapLink(IndexTools::getPageId($namespace, $item), $data[Index::TITLE])
                 ."</div>";
+
+
+            if (( ! $data[Index::IS_NS]) && ($this->config->getAttribute('namespacesFirst'))) {
+                $pages .= $itemHTML;
+            } else {
+                $document .= $itemHTML;
+            }
 
             if ($isNamespace) {
                 $this->renderNamespace(IndexTools::getPageId($namespace, $item), $document, $level+1);
@@ -55,7 +63,9 @@ class DefaultIndexRenderer implements iIndexRenderer {
 
         }
 
-
+        if ( ! $data[Index::IS_NS]) {
+            $document .= $pages;
+        }
 
         /*foreach($this->index[$namespace][iIndexBuilder::KEY_DIRS] as $ns)  {
             $classes = array(self::CLASS_NAMESPACE);

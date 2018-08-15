@@ -27,7 +27,8 @@ class IndexConfiguration
         'showMain' => false,
         'syntaxRenderer' => NULL,
         'theme-info' => NULL,
-        'indexRenderer' => NULL
+        'indexRenderer' => NULL,
+        'namespacesFirst' => true,
     );
 
     private $themesInfo;

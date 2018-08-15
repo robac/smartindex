@@ -49,10 +49,10 @@ class DefaultIndexBuilder implements iIndexBuilder
 
             $item = IndexTools::excludePageExtension($file);
             //*** CHANGE IT
-            $itemTitle = p_get_first_heading(IndexTools::getPageId($namespace, $item), METADATA_DONT_RENDER);
-            if (is_null($itemTitle)) {
+            /*$itemTitle = p_get_first_heading(IndexTools::getPageId($namespace, $item), METADATA_DONT_RENDER);
+            if (is_null($itemTitle)) {*/
                 $itemTitle = $item;
-            }
+            //}
             //*** CHANGE IT
             $isNamespace = is_dir(IndexTools::getPagePath($dirPath, $file));
 
