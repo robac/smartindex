@@ -2,3 +2,4 @@
 /templates/cache/*
 disabled
 manager.dat
+/cache/*
