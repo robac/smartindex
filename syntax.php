@@ -5,6 +5,7 @@ use Smartindex\Configuration\TagAttributes;
 use Monotek\MiniTPL\Template;
 use Smartindex\Factory\RendererFactory;
 use Smartindex\Renderer\SyntaxRenderer;
+use Smartindex\Manager\TemplateManager;
 
 require_once (dirname(__FILE__).'/inc.php');
 INC_requireDW();
@@ -71,9 +72,9 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
     }
 
     private function renderError(&$document, $error) {
-        $template = new Template(TEMPLATES_DIR);
-        $template->load("error.tpl");
-        $template->assign("error", $error);
-        $document .= $template->get();
+        $template = TemplateManager::getTemplate('syntax/error.tpl');
+        $document .= $template->render(array(
+            'error' => $error,
+        ));
     }
 }

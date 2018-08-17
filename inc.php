@@ -10,6 +10,11 @@ function path_to_class($class) {
 
 function smartindex_autoloader($class)
 {
+    //normalize Twig class
+    if (strpos($class, 'Twig_') === 0) {
+        $class =  str_replace('_', DIRECTORY_SEPARATOR, $class);
+    }
+
     $path = dirname(__FILE__) . "/classes" . DIRECTORY_SEPARATOR . path_to_class($class) . ".php";
     if (file_exists($path)) {
         require_once $path;
@@ -34,7 +39,8 @@ function INC_constsSmartindex() {
     DEFINE('SMARTINDEX_DIR', dirname(__FILE__).'/');
     DEFINE('THEMES_DIR', SMARTINDEX_DIR.'themes/');
     DEFINE('HTML_DIR', SMARTINDEX_DIR.'html/');
-    DEFINE('TEMPLATES_DIR', SMARTINDEX_DIR.'templates/');
+    DEFINE('TEMPLATES_DIR', SMARTINDEX_DIR.'templates/src/');
+    DEFINE('TEMPLATESCACHE_DIR', SMARTINDEX_DIR.'templates/cache/');
     DEFINE('SMARTINDEX_URL', DOKU_BASE.'lib/plugins/smartindex/');
     DEFINE('THEMES_URL', SMARTINDEX_URL.'themes/');
 }
