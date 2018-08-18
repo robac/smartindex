@@ -8,6 +8,7 @@ use Smartindex\Renderer\iIndexRenderer;
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Utils\IndexTools;
 use Smartindex\Utils\HtmlHelper;
+use Smartindex\Manager\TemplateManager;
 
 class DefaultIndexRenderer implements iIndexRenderer {
     private $config;
@@ -21,14 +22,31 @@ class DefaultIndexRenderer implements iIndexRenderer {
         $indexBuilder = new DefaultIndexBuilder($this->config);
         $this->index = $indexBuilder->getIndex();
 
-        $this->renderNamespace($this->config->getAttribute('namespace'), $document, 1);
+        //$this->renderNamespace($this->config->getAttribute('namespace'), $document, 1);
+        $document .= $this->renderNamespace($this->config->getAttribute('namespace'));
+        $x = 10;
+    }
+
+    private function sayhello() {
+        return "HELLO";
     }
     
-    private function renderNamespace($namespace, &$document, $level) {
+    private function renderNamespace($namespace, &$document) {
         if ( ! array_key_exists($namespace, $this->index->namespace))
                 return;
 
-        $pages = "";
+
+        $template = TemplateManager::getTemplate('renderer/index/default.tpl', array(
+            'sayhellos' => array($this, 'sayhello'),
+        ));
+
+        return $template->render(array(
+            'namespace' => $this->index->namespace[$namespace],
+        ));
+
+
+
+        /*$pages = "";
         $document .= "<ul>";
         
         foreach ($this->index->namespace[$namespace] as $item=>$data) {
@@ -58,7 +76,7 @@ class DefaultIndexRenderer implements iIndexRenderer {
             }
 
             if ($isNamespace) {
-                $this->renderNamespace(IndexTools::getPageId($namespace, $item), $document, $level+1);
+                $this->renderNamespace(IndexTools::getPageId($namespace, $item), $document);
             }
 
         }
@@ -86,9 +104,9 @@ class DefaultIndexRenderer implements iIndexRenderer {
             $document .= "<li". HtmlHelper::createIdClassesPart(NULL, array(self::CLASS_PAGE))."><div>"
                          . HtmlHelper::createInternalLink(IndexTools::getPageId($namespace, $page), NULL, $heading, NULL, NULL)
                          ."</div ></li>";
-        }*/
+        }
         
-        $document .= "</ul>";
+        $document .= "</ul>";*/
 
     }
 }
