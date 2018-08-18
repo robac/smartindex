@@ -65,7 +65,7 @@ class DefaultIndexBuilder implements iIndexBuilder
         closedir($dh);
 
         foreach ($followNS as $subNS) {
-            $this->addNamespaceToIndex(IndexTools::getPageId($namespace, $subNS), $level+1);
+            $this->addNamespaceToIndex(IndexTools::getItemId($namespace, $subNS), $level+1);
         }
     }
 

@@ -62,7 +62,11 @@ class IndexTools
         }
     }
 
-    public static function getPageId($namespace, $page)
+    public static function getPageURL($namespace, $id){
+        return wl(IndexTools::getItemId($namespace, $id));
+    }
+
+    public static function getItemId($namespace, $page)
     {
         return ($namespace == "") ? $page : $namespace . self::$NS_SEPARATOR . $page;
     }

@@ -1,19 +1,34 @@
+{% spaceless %}
 <ul>
-    {% for key, data in namespace %}
+    {% for key, data in items[namespace] %}
+        {# examine <li> class #}
         {% if data[1] %}
             {% if data[2] %}
-    <li class="namespace open">
+                {% set class = 'namespace open' %}
             {% else %}
-    <li class="namespace closed">
+                {% set class = 'namespace closed' %}
             {% endif %}
         {% else %}
-    <li class="page">
+            {% set class = 'page' %}
         {% endif %}
 
-        <div>{{ data[0] }}</div>
-        {% if data[1] %}
-            {{ sayhello() }}
+
+    <li class="{{ class }}">
+        <div>
+            {% if isNamespace(namespace, key) == false %}
+                <a href="{{ getPageURL(namespace, key) }}">{{ data[0] }}</a>
+            {% else %}
+                <a>{{ data[0] }}</a>
+            {% endif %}
+        </div>
+        {% if isNamespace(namespace, key) %}
+            {# recurse to sub namespace#}
+            {% set subnamespace = getItemId(namespace, key) %}
+            {% if items[subnamespace] is defined %}
+                {% include "default.tpl" with {'namespace' : subnamespace} %}
+            {% endif %}
         {% endif %}
     </li>
     {% endfor %}
 </ul>
+{% endspaceless %}
