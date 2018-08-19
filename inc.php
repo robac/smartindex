@@ -15,7 +15,7 @@ function smartindex_autoloader($class)
         $class =  str_replace('_', DIRECTORY_SEPARATOR, $class);
     }
 
-    $path = dirname(__FILE__) . "/classes" . DIRECTORY_SEPARATOR . path_to_class($class) . ".php";
+    $path = dirname(__FILE__) . "/lib" . DIRECTORY_SEPARATOR . path_to_class($class) . ".php";
     if (file_exists($path)) {
         require_once $path;
     }
