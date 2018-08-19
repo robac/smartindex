@@ -72,10 +72,6 @@ class IndexConfiguration
     public function validate($include_renderers = true) {
         global $conf;
 
-        /*if (is_null($this->ajaxDepth)) {
-            $this->ajaxDepth = $this->load;
-        }*/
-
         if (is_null($this->attributes['theme-info'])) {
             $this->loadTheme();
         }

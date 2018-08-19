@@ -29,10 +29,8 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
           return;
       }
 
-      $index = new AdminRenderer($config);
-
       $renderer = new AdminRenderer($config);
-      $renderer->render($index, $res);
+      $renderer->render($res);
       echo $res;
   }
   

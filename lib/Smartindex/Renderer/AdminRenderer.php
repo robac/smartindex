@@ -1,52 +1,40 @@
 <?php
 namespace Smartindex\Renderer;
 
+use Smartindex\Index\DefaultIndexBuilder;
 use Smartindex\Renderer\iIndexRenderer;
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Sorter\DefaultSorter;
+use Smartindex\Manager\TemplateManager;
+use Smartindex\Index\Index;
 
 class AdminRenderer implements iIndexRenderer {
-
-    private $useWrapper = true;
-    private $wrapperClasses = array();
-    private $wrapperId;
-
     private $config;
-    private $basicData;
+    private $index;
 
-
-    public function setWrapper($useWrapper, $id = NULL) {
-        $this->useWrapper = $useWrapper;
-
-        $this->wrapperClasses[] = IndexConfiguration::TREE_CLASS;
-        $this->wrapperClasses[] = $this->config->getAttribute('indexClass');
-        if ($this->config->getAttribute('highlite')) {
-            $this->wrapperClasses[] = IndexConfiguration::HIGHLIGHT_CLASS;
-        }
-
-        $this->wrapperId = $id;
-    }
 
     public function __construct(IndexConfiguration $config) {
         $this->config = $config;
     }
 
+    public function isNamespace($namespace, $id) {
+        return $this->index->namespace[$namespace][$id][Index::IS_NS];
+    }
+
     public function render(&$document) {
         $sorter = new DefaultSorter($this->config);
-        $template = new \Monotek\MiniTPL\Template(TEMPLATES_DIR);
-        $template->load("admin_index_renderer.tpl");
 
-        $index_renderer =
+        $template = TemplateManager::getTemplate('renderer/admin.tpl', array(
+            'isNamespace' => array($this, 'isNamespace'),
+        ));
 
+        $this->index = (new DefaultIndexBuilder($this->config))->getIndex();
 
-
-        $pages = $sorter->sort($index);
-        $template->assign("namespace", $this->config->getAttribute('namespace'));
-        $template->assign("page_titles", $pages[0]);
-        $template->assign("isnamespace", $pages[1]);
-        $template->assign("page_ids", $pages[2]);
-        $template->assign("sectoken", getSecurityToken());
-        $template->render();
+        $document .= $template->render(array(
+            'sectoken' => getSecurityToken(),
+            'namespace' => $this->config->getAttribute('namespace'),
+            'items' => $this->index->namespace,
+        ));
     }
 
 
