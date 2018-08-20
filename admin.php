@@ -3,6 +3,7 @@
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Utils\IndexTools;
 use Smartindex\Renderer\AdminRenderer;
+use Smartindex\Manager\TemplateManager;
 
 require_once (dirname(__FILE__).'/inc.php');
 INC_requireDW();
@@ -25,7 +26,11 @@ class admin_plugin_smartindex extends DokuWiki_Admin_Plugin {
           ));
           $config->validate();
       } catch (\Exception $e) {
-          echo "<div class=\"smartindex-error\"> '.$e->getMessage().' {$config->error}</div>";
+          $template = TemplateManager::getTemplate('error.tpl');
+          echo $template->render(array(
+              'error' => $e->getMessage(),
+          ));
+
           return;
       }
 

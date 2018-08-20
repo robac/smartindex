@@ -72,7 +72,7 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
     }
 
     private function renderError(&$document, $error) {
-        $template = TemplateManager::getTemplate('syntax/error.tpl');
+        $template = TemplateManager::getTemplate('error.tpl');
         $document .= $template->render(array(
             'error' => $error,
         ));
