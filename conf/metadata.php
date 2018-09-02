@@ -1,5 +1,6 @@
 <?php
-/*$meta['loadContextMenuCSS'] = array('onoff');
-$meta['loadFontAwesomeCSS'] = array('onoff');*/
-$meta['loadContextMenuCSS'] = array('string');
-$meta['loadFontAwesomeCSS'] = array('string');
+$meta['loadContextMenu'] = array('onoff');
+$meta['loadFontAwesomeCSS'] = array('onoff');
+$meta['allowCache'] = array('onoff');
+$conf['indexConfigDir'] = './data/plugins/smartindex/conf';
+$conf['fileCacheDir'] = './data/plugins/smartindex/cache';

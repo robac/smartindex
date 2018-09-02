@@ -29,7 +29,7 @@ class LoadAssetsEventHandler implements iEventHandler
         $base_url   = DOKU_BASE . 'lib/plugins/smartindex/assets';
 
         # Load Font-Awesome (skipped for Bootstrap3 template)
-        if ($this->action->getConf('loadContextMenuCSS')) {
+        if ($this->action->getConf('loadContextMenu')) {
             $this->addAsset('css', "$base_url/context-menu/css/jquery.contextMenu.min.css");
             $this->addAsset('js', "$base_url/context-menu/jquery.contextMenu.min.js");
             $this->addAsset('js', "$base_url/context-menu/jquery.ui.position.js");
