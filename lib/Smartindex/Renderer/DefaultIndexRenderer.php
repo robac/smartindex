@@ -37,6 +37,7 @@ class DefaultIndexRenderer implements iIndexRenderer {
         $template = TemplateManager::getTemplate('renderer/index/default.tpl', array(
             'getItemId' => '\\Smartindex\\Utils\\IndexTools::getItemId',
             'getPageURL' => '\\Smartindex\\Utils\\IndexTools::getPageURL',
+            'getNamespaceURL' => '\\Smartindex\\Utils\\IndexTools::getNamespaceURL',
             'isNamespace' => array($this, 'isNamespace'),
         ));
 

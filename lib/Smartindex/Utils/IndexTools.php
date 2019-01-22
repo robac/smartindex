@@ -66,6 +66,11 @@ class IndexTools
         return wl(IndexTools::getItemId($namespace, $id));
     }
 
+    public static function getNamespaceURL($namespace, $id){
+        return wl("",
+            array('idx' => IndexTools::getItemId($namespace, $id)));
+    }
+
     public static function getItemId($namespace, $page)
     {
         return ($namespace == "") ? $page : $namespace . self::$NS_SEPARATOR . $page;

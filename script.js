@@ -214,6 +214,8 @@ function SI_getURLParameter(url, param) {
 
 function SI_action_newPage(itemKey, opt) {
      var namespace = SI_getURLParameter(jQuery(this).find("a").first().attr("href"), "idx");
+     alert(namespace);
+     alert(jQuery(this));
      var title = jQuery(this).find("a").first().html();
      SI_action_openInputDlg(namespace, "Create new page in \""+title+"\"", "Enter page name to create:", function(data, input) {
          window.location = DOKU_BASE+"doku.php?do=edit&id="+data+":"+input;

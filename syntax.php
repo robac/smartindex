@@ -68,6 +68,7 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
         $renderer->render($doku_renderer->doc);
         $duration = (microtime(true) - $this->start);
         $doku_renderer->doc .= "<h1>$duration sec</h1>";
+        $doku_renderer->doc .= "<h2>".wl('index', array('idx'=>"hehehe:hehe"))."</h2>";
         return true;
     }
 

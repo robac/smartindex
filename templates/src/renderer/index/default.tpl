@@ -15,10 +15,10 @@
 
     <li class="{{ class }}">
         <div>
-            {% if isNamespace(namespace, key) == false %}
-                <a href="{{ getPageURL(namespace, key) }}">{{ data[0] }}</a>
+            {% if isNamespace(namespace, key) %}
+                <a href="{{ getNamespaceURL(namespace, key) }}">{{ data[0] }}</a>
             {% else %}
-                <a>{{ data[0] }}</a>
+                <a href="{{ getPageURL(namespace, key) }}">{{ data[0] }}</a>
             {% endif %}
         </div>
         {% if isNamespace(namespace, key) %}
