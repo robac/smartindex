@@ -10,7 +10,6 @@ namespace Smartindex\Renderer;
 
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Utils\HtmlHelper;
-use Smartindex\Manager\TemplateManager;
 
 class InlineRenderer implements iRenderer
 {
@@ -43,10 +42,5 @@ class InlineRenderer implements iRenderer
         $JSONConfig->theme = $this->config->getAttribute('theme');
 
         $document .= HtmlHelper::createInlineScript(HtmlHelper::createInlineJSON($this->config->getAttribute('indexId')."_conf", $JSONConfig));
-
-        $template = TemplateManager::getTemplate('test.tpl');
-        $document .= $template->render(array(
-            'data' => array('1' => 'jedna', '2' => 'dva')
-        ));
     }
 }

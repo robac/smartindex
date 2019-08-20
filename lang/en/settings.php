@@ -6,7 +6,5 @@
  * @author     Giuseppe Di Terlizzi <giuseppe.diterlizzi@gmail.com>
  */
 
-$lang['loadContextMenu'] = 'Load jQuery contextMenu .js and .css';
-$lang['loadFontAwesomeCSS'] = 'Load Font-Awesome .css';
-$lang['allowCache'] = 'Allow use of cache';
+$lang['loadFontAwesome'] = 'Load Font-Awesome';
 
