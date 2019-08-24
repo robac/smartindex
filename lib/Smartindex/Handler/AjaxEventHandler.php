@@ -5,6 +5,10 @@ namespace Smartindex\Handler;
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Factory\RendererFactory;
 use Smartindex\Index\DefaultIndexBuilder;
+require_once (dirname(__FILE__).'/../../../inc.php');
+INC_requireDW();
+INC_constsDW();
+INC_constsSmartindex();
 
 class AjaxEventHandler implements iEventHandler
 {
