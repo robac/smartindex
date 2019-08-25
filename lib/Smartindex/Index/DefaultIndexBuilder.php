@@ -40,7 +40,7 @@ class DefaultIndexBuilder implements iIndexBuilder
         if ( ! $dh)
             return;
 
-        $tryFollow = $level < $this->loadLevel || IndexTools::isSubnamespace($this->followPath);
+        //$tryFollow = $level < $this->loadLevel || IndexTools::isSubnamespace($this->followPath);
 
         //traverse all files inside directory
         while (($file = readdir($dh)) !== false) {
@@ -58,7 +58,7 @@ class DefaultIndexBuilder implements iIndexBuilder
 
             $this->index->addItem($namespace, $item, $itemTitle, $isNamespace);
 
-            if ($tryFollow && $isNamespace)
+            if ($isNamespace)
                 if (($level < $this->loadLevel) || IndexTools::isSubnamespace($this->followPath, $item) || ($this->followPath == $item))
                     $followNS[] = $item;
         }
