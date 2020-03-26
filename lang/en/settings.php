@@ -9,4 +9,5 @@
 $lang['loadContextMenu'] = 'Load jQuery contextMenu .js and .css';
 $lang['loadFontAwesomeCSS'] = 'Load Font-Awesome .css';
 $lang['allowCache'] = 'Allow use of cache';
+$lang['hookSitemap'] = 'Hook context menu on Sitemap';
 

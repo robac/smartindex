@@ -1,0 +1,1 @@
+SI_HOOK_SITEMAP = true;

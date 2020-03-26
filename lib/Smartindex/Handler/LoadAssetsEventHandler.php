@@ -39,6 +39,10 @@ class LoadAssetsEventHandler implements iEventHandler
             $this->addAsset('css', "$base_url/font-awesome/css/font-awesome.min.css");
         }
 
+        if ($this->action->getConf('hookSitemap')) {
+            $this->addAsset('js', "$base_url/sitemap/sitemap.js");
+        }
+
         foreach ($this->assets as $asset) {
             if ($asset['type'] == 'css') {
                 $event->data['link'][] = array (

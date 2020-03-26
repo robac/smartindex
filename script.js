@@ -136,38 +136,47 @@ function SI_initInputDialog() {
 }
 
 function SI_initContextMenu() {
+    $items = {
+        "new": {
+            name: "New page",
+            icon: "fas fa-plus",
+            callback: SI_action_newPage,
+        },
+        "search": {
+            name: "Search in namespace",
+            icon: "fas fa-search",
+            callback: SI_action_searchNamespace,
+        },
+        "acl": {
+            name: "Show ACL",
+            icon: "fas fa-users",
+            callback: SI_action_showAcl,
+        },
+        "sep11": "---------",
+        "organize": {
+            name: "Organize namespace",
+            icon: "fas fa-random",
+            callback: SI_action_organizeNamespace,
+        },
+        "sep12": "---------",
+        "quit": {
+            name: "Quit",
+            icon: "fas fa-times-circle",
+            callback: function () {return;}
+        }
+    };
+
     jQuery.contextMenu({
         selector: 'li.namespace > div',
-        items: {
-            "new": {
-                name: "New page",
-                icon: "fas fa-plus",
-                callback: SI_action_newPage,
-            },
-            "search": {
-                name: "Search in namespace",
-                icon: "fas fa-search",
-                callback: SI_action_searchNamespace,
-            },
-            "acl": {
-                name: "Show ACL",
-                icon: "fas fa-users",
-                callback: SI_action_showAcl,
-            },
-            "sep11": "---------",
-            "organize": {
-                name: "Organize namespace",
-                icon: "fas fa-random",
-                callback: SI_action_organizeNamespace,
-            },
-            "sep12": "---------",
-            "quit": {
-                name: "Quit",
-                icon: "fas fa-times-circle",
-                callback: function () {return;}
-            }
-        }
+        items: $items
     });
+
+    if (SI_HOOK_SITEMAP) {
+        jQuery.contextMenu({
+            selector: "li[role='treeitem'] > div",
+            items: $items
+        });
+    }
 }
 
 
@@ -202,20 +211,18 @@ function SI_action_openInputDlg(data, title, info, okHandler) {
  */
 function SI_getURLParameter(url, param) {
     param = param.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-    var regexS = "[\\?&]" + param + "=([^&#]*)";
+    var regexS = "([\\?&]|\&amp;)" + param + "=([^&#]*)";
     var regex = new RegExp(regexS);
     var results = regex.exec(url);
     if (results == null) {
         return "";
     } else {
-        return decodeURIComponent(results[1].replace(/\+/g, " "));
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 }
 
 function SI_action_newPage(itemKey, opt) {
      var namespace = SI_getURLParameter(jQuery(this).find("a").first().attr("href"), "idx");
-     alert(namespace);
-     alert(jQuery(this));
      var title = jQuery(this).find("a").first().html();
      SI_action_openInputDlg(namespace, "Create new page in \""+title+"\"", "Enter page name to create:", function(data, input) {
          window.location = DOKU_BASE+"doku.php?do=edit&id="+data+":"+input;
@@ -238,5 +245,7 @@ function SI_action_newPage(itemKey, opt) {
 
 function SI_action_organizeNamespace(itemKey, opt) {
     var namespace = SI_getURLParameter(jQuery(this).find("a").first().attr("href"), "idx");
+    window.alert(namespace);
+    exit;
     window.location = DOKU_BASE+"doku.php?do=admin&page=smartindex&id="+namespace+':organize';
 }
