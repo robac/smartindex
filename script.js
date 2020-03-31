@@ -173,7 +173,7 @@ function SI_initContextMenu() {
 
     if (SI_HOOK_SITEMAP) {
         jQuery.contextMenu({
-            selector: "li[role='treeitem'] > div",
+            selector: "#index__tree  div.li",
             items: $items
         });
     }
