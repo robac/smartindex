@@ -70,7 +70,7 @@ class HtmlHelper
 
     public static function createInlineScript($script)
     {
-        return "<script type=\"text/javascript\">/*<![CDATA[*/" . $script . "/*!]]>*/</script>";
+        return "<script type=\"text/javascript\" defer=\"defer\">/*<![CDATA[*/" . $script . "/*!]]>*/</script>";
     }
 
     public static function createInlineJSON($objectName, $object)

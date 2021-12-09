@@ -18,7 +18,7 @@ class LoadAssetsEventHandler implements iEventHandler
     private function addAsset($type, $path) {
         $this->assets[] = array (
             'type' => $type,
-            'path' => $path
+            'path' => $path,
         );
     }
 
@@ -54,6 +54,7 @@ class LoadAssetsEventHandler implements iEventHandler
                 $event->data["script"][]  = array (
                     'type'    => 'text/javascript',
                     'src'    => $asset['path'],
+                    'defer' => 'defer',
                     "_data" => "",
                 );
             } else {
