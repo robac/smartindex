@@ -136,7 +136,7 @@ function SI_initInputDialog() {
 }
 
 function SI_initContextMenu() {
-    $items = {
+    $items_ns = {
         "new": {
             name: "New page",
             icon: "fas fa-plus",
@@ -166,15 +166,34 @@ function SI_initContextMenu() {
         }
     };
 
+    $items_page = {
+        "new": {
+            name: "Sibling page",
+            icon: "fas fa-plus",
+            callback: SI_action_newPage,
+        },
+        "sep12": "---------",
+        "quit": {
+            name: "Quit",
+            icon: "fas fa-times-circle",
+            callback: function () {return;}
+        }
+    };
+
     jQuery.contextMenu({
         selector: 'li.namespace > div',
-        items: $items
+        items: $items_ns
+    });
+
+    jQuery.contextMenu({
+        selector: 'li.page > div',
+        items: $items_page
     });
 
     if (SI_HOOK_SITEMAP) {
         jQuery.contextMenu({
             selector: "#index__tree  div.li",
-            items: $items
+            items: $items_ns
         });
     }
 }
