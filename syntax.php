@@ -2,7 +2,7 @@
 
 use Smartindex\Configuration\IndexConfiguration;
 use Smartindex\Configuration\TagAttributes;
-use Monotek\MiniTPL\Template;
+//use Monotek\MiniTPL\Template;
 use Smartindex\Factory\RendererFactory;
 use Smartindex\Renderer\SyntaxRenderer;
 use Smartindex\Manager\TemplateManager;
@@ -66,7 +66,7 @@ class syntax_plugin_smartindex extends DokuWiki_Syntax_Plugin {
 
         $renderer = RendererFactory::getSyntaxRenderer($config);
         $renderer->render($doku_renderer->doc);
-        $duration = (microtime(true) - $this->start);
+        //$duration = (microtime(true) - $this->start);
         //$doku_renderer->doc .= "<h1>$duration sec</h1>";
         //$doku_renderer->doc .= "<h2>".wl('index', array('idx'=>"hehehe:hehe"))."</h2>";
         return true;
